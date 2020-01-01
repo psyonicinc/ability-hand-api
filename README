@@ -1,0 +1,15 @@
+COMPILATION AND TESTING:
+
+1. From a raspberry pi (with git installed), clone this repository.
+
+2. Enable I2C:  
+	-'sudo raspi-config'  
+	-navigate to '5 Interfacing Options'  
+	-go to I2C and enable it  
+	-restart the pi  
+	
+2.1 Testing I2C:  
+	-Using pins: 3/BCM2 (SDA), 5/BCM3 (SCL), 6 (GND), connect the raspberry pi to the hand  
+	-With the hand powered on, type 'sudo i2cdetect -y 1'. The entry for 0x50, the hand's slave address, should appear on the list.  
+	
+3. From the demo directory, type 'make' and run ./demo.out to control the hand  
