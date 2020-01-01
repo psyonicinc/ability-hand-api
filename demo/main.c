@@ -20,7 +20,7 @@ void main()
 
 	open_i2c(0x50);	//Initialize the I2C port. Currently default setting is 100kHz clock rate
 
-	/*Quick example of pre-programmed grip control*/
+	/*Quick example of pre-programmed grip control (i.e. separate control mode from torque, velocity and position control)*/
 	set_grip(GENERAL_OPEN_CMD,0xFF);	
 	usleep(1000000);
 	set_grip(CHUCK_OK_GRASP_CMD,0xFF);	
