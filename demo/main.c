@@ -77,7 +77,7 @@ void main()
 			for(ch = 0; ch < 3; ch++)
 				printf("ps[%d] = %f, ", ch,  (float)(pres_fmt.v[ch])/6553.5f );	//pressure will be 0-0xFFFF, floating point
 			printf("ps[%d] = %f \r\n", ch, (float)(pres_fmt.v[ch])/6553.5f);
-		#else	
+		#else	//Print the position
 			int ch;
 			for(ch = 0; ch < NUM_CHANNELS-1; ch++)
 				printf("q[%d] = %f, ",ch,i2c_in.v[ch]);
