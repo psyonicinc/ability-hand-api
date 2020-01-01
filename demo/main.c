@@ -1,13 +1,11 @@
 #include "i2c-master-test.h"
 
-/*
-Uncomment and compile whichever control mode you would like to test.
-*/
+/*Uncomment and compile whichever control mode you would like to test.*/
 #define POS_CONTROL_MODE
 //#define TAU_CONTROL_MODE
 //#define VELOCITY_CONTROL_MODE
 
-
+/*When enabled, prints the value of the pressure sensors on the index finger. */
 #define PRINT_PRESSURE
 
 float current_time_sec(struct timeval * tv)
@@ -16,6 +14,7 @@ float current_time_sec(struct timeval * tv)
 	int64_t t_int = (tv->tv_sec*1000000+tv->tv_usec);
 	return ((float)t_int)/1000000.0f;
 }
+
 void main()
 {
 
@@ -27,8 +26,7 @@ void main()
 	set_grip(CHUCK_OK_GRASP_CMD,0xFF);	
 	usleep(1000000);
 	set_grip(GENERAL_OPEN_CMD,0xFF);	
-	usleep(1000000);
-	
+	usleep(1000000);	
 	
 	//set_mode(DISABLE_PRESSURE_FILTER);	//uncomment for RAW pressure
 	//set_mode(DISABLE_TORQUE_VELOCITY_SAFETY);	//uncomment for UNSAFE torque and velocity control modes
