@@ -6,7 +6,7 @@
 //#define VELOCITY_CONTROL_MODE
 
 /*When enabled, prints the value of the pressure sensors on the index finger. */
-#define PRINT_PRESSURE
+//#define PRINT_PRESSURE
 
 float current_time_sec(struct timeval * tv)
 {
@@ -21,12 +21,12 @@ void main()
 	open_i2c(0x50);	//Initialize the I2C port. Currently default setting is 100kHz clock rate
 
 	/*Quick example of pre-programmed grip control (i.e. separate control mode from torque, velocity and position control)*/
-	set_grip(GENERAL_OPEN_CMD,0xFF);
-	usleep(1000000);
-	set_grip(CHUCK_OK_GRASP_CMD,0xFF);
-	usleep(1000000);
-	set_grip(GENERAL_OPEN_CMD,0xFF);
-	usleep(1000000);
+	set_grip(GENERAL_OPEN_CMD,100);
+	usleep(2000000);
+//	set_grip(CHUCK_OK_GRASP_CMD,100);
+//	usleep(2000000);
+	set_grip(GENERAL_OPEN_CMD,100);
+	usleep(2000000);
 
 	//set_mode(DISABLE_PRESSURE_FILTER);	//uncomment for RAW pressure
 	//set_mode(DISABLE_TORQUE_VELOCITY_SAFETY);	//uncomment for UNSAFE torque and velocity control modes
@@ -45,20 +45,36 @@ void main()
 	/*Setup for demo motion*/
 	float qd[NUM_CHANNELS] = {15.0f, 15.0f, 15.0f, 15.0f, 15.0f, -15.0f};
 	float qd_amp[NUM_CHANNELS] = {50.0f, 50.0f, 50.0f, 50.0f, 50.0f, -50.0f};
-	float qd_offset[NUM_CHANNELS] = {10.0f, 10.0f, 10.0f, 10.0f, 10.0f, -10.0f};
-
+	float qd_offset[NUM_CHANNELS] = {20.0f, 20.0f, 20.0f, 20.0f, 20.0f, -10.0f};
+	uint8_t disabled_stat = 0;
+	uint8_t enable_cmd = 0;
+	float reset_safety_ts = 0;
+	
 	while(1)
 	{
 		float t = current_time_sec(&tv) - start_ts;
+		
 
 		#ifdef POS_CONTROL_MODE
-			int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &pres_fmt);
+			int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, enable_cmd, &disabled_stat, &pres_fmt);
 		#elif defined TAU_CONTROL_MODE
-			int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &pres_fmt);
+			int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, enable_cmd, &disabled_stat, &pres_fmt);
 		#elif defined VELOCITY_CONTROL_MODE
-			int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, &pres_fmt);
+			int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, enable_cmd, &disabled_stat, &pres_fmt);
 		#endif
-
+		
+		if(disabled_stat == 0x3F)
+		{
+			for(int ch = 0; ch < NUM_CHANNELS; ch++)
+				i2c_out.v[ch] = i2c_in.v[ch];
+			send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, 0x3F, &disabled_stat, &pres_fmt);
+		}
+		
+		printf("disabled status = ");
+		for(int ch = 0; ch < NUM_CHANNELS; ch++)
+			printf("%d", ((disabled_stat >> ch) & 1) );
+		printf("\r\n");
+		
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
 
@@ -71,10 +87,10 @@ void main()
 		Thumb: 	16-19
 
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
-		*/
+		
 		#ifdef PRINT_PRESSURE
 			int ch;
-			for(ch = 0; ch < 3; ch++)
+			for(ch = 0; ch < 4; ch++)
 				printf("ps[%d] = %f, ", ch,  (float)(pres_fmt.v[ch])/6553.5f );	//pressure will be 0-0xFFFF, floating point
 			printf("ps[%d] = %f \r\n", ch, (float)(pres_fmt.v[ch])/6553.5f);
 		#else	//Print the position
@@ -83,7 +99,8 @@ void main()
 				printf("q[%d] = %f, ",ch,i2c_in.v[ch]);
 			printf("q[%d] = %f\r\n",ch,i2c_in.v[ch]);
 		#endif
-
+		*/
+				
 		/*Generate a motion pattern*/
 		float phase[NUM_CHANNELS] = {3, 2, 1, 0, 5, 4};
 		for(int ch = 0; ch < NUM_CHANNELS; ch++)
