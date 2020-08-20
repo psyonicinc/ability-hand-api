@@ -5,14 +5,43 @@
 //#define TAU_CONTROL_MODE
 //#define VELOCITY_CONTROL_MODE
 
-/*When enabled, prints the value of the pressure sensors on the index finger. */
-//#define PRINT_PRESSURE
+
+//#define PRINT_PRESSURE	/*When enabled, prints the value of the pressure sensors on the index finger. */
 
 float current_time_sec(struct timeval * tv)
 {
 	gettimeofday(tv,NULL);
 	int64_t t_int = (tv->tv_sec*1000000+tv->tv_usec);
 	return ((float)t_int)/1000000.0f;
+}
+
+/*INPUT 0-4
+0-index
+1-middle
+2-ring
+3-pinky
+4-thumb
+*/
+int get_idx_of_max_pressure(int ch, pres_union_fmt_i2c * pres_fmt)
+{
+	if(ch > 4)
+		ch = 4;
+	else if (ch < 0)
+		ch = 0;
+	int lowidx = ch*4;
+	int hidx = lowidx+4;
+	uint16_t max = 0;
+	int idx_of_max = -1;
+	for(int i = lowidx; i < hidx; i++)
+	{
+		uint16_t v = pres_fmt->v[ch];
+		if(max < v)
+		{
+			idx_of_max = i;
+			max = v;
+		}		
+	}
+	return max;
 }
 
 void main()
@@ -58,7 +87,6 @@ void main()
 		if(t >= 1 && t < 2)
 		{
 			phase = 1;
-			//float sp = (t-1.f)*50.f;
 			float t_off = t-1.f;
 			for(int ch = 0; ch <= PINKY; ch++)
 				qd[ch] = t_off*50.f + 20.f;	//travel to 70 degrees (close) from 20 degrees (open)
@@ -88,17 +116,12 @@ void main()
 		if(prev_phase != phase && prev_phase == -1)
 		{
 			//enable_cmd = 0x3f;
-			send_enable_word(0x3F);
+			send_enable_word(0x3F);		//should call this only once for optimum behavior
 			printf(" enabling...\r\n");
 		}
 		prev_phase = phase;
 		
 		
-		
-		printf("disabled status = ");
-		for(int ch = 0; ch < NUM_CHANNELS; ch++)
-			printf("%d", ((disabled_stat >> ch) & 1) );
-		printf("\r\n");
 		
 
 		/*
@@ -110,19 +133,32 @@ void main()
 		Thumb: 	16-19
 
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
-		
+		*/
 		#ifdef PRINT_PRESSURE
 			int ch;
-			for(ch = 0; ch < 4; ch++)
-				printf("ps[%d] = %f, ", ch,  (float)(pres_fmt.v[ch])/6553.5f );	//pressure will be 0-0xFFFF, floating point
-			printf("ps[%d] = %f \r\n", ch, (float)(pres_fmt.v[ch])/6553.5f);
+			const char * name[5] = {"index","middle","ring","pinky","thumb"};
+			for(ch = 0; ch < 5; ch++)
+			{
+				int i_max = get_idx_of_max_pressure(ch, &pres_fmt);
+				if(i_max >= 0)
+					printf("%s: %.3f, ", name[ch], (float)pres_fmt.v[i_max]/6553.5f);
+				else
+					printf("%s: 0.000", name[ch]);
+			}
+			//	printf("ps[%d] = %f, ", ch,  (float)(pres_fmt.v[ch])/6553.5f );	//pressure will be 0-0xFFFF, floating point
+			//printf("ps[%d] = %f\r\n", ch, (float)(pres_fmt.v[ch])/6553.5f);
 		#else	//Print the position
 			int ch;
 			for(ch = 0; ch < NUM_CHANNELS-1; ch++)
 				printf("q[%d] = %f, ",ch,i2c_in.v[ch]);
 			printf("q[%d] = %f\r\n",ch,i2c_in.v[ch]);
 		#endif
-		*/
+		printf("disabled status = ");
+		for(int ch = 0; ch < NUM_CHANNELS; ch++)
+			printf("%d", ((disabled_stat >> ch) & 1) );
+		printf("\r\n");
+
+		
 		
 		#ifdef POS_CONTROL_MODE
 			
