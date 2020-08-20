@@ -15,7 +15,6 @@ float current_time_sec(struct timeval * tv)
 	int64_t t_int = (tv->tv_sec*1000000+tv->tv_usec);
 	return ((float)t_int)/1000000.0f;
 }
-int get_idx_of_max_pressure(int ch, pres_union_fmt_i2c * pres_fmt);
 
 void main()
 {
@@ -94,9 +93,6 @@ void main()
 		}
 		prev_phase = phase;
 		
-		
-		
-
 		/*
 		Pressure Indices:
 		Index: 	0-3
@@ -108,17 +104,11 @@ void main()
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
 		*/
 		#ifdef PRINT_PRESSURE
-			int ch;
-			const char * name[5] = {"index","middle","ring","pinky","thumb"};
-			for(ch = 0; ch < 5; ch++)
-			{
-				int i_max = get_idx_of_max_pressure(ch, &pres_fmt);
-				if(i_max >= 0)
-					printf("%s: %.3f, ", name[ch], (float)pres_fmt.v[i_max]/6553.5f);
-				else
-					printf("%s: 0.000", name[ch]);
-			}
-		#elifdef PRINT_POSITION	//Print the position
+			int pidx = 0;
+			for(pidx = 0; pidx < 3; pidx++)
+				printf("%.3f, ",(float)pres_fmt.v[pidx]/6553.5f);
+			printf("%.3f\r\n",(float)pres_fmt.v[pidx]/6553.5f);
+		#elif defined PRINT_POSITION	//Print the position
 			int ch;
 			for(ch = 0; ch < NUM_CHANNELS-1; ch++)
 				printf("q[%d] = %f, ",ch,i2c_in.v[ch]);
@@ -151,33 +141,4 @@ void main()
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
 	}
-}
-
-/*INPUT 0-4
-0-index
-1-middle
-2-ring
-3-pinky
-4-thumb
-*/
-int get_idx_of_max_pressure(int ch, pres_union_fmt_i2c * pres_fmt)
-{
-	if(ch > 4)
-		ch = 4;
-	else if (ch < 0)
-		ch = 0;
-	int lowidx = ch*4;
-	int hidx = lowidx+4;
-	uint16_t max = 0;
-	int idx_of_max = -1;
-	for(int i = lowidx; i < hidx; i++)
-	{
-		uint16_t v = pres_fmt->v[ch];
-		if(max < v)
-		{
-			idx_of_max = i;
-			max = v;
-		}		
-	}
-	return max;
 }
