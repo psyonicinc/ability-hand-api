@@ -15,35 +15,7 @@ float current_time_sec(struct timeval * tv)
 	int64_t t_int = (tv->tv_sec*1000000+tv->tv_usec);
 	return ((float)t_int)/1000000.0f;
 }
-
-/*INPUT 0-4
-0-index
-1-middle
-2-ring
-3-pinky
-4-thumb
-*/
-int get_idx_of_max_pressure(int ch, pres_union_fmt_i2c * pres_fmt)
-{
-	if(ch > 4)
-		ch = 4;
-	else if (ch < 0)
-		ch = 0;
-	int lowidx = ch*4;
-	int hidx = lowidx+4;
-	uint16_t max = 0;
-	int idx_of_max = -1;
-	for(int i = lowidx; i < hidx; i++)
-	{
-		uint16_t v = pres_fmt->v[ch];
-		if(max < v)
-		{
-			idx_of_max = i;
-			max = v;
-		}		
-	}
-	return max;
-}
+int get_idx_of_max_pressure(int ch, pres_union_fmt_i2c * pres_fmt);
 
 void main()
 {
@@ -53,8 +25,8 @@ void main()
 	/*Quick example of pre-programmed grip control (i.e. separate control mode from torque, velocity and position control)*/
 	set_grip(GENERAL_OPEN_CMD,100);
 	usleep(2000000);
-//	set_grip(CHUCK_OK_GRASP_CMD,100);
-//	usleep(2000000);
+	set_grip(CHUCK_OK_GRASP_CMD,100);
+	usleep(2000000);
 	set_grip(GENERAL_OPEN_CMD,100);
 	usleep(2000000);
 
@@ -181,3 +153,31 @@ void main()
 	}
 }
 
+/*INPUT 0-4
+0-index
+1-middle
+2-ring
+3-pinky
+4-thumb
+*/
+int get_idx_of_max_pressure(int ch, pres_union_fmt_i2c * pres_fmt)
+{
+	if(ch > 4)
+		ch = 4;
+	else if (ch < 0)
+		ch = 0;
+	int lowidx = ch*4;
+	int hidx = lowidx+4;
+	uint16_t max = 0;
+	int idx_of_max = -1;
+	for(int i = lowidx; i < hidx; i++)
+	{
+		uint16_t v = pres_fmt->v[ch];
+		if(max < v)
+		{
+			idx_of_max = i;
+			max = v;
+		}		
+	}
+	return max;
+}
