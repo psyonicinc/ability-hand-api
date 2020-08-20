@@ -7,6 +7,7 @@
 
 
 //#define PRINT_PRESSURE	/*When enabled, prints the value of the pressure sensors on the index finger. */
+//#define PRINT_POSITION	/*When enabled, prints the finger position in degrees/*
 
 float current_time_sec(struct timeval * tv)
 {
@@ -145,18 +146,19 @@ void main()
 				else
 					printf("%s: 0.000", name[ch]);
 			}
-			//	printf("ps[%d] = %f, ", ch,  (float)(pres_fmt.v[ch])/6553.5f );	//pressure will be 0-0xFFFF, floating point
-			//printf("ps[%d] = %f\r\n", ch, (float)(pres_fmt.v[ch])/6553.5f);
-		#else	//Print the position
+		#elifdef PRINT_POSITION	//Print the position
 			int ch;
 			for(ch = 0; ch < NUM_CHANNELS-1; ch++)
 				printf("q[%d] = %f, ",ch,i2c_in.v[ch]);
 			printf("q[%d] = %f\r\n",ch,i2c_in.v[ch]);
+		#else
+			const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
+			const char * yn[2] = {"on ","off"};
+			for(int ch = 0; ch < NUM_CHANNELS; ch++)
+				printf("%s: %s ", name[ch], yn[((disabled_stat >> ch) & 1)] );
+			printf("\r\n");			
 		#endif
-		printf("disabled status = ");
-		for(int ch = 0; ch < NUM_CHANNELS; ch++)
-			printf("%d", ((disabled_stat >> ch) & 1) );
-		printf("\r\n");
+		
 
 		
 		
