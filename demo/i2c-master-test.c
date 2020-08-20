@@ -77,20 +77,21 @@ INPUTS:
 			-In Velocity control mode, out.v is a list of velocities in degrees/second
 			-In Torque control mode, out.v is a list of unitless torques. Useful range is -80 to 80
 OUTPUTS:
-	in: Always corresponds to finger position (zero-referenced from the stall point on startup), in degrees.
-	pres_fmt: Contains the pressure sensor data ranging from 0-0xFFFF
-	
+	in: 			Always corresponds to finger position (zero-referenced from the stall point on startup), in degrees.
+	pres_fmt: 		Contains the pressure sensor data ranging from 0-0xFFFF
+	disabled_stat: 	Pass by reference word that indicates the driver disabled status (safety feature)
+		Bit:[ 		0			1				2			3					4						5			]
+			[	index 0/1	middle 0/1		ring 0/1	pinky 0/1		thumb flexor 0/1		thumb rotator 0/1	]
+
 Returns a nonzero code to indicate I2C error.
 */
-int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * enabled_cmd, uint8_t * disabled_stat, pres_union_fmt_i2c * pres_fmt)
+int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_union_fmt_i2c * pres_fmt)
 {
 	int ret = 0;
 	
 	i2c_tx_buf[0] = mode;
 	for(int i = 0; i < I2C_Q_RX_SIZE; i++)
 		i2c_tx_buf[i+1] = out->d[i];
-	i2c_tx_buf[25] = *enabled_cmd;
-	*enabled_cmd = 0;
 	
 	if (write(file_i2c, i2c_tx_buf, I2C_TX_SIZE) != I2C_TX_SIZE)          //write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)
 		ret |= 1;
@@ -104,6 +105,34 @@ int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c *
 			pres_fmt->d[i-24] = i2c_rx_buf[i];
 	}
 	*disabled_stat = i2c_rx_buf[64];
+	
+	return ret;
+}
+int send_enable_word(uint8_t enable_command)
+{
+	int ret = 0;
+	uint8_t confirm = 0;
+	int attempts = 0;
+	while(confirm == 0)
+	{
+		for(int i = 0; i < I2C_TX_SIZE; i++)
+			i2c_tx_buf[i]=0;	
+		i2c_tx_buf[0] = 0xEB;
+		i2c_tx_buf[1] = enable_command;
+		if(write(file_i2c, i2c_tx_buf, I2C_TX_SIZE) != I2C_TX_SIZE)
+			ret|=1;
+		if(read(file_i2c, i2c_rx_buf, I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE) != I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE)
+			ret |= (1 << 1);
+		if(i2c_rx_buf[64] == enable_command)
+			confirm = 1;
+		
+		attempts++;
+		if(attempts > 300)	//Kludged timeout
+		{
+			confirm = 1;	//break out of loop with an error message
+			ret |= (1 << 2);
+		}
+	}
 	
 	return ret;
 }

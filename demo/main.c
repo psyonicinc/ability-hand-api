@@ -33,7 +33,6 @@ void main()
 
 	/*Setpoint generation start time*/
 	struct timeval tv;
-	float start_ts = current_time_sec(&tv);
 
 	/*All control modes will use the same float format struct for input and output. Initializing them here*/
 	float_format_i2c i2c_out;
@@ -44,13 +43,15 @@ void main()
 
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
-	uint8_t enable_cmd = 0;
 	
 	int prev_phase = 0;
 	int phase = 0;
-	
-	i2c_out.v[THUMB_ROTATOR] = -80.f;
+		
 	float q_stop[NUM_CHANNELS] = {0};
+	float qd[NUM_CHANNELS] = {0};
+	qd[THUMB_ROTATOR] = -80.f;
+
+	float start_ts = current_time_sec(&tv);
 	while(1)
 	{
 		float t = fmod(current_time_sec(&tv) - start_ts, 10);
@@ -60,10 +61,9 @@ void main()
 			//float sp = (t-1.f)*50.f;
 			float t_off = t-1.f;
 			for(int ch = 0; ch <= PINKY; ch++)
-				i2c_out.v[ch] = t_off*50.f + 20.f;	//travel to 70 degrees (close) from 20 degrees (open)
-			i2c_out.v[THUMB_FLEXOR] = t_off*30.f+10.f; //travel to 40 degrees (close) from 10 degrees (open)
+				qd[ch] = t_off*50.f + 20.f;	//travel to 70 degrees (close) from 20 degrees (open)
+			qd[THUMB_FLEXOR] = t_off*30.f+10.f; //travel to 40 degrees (close) from 10 degrees (open)
 			
-
 			for(int ch = 0; ch < NUM_CHANNELS; ch++)
 				q_stop[ch] = i2c_in.v[ch];	//record so when phase 1 is complete you know where the hand stopped
 		}
@@ -72,22 +72,23 @@ void main()
 			phase = 2;
 			float t_off = (t-6.f);
 			for(int ch = 0; ch <= PINKY; ch++)
-				i2c_out.v[ch] = t_off*(20.f-q_stop[ch]) + q_stop[ch];	//travel to 20 from where you currently are
-			i2c_out.v[THUMB_FLEXOR] = t_off*(10.f-q_stop[THUMB_FLEXOR])+q_stop[THUMB_FLEXOR];	//travel to 10 from where you currently are
+				qd[ch] = t_off*(20.f-q_stop[ch]) + q_stop[ch];	//travel to 20 from where you currently are
+			qd[THUMB_FLEXOR] = t_off*(10.f-q_stop[THUMB_FLEXOR])+q_stop[THUMB_FLEXOR];	//travel to 10 from where you currently are
 		}
 		else if(t > 7)
 		{
 			phase = 3;
 			for(int ch = 0; ch <= PINKY; ch++)
-				i2c_out.v[ch] = 20.f;			//enforce start position
-			i2c_out.v[THUMB_FLEXOR] = 10.f;		//for both sets of fingers
+				qd[ch] = 20.f;			//enforce start position
+			qd[THUMB_FLEXOR] = 10.f;		//for both sets of fingers
 		}
 		else
 			phase = -1;
 
 		if(prev_phase != phase && prev_phase == -1)
 		{
-			enable_cmd = 0x3f;
+			//enable_cmd = 0x3f;
+			send_enable_word(0x3F);
 			printf(" enabling...\r\n");
 		}
 		prev_phase = phase;
@@ -97,11 +98,7 @@ void main()
 		printf("disabled status = ");
 		for(int ch = 0; ch < NUM_CHANNELS; ch++)
 			printf("%d", ((disabled_stat >> ch) & 1) );
-		printf("enable word = ");
-		for(int ch = 0; ch < NUM_CHANNELS; ch++)
-			printf("%d", ((enable_cmd >> ch) & 1) );		
 		printf("\r\n");
-		
 		
 
 		/*
@@ -127,18 +124,22 @@ void main()
 		#endif
 		*/
 		
-		
-		
 		#ifdef POS_CONTROL_MODE
-			int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &enable_cmd, &disabled_stat, &pres_fmt);
+			
+			for(int ch = 0; ch < NUM_CHANNELS; ch++)
+				i2c_out.v[ch] = qd[ch];
+			int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
 		#elif defined TAU_CONTROL_MODE
-			int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &enable_cmd, &disabled_stat, &pres_fmt);
+			for(int ch = 0; ch < NUM_CHANNELS; ch++)
+				i2c_out.v[ch] = 2.0f*(qd[ch] - i2c_in.v[ch]);
+			int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
 		#elif defined VELOCITY_CONTROL_MODE
-			int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, &enable_cmd, &disabled_stat, &pres_fmt);
+			for(int ch = 0; ch < NUM_CHANNELS; ch++)
+				i2c_out.v[ch] = 3.0f*(qd[ch] - i2c_in.v[ch]);
+			int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
 		#endif
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
-
 	}
 }
 
