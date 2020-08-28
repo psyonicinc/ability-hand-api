@@ -36,12 +36,7 @@ void main()
 	struct timeval tv;
 
 	/*All control modes will use the same float format struct for input and output. Initializing them here*/
-	float_format_i2c i2c_out;
-	for(int ch = 0; ch < NUM_CHANNELS; ch++)
-		i2c_out.v[ch] = 0;
-	float_format_i2c i2c_in;
-	pres_union_fmt_i2c pres_fmt;
-
+	
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
 	
@@ -51,6 +46,14 @@ void main()
 	float q_stop[NUM_CHANNELS] = {0};
 	float qd[NUM_CHANNELS] = {0};
 	qd[THUMB_ROTATOR] = -80.f;
+
+	pres_union_fmt_i2c pres_fmt;
+	float_format_i2c i2c_out;
+	for(int ch = 0; ch < NUM_CHANNELS; ch++)
+		i2c_out.v[ch] = 0;
+	float_format_i2c i2c_in;
+	for(float ts = current_time_sec(&tv) + .5; current_time_sec(&tv) < ts;)
+		send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);	//initialize position
 
 	float start_ts = current_time_sec(&tv);
 	while(1)
@@ -124,8 +127,7 @@ void main()
 
 		
 		
-		#ifdef POS_CONTROL_MODE
-			
+		#ifdef POS_CONTROL_MODE			
 			for(int ch = 0; ch < NUM_CHANNELS; ch++)
 				i2c_out.v[ch] = qd[ch];
 			int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
