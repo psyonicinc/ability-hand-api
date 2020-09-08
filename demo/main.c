@@ -1,4 +1,5 @@
 #include "i2c-master-test.h"
+#include <signal.h>
 
 float current_time_sec(struct timeval * tv)
 {
@@ -6,6 +7,12 @@ float current_time_sec(struct timeval * tv)
 	int64_t t_int = (tv->tv_sec*1000000+tv->tv_usec);
 	return ((float)t_int)/1000000.0f;
 }
+
+static volatile int gl_leave_loop = 0;
+void int_handler(int tmp)
+{
+	gl_leave_loop = 1;
+}	
 
 /*INPUT 0-4
 0-index
@@ -37,15 +44,15 @@ int get_idx_of_max_pressure(int finger, pres_union_fmt_i2c * pres_fmt)
 
 void main()
 {
+	signal(SIGINT, int_handler);
 
 	open_i2c(0x50);	//Initialize the I2C port. Currently default setting is 100kHz clock rate
 
 	/*Quick example of pre-programmed grip control (i.e. separate control mode from torque, velocity and position control)*/
+	set_grip(PINCH_GRASP_CMD,100);
+	usleep(1000000);
 	set_grip(GENERAL_OPEN_CMD,100);
-	usleep(500000);
-	set_grip(GENERAL_OPEN_CMD,100);
-	usleep(500000);
-
+	usleep(1000000);
 	//set_mode(DISABLE_PRESSURE_FILTER);	//uncomment for RAW pressure
 	//set_mode(DISABLE_TORQUE_VELOCITY_SAFETY);	//uncomment for UNSAFE torque and velocity control modes
 
@@ -59,6 +66,9 @@ void main()
 	float_format_i2c i2c_in;
 	pres_union_fmt_i2c pres_fmt;
 
+	set_mode(POS_CTL_MODE);
+	usleep(50000);
+	
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
 
@@ -66,8 +76,10 @@ void main()
 	float max_of_max[5] = {0};
 	
 	float reset_ts = 0;
-	while(1)
+	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,50.f,15.f,-15.f};
+	while(gl_leave_loop == 0)
 	{
+
 		float t = current_time_sec(&tv) - start_ts;
 		
 		if(t > reset_ts)
@@ -105,10 +117,14 @@ void main()
 		printf("Countdown t minus: %.3f\r\n", reset_ts - t);
 			
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
-			i2c_out.v[ch] = 0.f;
-		int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);	//no motor motion, just want the pressure sensor data
+			i2c_out.v[ch] = test_config[ch];
+		int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
-	}
+	}	
+	printf("Exit Program\r\n");
+	set_mode(GRIP_CTL_MODE);
+	usleep(50000);
+
 }
 
