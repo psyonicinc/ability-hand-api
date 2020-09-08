@@ -43,7 +43,7 @@ int set_grip(grasp_cmd grip_idx, uint8_t speed)
 {
 	const int len = 3;
 	uint8_t i2c_buf[len];
-	i2c_buf[0] = 0x1D;
+	i2c_buf[0] = GRIP_CTL_MODE;
     i2c_buf[1] = (uint8_t)grip_idx;
 	i2c_buf[2] = speed;
 	if (write(file_i2c, i2c_buf, len) != len)          //write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)

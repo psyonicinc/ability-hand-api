@@ -1,10 +1,9 @@
 #include "i2c-master-test.h"
 
 /*Uncomment and compile whichever control mode you would like to test.*/
-#define POS_CONTROL_MODE
-//#define TAU_CONTROL_MODE
-//#define VELOCITY_CONTROL_MODE
-
+//const uint8_t gl_ctl_mode = TORQUE_CTL_MODE;
+const uint8_t gl_ctl_mode = POS_CTL_MODE;
+//const uint8_t gl_ctl_mode = VELOCITY_CTL_MODE;
 
 //#define PRINT_PRESSURE	/*When enabled, prints the value of the pressure sensors on the index finger. */
 //#define PRINT_POSITION	/*When enabled, prints the finger position in degrees/*
@@ -52,9 +51,13 @@ void main()
 	for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		i2c_out.v[ch] = 0;
 	float_format_i2c i2c_in;
+	set_mode(TORQUE_CTL_MODE);
+	usleep(10000);
 	for(float ts = current_time_sec(&tv) + .5; current_time_sec(&tv) < ts;)
 		send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);	//initialize position
-
+	set_mode(gl_ctl_mode);
+	usleep(10000);
+	
 	float start_ts = current_time_sec(&tv);
 	while(1)
 	{
@@ -126,20 +129,34 @@ void main()
 		
 
 		
-		
-		#ifdef POS_CONTROL_MODE			
-			for(int ch = 0; ch < NUM_CHANNELS; ch++)
-				i2c_out.v[ch] = qd[ch];
-			int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-		#elif defined TAU_CONTROL_MODE
-			for(int ch = 0; ch < NUM_CHANNELS; ch++)
-				i2c_out.v[ch] = 2.0f*(qd[ch] - i2c_in.v[ch]);
-			int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-		#elif defined VELOCITY_CONTROL_MODE
-			for(int ch = 0; ch < NUM_CHANNELS; ch++)
-				i2c_out.v[ch] = 3.0f*(qd[ch] - i2c_in.v[ch]);
-			int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-		#endif
+		int rc = 0;
+		switch(gl_ctl_mode)
+		{
+			case POS_CTL_MODE:
+			{
+				for(int ch = 0; ch < NUM_CHANNELS; ch++)
+					i2c_out.v[ch] = qd[ch];
+				rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+				break;
+			}
+			case TORQUE_CTL_MODE:
+			{
+				for(int ch = 0; ch < NUM_CHANNELS; ch++)
+					i2c_out.v[ch] = 2.0f*(qd[ch] - i2c_in.v[ch]);
+				int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+				break;
+			}
+			case VELOCITY_CTL_MODE:
+			{
+				for(int ch = 0; ch < NUM_CHANNELS; ch++)
+					i2c_out.v[ch] = 3.0f*(qd[ch] - i2c_in.v[ch]);
+				int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+				break;
+			}
+			default:
+				rc = 11;	//random value to show ctl mode is not set properly
+			break;
+		};
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
 	}

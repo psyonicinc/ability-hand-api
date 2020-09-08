@@ -26,6 +26,7 @@
 #define POS_CTL_MODE						0xAD
 #define TORQUE_CTL_MODE						0xAB
 #define VELOCITY_CTL_MODE					0xAC
+#define GRIP_CTL_MODE 						0x1D
 
 /*Motor indices*/
 #define INDEX 			0
