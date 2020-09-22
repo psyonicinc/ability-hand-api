@@ -49,10 +49,10 @@ void main()
 	open_i2c(0x50);	//Initialize the I2C port. Currently default setting is 100kHz clock rate
 
 	/*Quick example of pre-programmed grip control (i.e. separate control mode from torque, velocity and position control)*/
-	set_grip(PINCH_GRASP_CMD,100);
-	usleep(1000000);
-	set_grip(GENERAL_OPEN_CMD,100);
-	usleep(1000000);
+	//set_grip(PINCH_GRASP_CMD,100);
+	//usleep(1000000);
+	//set_grip(GENERAL_OPEN_CMD,100);
+	//usleep(1000000);
 	//set_mode(DISABLE_PRESSURE_FILTER);	//uncomment for RAW pressure
 	//set_mode(DISABLE_TORQUE_VELOCITY_SAFETY);	//uncomment for UNSAFE torque and velocity control modes
 
@@ -76,7 +76,7 @@ void main()
 	float max_of_max[5] = {0};
 	
 	float reset_ts = 0;
-	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,50.f,15.f,-15.f};
+	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,15.f,15.f,-15.f};
 	while(gl_leave_loop == 0)
 	{
 
