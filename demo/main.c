@@ -10,6 +10,32 @@ float current_time_sec(struct timeval * tv)
 	return ((float)t_int)/1000000.0f;
 }
 
+const char * finger_name[] = {
+	"index",
+	"middle",
+	"ring",
+	"pinky",
+	"thumb flex",
+	"thumb rot",
+};
+
+/**/
+void wait_for_cooldown(uint8_t * disabled_stat, float_format_i2c * out, float_format_i2c * in, pres_union_fmt_i2c * pres)
+{
+	while(*disabled_stat != 0)
+	{
+		for(int ch = 0; ch < NUM_CHANNELS; ch++)
+		{
+			out->v[ch] = 0.f;
+			int chk = (*disabled_stat >> ch) & 1;
+			if(chk)
+				printf("[%s cooling]", finger_name[ch]);
+		}
+		printf("\r\n");
+		int rc = send_recieve_floats(TORQUE_CTL_MODE, out, in, disabled_stat, pres);
+	}
+}
+
 void main()
 {
 
@@ -37,50 +63,28 @@ void main()
 	for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		i2c_out.v[ch] = 0;
 	float_format_i2c i2c_in;
-
+	int rc=7;
 	
 	set_mode(TORQUE_CTL_MODE);
-	printf("entering torque ctl mode...\r\n");
-	usleep(1000000);//need to wait to enter the api mode
-	const char * finger_name[] = {
-		"index",
-		"middle",
-		"ring",
-		"pinky",
-		"thumb flex",
-		"thumb rot",
-	};
-	printf("torque control entered\r\n");
-	printf("disabling pressure HPF...\r\n");
-	set_mode(DISABLE_PRESSURE_FILTER);//example of pres filter disable
-	usleep(1000000);//need to wait to enter the api mode
-	printf("pressure filter disabled\r\n");
-	usleep(1000000);//need to wait to enter the api mode
-
-	while(disabled_stat != 0)
+	printf("prepping api...\r\n");
+	while(rc != 0)
 	{
-		for(int ch = 0; ch < NUM_CHANNELS; ch++)
-		{
-			i2c_out.v[ch] = 0.f;
-			int chk = (disabled_stat >> ch) & 1;
-			if(chk)
-				printf("[%s cooling]", finger_name[ch]);
-		}
-		printf("\r\n");
-		int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-		
-		int finger_idx = PINKY;
-		uint8_t pb_idx = 4*finger_idx;
-		if(pb_idx > 16)
-			pb_idx = 16;
-		int pidx = 0;
-		for(pidx = 0; pidx < 3; pidx++)
-			printf("%.3f, ",(float)pres_fmt.v[pb_idx+pidx]/6553.5f);
-		printf("%.3f\r\n",(float)pres_fmt.v[pb_idx+pidx]/6553.5f);
+		rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+		if(rc != 0)
+			printf("waiting...\r\n");
 	}
-
-	float start_ts = current_time_sec(&tv);
+	printf("api entered\r\n");
+	printf("disabling pressure HPF...\r\n");
+	if(set_mode(DISABLE_PRESSURE_FILTER) == 0)//example of pres filter disable
+		printf("pressure filter disabled\r\n");
+	else
+		printf("comm failure, filter not disabled\r\n");
+	usleep(3000000);	//delay for printf visibility
+	printf("waiting for motor cooldown\r\n");
+	wait_for_cooldown(&disabled_stat, &i2c_out, &i2c_in, &pres_fmt);
+	printf("ready\r\n");
 	
+	float start_ts = current_time_sec(&tv);
 	float tau_thresh[NUM_CHANNELS] = {0};
 	while(1)
 	{
@@ -110,8 +114,8 @@ void main()
 			i2c_out.v[ch] = tau;
 		}
 		printf("\r\n");
-		int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-		
+		rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+		wait_for_cooldown(&disabled_stat, &i2c_out, &i2c_in, &pres_fmt);
 		/*
 		Pressure Indices:
 		Index: 	0-3
@@ -138,10 +142,9 @@ void main()
 				printf("q[%d] = %f, ",ch,i2c_in.v[ch]);
 			printf("q[%d] = %f\r\n",ch,i2c_in.v[ch]);
 		#else
-			const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
 			const char * yn[2] = {"on ","off"};
 			for(int ch = 0; ch < NUM_CHANNELS; ch++)
-				printf("%s: %s ", name[ch], yn[((disabled_stat >> ch) & 1)] );
+				printf("%s: %s ", finger_name[ch], yn[((disabled_stat >> ch) & 1)] );
 			printf("\r\n");			
 		#endif
 		if(rc != 0)
