@@ -1,8 +1,8 @@
 #include "i2c-master-test.h"
 
 /*Uncomment and compile whichever control mode you would like to test.*/
-//const uint8_t gl_ctl_mode = TORQUE_CTL_MODE;
-const uint8_t gl_ctl_mode = POS_CTL_MODE;
+const uint8_t gl_ctl_mode = TORQUE_CTL_MODE;
+//const uint8_t gl_ctl_mode = POS_CTL_MODE;
 //const uint8_t gl_ctl_mode = VELOCITY_CTL_MODE;
 
 //#define PRINT_PRESSURE	/*When enabled, prints the value of the pressure sensors on the index finger. */
@@ -94,8 +94,15 @@ void main()
 		if(prev_phase != phase && prev_phase == -1)
 		{
 			//enable_cmd = 0x3f;
-			send_enable_word(0x3F);		//should call this only once for optimum behavior
-			printf(" enabling...\r\n");
+			//send_enable_word(0x3F);		//should call this only once for optimum behavior
+			printf(" waiting to cool down...\r\n");
+			while(disabled_stat != 0)
+			{
+				for(int ch = 0; ch < NUM_CHANNELS; ch++)
+					i2c_out.v[ch] = 0;
+				int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+			}
+			
 		}
 		prev_phase = phase;
 		
@@ -126,8 +133,6 @@ void main()
 				printf("%s: %s ", name[ch], yn[((disabled_stat >> ch) & 1)] );
 			printf("\r\n");			
 		#endif
-		
-
 		
 		int rc = 0;
 		switch(gl_ctl_mode)
