@@ -2,7 +2,7 @@
 
 static int file_i2c;
 uint8_t i2c_tx_buf[I2C_TX_SIZE] = {0};
-uint8_t i2c_rx_buf[I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE] = {0};
+uint8_t i2c_rx_buf[I2C_RX_BUF_SIZE] = {0};
 
 /*
 Open the I2C port with default settings.
@@ -24,6 +24,21 @@ int open_i2c(uint8_t addr)
 	
 	return 0;
 }
+
+
+/*
+Generic hex checksum calculation.
+TODO: use this in the psyonic API
+*/
+uint8_t get_checksum(uint8_t * arr, int size)
+{
+
+	int8_t checksum = 0;
+	for (int i = 0; i < size; i++)
+		checksum += (int8_t)arr[i];
+	return -checksum;
+}
+
 
 /*
 Generic function which blindly sends out a hand grip index. 
@@ -88,14 +103,17 @@ Returns a nonzero code to indicate I2C error.
 int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_union_fmt_i2c * pres_fmt)
 {
 	int ret = 0;
+	uint8_t checksum = 0;
+	
 	
 	i2c_tx_buf[0] = mode;
 	for(int i = 0; i < I2C_Q_RX_SIZE; i++)
 		i2c_tx_buf[i+1] = out->d[i];
+	i2c_tx_buf[25] = get_checksum(i2c_tx_buf, 25);
 	
 	if (write(file_i2c, i2c_tx_buf, I2C_TX_SIZE) != I2C_TX_SIZE)          //write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)
 		ret |= 1;
-	if(read(file_i2c, i2c_rx_buf, I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE) != I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE)
+	if(read(file_i2c, i2c_rx_buf, I2C_RX_BUF_SIZE) != I2C_RX_BUF_SIZE)
 		ret |= (1 << 1);
 	else
 	{
@@ -106,8 +124,21 @@ int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c *
 	}
 	*disabled_stat = i2c_rx_buf[64];
 	
+	checksum = get_checksum(i2c_rx_buf, 65);
+	
+	if(checksum != i2c_rx_buf[65])
+	{
+		printf("ck=0x%.2X\r\nbf= ", checksum);
+		for(int i = 0; i < I2C_RX_BUF_SIZE; i++)
+			printf("%.2X",i2c_rx_buf[i]);
+		printf("\r\n");
+		ret |= (1 << 2);
+	}
+	
 	return ret;
 }
+
+
 int send_enable_word(uint8_t enable_command)
 {
 	int ret = 0;

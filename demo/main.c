@@ -1,11 +1,6 @@
 #include "i2c-master-test.h"
 
-/*Uncomment and compile whichever control mode you would like to test.*/
-const uint8_t gl_ctl_mode = TORQUE_CTL_MODE;
-//const uint8_t gl_ctl_mode = POS_CTL_MODE;
-//const uint8_t gl_ctl_mode = VELOCITY_CTL_MODE;
-
-//#define PRINT_PRESSURE	/*When enabled, prints the value of the pressure sensors on the index finger. */
+#define PRINT_PRESSURE	/*When enabled, prints the value of the pressure sensors on the index finger. */
 //#define PRINT_POSITION	/*When enabled, prints the finger position in degrees/*
 
 float current_time_sec(struct timeval * tv)
@@ -28,83 +23,94 @@ void main()
 	set_grip(GENERAL_OPEN_CMD,100);
 	usleep(2000000);
 
-	//set_mode(DISABLE_PRESSURE_FILTER);	//uncomment for RAW pressure
-	//set_mode(DISABLE_TORQUE_VELOCITY_SAFETY);	//uncomment for UNSAFE torque and velocity control modes
-
 	/*Setpoint generation start time*/
 	struct timeval tv;
 
 	/*All control modes will use the same float format struct for input and output. Initializing them here*/
 	
 	/*Setup for demo motion*/
-	uint8_t disabled_stat = 0;
+	uint8_t disabled_stat = 0xFF;
 	
-	int prev_phase = 0;
-	int phase = 0;
-		
-	float q_stop[NUM_CHANNELS] = {0};
-	float qd[NUM_CHANNELS] = {0};
-	qd[THUMB_ROTATOR] = -80.f;
-
+	float qd[NUM_CHANNELS];
 	pres_union_fmt_i2c pres_fmt;
 	float_format_i2c i2c_out;
 	for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		i2c_out.v[ch] = 0;
 	float_format_i2c i2c_in;
-	set_mode(TORQUE_CTL_MODE);
-	usleep(10000);
-	for(float ts = current_time_sec(&tv) + .5; current_time_sec(&tv) < ts;)
-		send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);	//initialize position
-	set_mode(gl_ctl_mode);
-	usleep(10000);
+
 	
+	set_mode(TORQUE_CTL_MODE);
+	printf("entering torque ctl mode...\r\n");
+	usleep(1000000);//need to wait to enter the api mode
+	const char * finger_name[] = {
+		"index",
+		"middle",
+		"ring",
+		"pinky",
+		"thumb flex",
+		"thumb rot",
+	};
+	printf("torque control entered\r\n");
+	printf("disabling pressure HPF...\r\n");
+	set_mode(DISABLE_PRESSURE_FILTER);//example of pres filter disable
+	usleep(1000000);//need to wait to enter the api mode
+	printf("pressure filter disabled\r\n");
+	usleep(1000000);//need to wait to enter the api mode
+
+	while(disabled_stat != 0)
+	{
+		for(int ch = 0; ch < NUM_CHANNELS; ch++)
+		{
+			i2c_out.v[ch] = 0.f;
+			int chk = (disabled_stat >> ch) & 1;
+			if(chk)
+				printf("[%s cooling]", finger_name[ch]);
+		}
+		printf("\r\n");
+		int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+		
+		int finger_idx = PINKY;
+		uint8_t pb_idx = 4*finger_idx;
+		if(pb_idx > 16)
+			pb_idx = 16;
+		int pidx = 0;
+		for(pidx = 0; pidx < 3; pidx++)
+			printf("%.3f, ",(float)pres_fmt.v[pb_idx+pidx]/6553.5f);
+		printf("%.3f\r\n",(float)pres_fmt.v[pb_idx+pidx]/6553.5f);
+	}
+
 	float start_ts = current_time_sec(&tv);
+	
+	float tau_thresh[NUM_CHANNELS] = {0};
 	while(1)
 	{
-		float t = fmod(current_time_sec(&tv) - start_ts, 10);
-		if(t >= 1 && t < 2)
+		float t = current_time_sec(&tv)-start_ts;
+		for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		{
-			phase = 1;
-			float t_off = t-1.f;
-			for(int ch = 0; ch <= PINKY; ch++)
-				qd[ch] = t_off*50.f + 20.f;	//travel to 70 degrees (close) from 20 degrees (open)
-			qd[THUMB_FLEXOR] = t_off*30.f+10.f; //travel to 40 degrees (close) from 10 degrees (open)
+			float qd = 50.f*(.5f*sin(3*t+(float)(5-ch)*3.1415f/6)+.5f) + 10.f;
+			if(ch == THUMB_ROTATOR)
+				qd = -qd;
 			
-			for(int ch = 0; ch < NUM_CHANNELS; ch++)
-				q_stop[ch] = i2c_in.v[ch];	//record so when phase 1 is complete you know where the hand stopped
-		}
-		else if(t >= 6 && t < 7)
-		{
-			phase = 2;
-			float t_off = (t-6.f);
-			for(int ch = 0; ch <= PINKY; ch++)
-				qd[ch] = t_off*(20.f-q_stop[ch]) + q_stop[ch];	//travel to 20 from where you currently are
-			qd[THUMB_FLEXOR] = t_off*(10.f-q_stop[THUMB_FLEXOR])+q_stop[THUMB_FLEXOR];	//travel to 10 from where you currently are
-		}
-		else if(t > 7)
-		{
-			phase = 3;
-			for(int ch = 0; ch <= PINKY; ch++)
-				qd[ch] = 20.f;			//enforce start position
-			qd[THUMB_FLEXOR] = 10.f;		//for both sets of fingers
-		}
-		else
-			phase = -1;
-
-		if(prev_phase != phase && prev_phase == -1)
-		{
-			//enable_cmd = 0x3f;
-			//send_enable_word(0x3F);		//should call this only once for optimum behavior
-			printf(" waiting to cool down...\r\n");
-			while(disabled_stat != 0)
+			/*Create a cooldown handler rule (stop the finger if it has triggered the 'hot' flag*/
+			int chk = (disabled_stat >> ch) & 1;
+			if(chk)
 			{
-				for(int ch = 0; ch < NUM_CHANNELS; ch++)
-					i2c_out.v[ch] = 0;
-				int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
+				tau_thresh[ch] = 0.f;
+				printf("[%s hot]", finger_name[ch]);
 			}
+			else
+				tau_thresh[ch] = 90.f;
 			
+			/*Perform torque based position control*/
+			float tau = 1.f*(qd-i2c_in.v[ch]);
+			if(tau > tau_thresh[ch])
+				tau = tau_thresh[ch];
+			else if(tau < -tau_thresh[ch])
+				tau = -tau_thresh[ch];
+			i2c_out.v[ch] = tau;
 		}
-		prev_phase = phase;
+		printf("\r\n");
+		int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
 		
 		/*
 		Pressure Indices:
@@ -117,10 +123,15 @@ void main()
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
 		*/
 		#ifdef PRINT_PRESSURE
+			int finger_idx = PINKY;
+			uint8_t pb_idx = 4*finger_idx;
+			if(pb_idx > 16)
+				pb_idx = 16;
 			int pidx = 0;
 			for(pidx = 0; pidx < 3; pidx++)
-				printf("%.3f, ",(float)pres_fmt.v[pidx]/6553.5f);
-			printf("%.3f\r\n",(float)pres_fmt.v[pidx]/6553.5f);
+				printf("%.3f, ",(float)pres_fmt.v[pb_idx+pidx]/6553.5f);
+			printf("%.3f\r\n",(float)pres_fmt.v[pb_idx+pidx]/6553.5f);
+			
 		#elif defined PRINT_POSITION	//Print the position
 			int ch;
 			for(ch = 0; ch < NUM_CHANNELS-1; ch++)
@@ -133,35 +144,6 @@ void main()
 				printf("%s: %s ", name[ch], yn[((disabled_stat >> ch) & 1)] );
 			printf("\r\n");			
 		#endif
-		
-		int rc = 0;
-		switch(gl_ctl_mode)
-		{
-			case POS_CTL_MODE:
-			{
-				for(int ch = 0; ch < NUM_CHANNELS; ch++)
-					i2c_out.v[ch] = qd[ch];
-				rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-				break;
-			}
-			case TORQUE_CTL_MODE:
-			{
-				for(int ch = 0; ch < NUM_CHANNELS; ch++)
-					i2c_out.v[ch] = 2.0f*(qd[ch] - i2c_in.v[ch]);
-				int rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-				break;
-			}
-			case VELOCITY_CTL_MODE:
-			{
-				for(int ch = 0; ch < NUM_CHANNELS; ch++)
-					i2c_out.v[ch] = 3.0f*(qd[ch] - i2c_in.v[ch]);
-				int rc = send_recieve_floats(VELOCITY_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-				break;
-			}
-			default:
-				rc = 11;	//random value to show ctl mode is not set properly
-			break;
-		};
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
 	}
