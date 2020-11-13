@@ -115,7 +115,7 @@ void main()
 		}
 		printf("\r\n");
 		rc = send_recieve_floats(TORQUE_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);
-		wait_for_cooldown(&disabled_stat, &i2c_out, &i2c_in, &pres_fmt);
+		
 		/*
 		Pressure Indices:
 		Index: 	0-3
