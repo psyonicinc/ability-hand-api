@@ -13,10 +13,15 @@
 
 /*Various size defines for i2c communication*/
 #define NUM_CHANNELS 6
-#define I2C_PS_TX_SIZE 40
-#define I2C_TX_SIZE 25
-#define I2C_Q_RX_SIZE 24
-#define I2C_SAFETY_STAT_SIZE 1
+
+#define I2C_TX_SIZE 26	//0-24 = pos bytes. 25 = checksum
+
+#define I2C_Q_RX_SIZE 24	//first set of bytes (0-23)
+#define I2C_PS_TX_SIZE 40	//next set of bytes (24-63)
+#define I2C_SAFETY_STAT_SIZE 1	//byte 64
+#define I2C_CHECKSUM_SIZE 	1	//byte 65
+
+#define I2C_RX_BUF_SIZE I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE+I2C_CHECKSUM_SIZE
 
 /*Set mode flags*/
 #define DISABLE_PRESSURE_FILTER				0xC0		
@@ -86,8 +91,6 @@ int open_i2c(uint8_t addr);
 int set_grip(grasp_cmd grip_idx, uint8_t speed);
 int set_mode(uint8_t mode);
 int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_union_fmt_i2c * pres_fmt);
-int send_enable_word(uint8_t enable_command);
-//int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, pres_union_fmt_i2c * pres_fmt);
 
 
 #endif

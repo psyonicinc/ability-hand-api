@@ -67,8 +67,7 @@ void main()
 	pres_union_fmt_i2c pres_fmt;
 
 	set_mode(POS_CTL_MODE);
-	usleep(50000);
-	
+		
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
 
@@ -123,8 +122,6 @@ void main()
 			printf("I2C error code %d\r\n",rc);
 	}	
 	printf("Exit Program\r\n");
-	set_mode(GRIP_CTL_MODE);
-	usleep(50000);
 
 }
 
