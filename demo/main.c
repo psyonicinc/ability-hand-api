@@ -52,7 +52,7 @@ void main()
 	
 	pres_fmt_i2c pres_fmt[NUM_CHANNELS] = {0};
 
-	set_mode(READ_ONLY_MODE);
+	set_mode(POS_CTL_MODE);
 		
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
@@ -101,7 +101,7 @@ void main()
 				
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
 			i2c_out.v[ch] = test_config[ch];
-		int rc = send_recieve_floats(READ_ONLY_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
+		int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
 		usleep(1000);
