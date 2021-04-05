@@ -81,6 +81,23 @@ int set_mode(uint8_t mode)
 	return 0;
 }
 
+/*
+* Load packed 12 bit values located in an 8bit array into
+* an unpacked (zero padded) 16 bit array. FSR utility function
+*/
+void unpack_8bit_into_12bit(uint8_t* arr, uint16_t* vals, int valsize)
+{
+	for(int i = 0; i < valsize; i++)
+		vals[i] = 0;	//clear the buffer before loading it with |=
+    for (int bidx = valsize * 12 - 4; bidx >= 0; bidx -= 4)
+    {
+        int validx = bidx / 12;
+        int arridx = bidx / 8;
+        int shift_val = (bidx % 8);
+        vals[validx] |= ((arr[arridx] >> shift_val) & 0x0F) << (bidx % 12);
+    }
+}
+
 
 /*
 API, low level control mode. 
@@ -99,34 +116,42 @@ OUTPUTS:
 
 Returns a nonzero code to indicate I2C error.
 */
-int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_union_fmt_i2c * pres_fmt)
+int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt)
 {
 	int ret = 0;
 	uint8_t checksum = 0;
 	
-	
-	i2c_tx_buf[0] = mode;
-	for(int i = 0; i < I2C_Q_RX_SIZE; i++)
-		i2c_tx_buf[i+1] = out->d[i];
-	//i2c_tx_buf[I2C_TX_SIZE-1] = get_checksum(i2c_tx_buf, I2C_TX_SIZE-1);
-	i2c_tx_buf[I2C_TX_SIZE-1] = get_checksum(i2c_tx_buf, I2C_TX_SIZE-1); //deliberate break of checksum for testing purposes
-	
-	if (write(file_i2c, i2c_tx_buf, I2C_TX_SIZE) != I2C_TX_SIZE)          //write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)
-		ret |= 1;
+	if(mode != READ_ONLY_MODE)
+	{
+		i2c_tx_buf[0] = mode;
+		for(int i = 0; i < I2C_Q_RX_SIZE; i++)
+			i2c_tx_buf[i+1] = out->d[i];
+		
+		i2c_tx_buf[I2C_TX_SIZE-1] = get_checksum(i2c_tx_buf, I2C_TX_SIZE-1); //deliberate break of checksum for testing purposes
+		
+		if (write(file_i2c, i2c_tx_buf, I2C_TX_SIZE) != I2C_TX_SIZE)          //write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)
+			ret |= 1;
+	}
 	if(read(file_i2c, i2c_rx_buf, I2C_RX_BUF_SIZE) != I2C_RX_BUF_SIZE)
 		ret |= (1 << 1);
 	else
 	{
 		for(int i = 0; i < I2C_Q_RX_SIZE; i++)
 			in->d[i] = i2c_rx_buf[i];
-		for(int i = 24; i < 64; i++)
-			pres_fmt->d[i-24] = i2c_rx_buf[i];
+		//for(int i = I2C_Q_RX_SIZE; i < I2C_Q_RX_SIZE+I2C_PS_TX_SIZE; i++)
+		//	pres_fmt->d[i-I2C_Q_RX_SIZE] = i2c_rx_buf[i];
+		for(int sensor = 0; sensor < 5; sensor++)
+		{
+			int start_bidx = I2C_Q_RX_SIZE + 9*sensor;
+			unpack_8bit_into_12bit(&i2c_rx_buf[start_bidx], pres_fmt[sensor].v, NUM_FSR_PER_FINGER);
+		}
 	}
-	*disabled_stat = i2c_rx_buf[64];
 	
-	checksum = get_checksum(i2c_rx_buf, 65);
+	*disabled_stat = i2c_rx_buf[I2C_RX_BUF_SIZE-2];
 	
-	if(checksum != i2c_rx_buf[65])
+	checksum = get_checksum(i2c_rx_buf, I2C_RX_BUF_SIZE-1);
+	
+	if(checksum != i2c_rx_buf[I2C_RX_BUF_SIZE-1])
 		ret |= (1 << 2);
 	
 	return ret;

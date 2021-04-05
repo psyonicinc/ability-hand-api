@@ -17,9 +17,9 @@
 #define I2C_TX_SIZE 26	//0-24 = pos bytes. 25 = checksum
 
 #define I2C_Q_RX_SIZE 24	//first set of bytes (0-23)
-#define I2C_PS_TX_SIZE 40	//next set of bytes (24-63)
-#define I2C_SAFETY_STAT_SIZE 1	//byte 64
-#define I2C_CHECKSUM_SIZE 	1	//byte 65
+#define I2C_PS_TX_SIZE 45	//next set of bytes (24-63)
+#define I2C_SAFETY_STAT_SIZE 1	//byte 69
+#define I2C_CHECKSUM_SIZE 	1	//byte 70
 
 #define I2C_RX_BUF_SIZE I2C_Q_RX_SIZE+I2C_PS_TX_SIZE+I2C_SAFETY_STAT_SIZE+I2C_CHECKSUM_SIZE
 
@@ -32,7 +32,7 @@
 #define TORQUE_CTL_MODE						0xAB
 #define VELOCITY_CTL_MODE					0xAC
 #define GRIP_CTL_MODE 						0x1D
-
+#define READ_ONLY_MODE						0x31
 /*Motor indices*/
 #define INDEX 			0
 #define MIDDLE 			1
@@ -40,6 +40,8 @@
 #define PINKY 			3
 #define THUMB_FLEXOR 	4
 #define THUMB_ROTATOR 	5
+
+#define NUM_FSR_PER_FINGER 6
 
 /*Union used for easy data stream type conversion (for motors)*/
 typedef union
@@ -49,11 +51,10 @@ typedef union
 }float_format_i2c;
 
 /*Union used for pressure formatting and type conversion*/
-typedef union
+typedef struct
 {
-	uint8_t d[40];
-	uint16_t v[20];
-}pres_union_fmt_i2c;
+	uint16_t v[NUM_FSR_PER_FINGER];
+}pres_fmt_i2c;
 
 typedef enum {
 	GENERAL_OPEN_CMD,
@@ -90,7 +91,7 @@ typedef enum {
 int open_i2c(uint8_t addr);
 int set_grip(grasp_cmd grip_idx, uint8_t speed);
 int set_mode(uint8_t mode);
-int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_union_fmt_i2c * pres_fmt);
+int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
 
 
 #endif

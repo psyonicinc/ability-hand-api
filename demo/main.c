@@ -1,5 +1,6 @@
 #include "i2c-master-test.h"
 #include <signal.h>
+#include <string.h>
 
 float current_time_sec(struct timeval * tv)
 {
@@ -14,33 +15,17 @@ void int_handler(int tmp)
 	gl_leave_loop = 1;
 }	
 
-/*INPUT 0-4
-0-index
-1-middle
-2-ring
-3-pinky
-4-thumb
-*/
-int get_idx_of_max_pressure(int finger, pres_union_fmt_i2c * pres_fmt)
+uint16_t get_max(uint16_t * list, int listsize)
 {
-	if(finger > 4)
-		finger = 4;
-	else if (finger < 0)
-		finger = 0;
-	int lowidx = finger*4;
 	uint16_t max = 0;
-	int idx_of_max = -1;
-	for(int i = lowidx; i < lowidx+4; i++)
+	for(int i = 0; i < listsize; i++)
 	{
-		uint16_t v = pres_fmt->v[i];
-		if(max < v)
-		{
-			idx_of_max = i;
-			max = v;
-		}		
+		if(list[i] > max)
+			max = list[i];
 	}
-	return idx_of_max;
+	return max;
 }
+
 
 void main()
 {
@@ -64,29 +49,24 @@ void main()
 	for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		i2c_out.v[ch] = 0;
 	float_format_i2c i2c_in;
-	pres_union_fmt_i2c pres_fmt;
+	
+	pres_fmt_i2c pres_fmt[NUM_CHANNELS] = {0};
 
-	set_mode(POS_CTL_MODE);
+	set_mode(READ_ONLY_MODE);
 		
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
 
 	float start_ts = current_time_sec(&tv);
-	float max_of_max[5] = {0};
 	
-	float reset_ts = 0;
 	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,15.f,15.f,-15.f};
+	printf("\033[2J\033[1;1H");
+	char buffer[4096] = {0};
 	while(gl_leave_loop == 0)
 	{
 
 		float t = current_time_sec(&tv) - start_ts;
 		
-		if(t > reset_ts)
-		{
-			for(int finger =0; finger<5; finger++)
-				max_of_max[finger] = 0.f;
-			reset_ts = t + 5;
-		}
 		/*
 		Pressure Indices:
 		Index: 	0-3
@@ -97,29 +77,34 @@ void main()
 
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
 		*/
-		
-		for(int finger = 0; finger < 5; finger++)
+
+		const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
+		//printf("\033[2J\033[1;1H");
+		printf("\033[2J\033[1;1H");
+		//printf("\033[H");	
+		int length = 0;
+		for(int finger = 0; finger < 6; finger++)
 		{
-			int i_max = get_idx_of_max_pressure(finger, &pres_fmt);
-			if(i_max >= 0)
+			length += sprintf(buffer+length, "%s:                                               \r\n", name[finger]);
+			length += sprintf(buffer+length, "--------------------------------------------------\r\n");
+			length += sprintf(buffer+length, "sensor: [");
+			for(int sensor = 0; sensor < 6; sensor ++)
 			{
-				float v = (float)pres_fmt.v[i_max]/6553.5f;
-				if(max_of_max[finger] < v)
-					max_of_max[finger] = v;
+				length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
 			}
-		}	
-		const char * name[5] = {"index","middle","ring","pinky","thumb"};
-		int finger = 0;
-		for(finger = 0; finger < 4; finger++)
-			printf("%s: %.4f, ", name[finger], max_of_max[finger]);
-		printf("%s: %.4f  ", name[finger], max_of_max[finger]);
-		printf("Countdown t minus: %.3f\r\n", reset_ts - t);
-			
+			length += sprintf(buffer+length, "]                             \r\n");
+			length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", i2c_in.v[finger]);
+			length += sprintf(buffer+length, "--------------------------------------------------\r\n");
+			length += sprintf(buffer+length, "                                                           \r\n");
+		}
+		printf("%s", buffer);
+				
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
 			i2c_out.v[ch] = test_config[ch];
-		int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, &pres_fmt);	//no motor motion, just want the pressure sensor data
+		int rc = send_recieve_floats(READ_ONLY_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
 			printf("I2C error code %d\r\n",rc);
+		usleep(1000);
 	}	
 	printf("Exit Program\r\n");
 
