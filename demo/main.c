@@ -1,6 +1,7 @@
 #include "i2c-master-test.h"
 #include <signal.h>
 #include <string.h>
+#include "i2c-err-lookup.h"
 
 float current_time_sec(struct timeval * tv)
 {
@@ -82,10 +83,7 @@ void main()
 			i2c_out.v[ch] = test_config[ch];
 		int rc = send_recieve_floats(READ_ONLY_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
-		{
-			//printf("\033[2J\033[1;1H");
-			printf("I2C error code %d\r\n",rc);
-		}//printf("I2C error code %d\r\n",rc);
+			print_hr_errcode(rc);
 		else
 		{
 			const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
