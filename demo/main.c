@@ -76,35 +76,40 @@ void main()
 		Thumb: 	16-19
 
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
-		*/
-
-		const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
-		//printf("\033[2J\033[1;1H");
-		printf("\033[2J\033[1;1H");
-		//printf("\033[H");	
-		int length = 0;
-		for(int finger = 0; finger < 6; finger++)
-		{
-			length += sprintf(buffer+length, "%s:                                               \r\n", name[finger]);
-			length += sprintf(buffer+length, "--------------------------------------------------\r\n");
-			length += sprintf(buffer+length, "sensor: [");
-			for(int sensor = 0; sensor < 6; sensor ++)
-			{
-				length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
-			}
-			length += sprintf(buffer+length, "]                             \r\n");
-			length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", i2c_in.v[finger]);
-			length += sprintf(buffer+length, "--------------------------------------------------\r\n");
-			length += sprintf(buffer+length, "                                                           \r\n");
-		}
-		printf("%s", buffer);
-				
+		*/				
+		
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
 			i2c_out.v[ch] = test_config[ch];
 		int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
+		{
+			//printf("\033[2J\033[1;1H");
 			printf("I2C error code %d\r\n",rc);
-		usleep(1000);
+		}//printf("I2C error code %d\r\n",rc);
+		else
+		{
+			const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
+			//printf("\033[2J\033[1;1H");
+			//printf("\033[H");	
+			printf("\033[2J\033[1;1H");
+			int length = 0;
+			for(int finger = 0; finger < 6; finger++)
+			{
+				length += sprintf(buffer+length, "%s:                                               \r\n", name[finger]);
+				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
+				length += sprintf(buffer+length, "sensor: [");
+				for(int sensor = 0; sensor < 6; sensor ++)
+				{
+					length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
+				}
+				length += sprintf(buffer+length, "]                             \r\n");
+				length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", i2c_in.v[finger]);
+				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
+				length += sprintf(buffer+length, "                                                           \r\n");
+			}
+			printf("%s", buffer);
+		}
+		usleep(20000);
 	}	
 	printf("Exit Program\r\n");
 
