@@ -35,12 +35,10 @@ void main()
 	open_i2c(0x50);	//Initialize the I2C port. Currently default setting is 100kHz clock rate
 
 	/*Quick example of pre-programmed grip control (i.e. separate control mode from torque, velocity and position control)*/
-	//set_grip(PINCH_GRASP_CMD,100);
-	//usleep(1000000);
-	//set_grip(GENERAL_OPEN_CMD,100);
-	//usleep(1000000);
-	//set_mode(DISABLE_PRESSURE_FILTER);	//uncomment for RAW pressure
-	//set_mode(DISABLE_TORQUE_VELOCITY_SAFETY);	//uncomment for UNSAFE torque and velocity control modes
+	set_grip(PINCH_GRASP_CMD,100);
+	usleep(3000000);
+	set_grip(GENERAL_OPEN_CMD,100);
+	usleep(3000000);
 
 	/*Setpoint generation start time*/
 	struct timeval tv;
@@ -60,7 +58,7 @@ void main()
 
 	float start_ts = current_time_sec(&tv);
 	
-	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,15.f,15.f,-15.f};
+	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,15.f,15.f,-80.f};
 	printf("\033[2J\033[1;1H");
 	char buffer[4096] = {0};
 	while(gl_leave_loop == 0)
@@ -80,7 +78,12 @@ void main()
 		*/				
 		
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
-			i2c_out.v[ch] = test_config[ch];
+		{
+			if(ch != THUMB_ROTATOR)
+				i2c_out.v[ch] = 30.f*(.5*sin(t*3.f+(float)ch)+.5)+15.f;
+			else if (ch == THUMB_ROTATOR)
+				i2c_out.v[ch] = 30.f*(.5*sin(t*3.f+(float)ch)+.5)-80.f;
+		}
 		int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
 			print_hr_errcode(rc);
