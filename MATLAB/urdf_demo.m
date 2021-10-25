@@ -8,7 +8,7 @@ robot = importrobot('ability_hand.urdf');
 %index, middle, ring, pinky, thumb flexor, thumb rotator
 %thumb rotator angle range is 10 to -120
 %finger range is 10-110
-q = [0,0,0,0,0,0];  
+q = [60,0,0,0,0,0];  
 
 robot.Bodies{1,9}.Joint.HomePosition = q(6)*pi/180;
 robot.Bodies{1,10}.Joint.HomePosition = q(5)*pi/180;
@@ -23,8 +23,8 @@ robot.Bodies{1,8}.Joint.HomePosition = get_abh_4bar_driven_angle(robot.Bodies{1,
 
 show(robot,'visuals','on','collision','off', 'frames', 'off');
 
-% zlim([-150,50]);
-% xlim([-100,100]);
-% ylim([-50,50]);
-view(az,el);
+zlim([-150e-3,50e-3]);
+xlim([-100e-3,100e-3]);
+ylim([-50e-3,50e-3]);
+% view(az,el);
 % zoom(2);

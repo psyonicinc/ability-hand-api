@@ -20,5 +20,5 @@ function out = get_abh_4bar_driven_angle(in)
     % calculate the linkage intermediate angle!
     q2pq1 = atan2(p2(2)-L1*sq1, p2(1)-L1*cq1);
     q2 = q2pq1-in;
-    out = q2;
+    out = mod(q2+pi, 2*pi)-pi;
 end
