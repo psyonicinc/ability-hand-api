@@ -1,0 +1,430 @@
+<!--
+	NOTES:
+	Units:
+		Distance: mm
+		Angles: rad (only option)
+		Mass: kg
+		Inertia: kg*mm^2
+		
+	Notes on intertia:
+		-The inertias are calculated for uniform density with weights that may or may not be accurate.
+		At the time of this writing only the thumb flexor weight is correct. The palm is a 'best guess' 
+		approximation and the fingers are likely off by an order of magnitude
+	
+	Notes on finger q2:
+		-The hand is a 4 bar linkage mechanism, forming an 'X'. 4 bar linkages are not supported in the 
+		urdf format. The motion of the second finger joint is fully defined by the motion of the first 
+		finger joint. The calculation to find the index finger second joint angle given the first is provided
+		in a matlab script elsewhere in this repository.
+-->
+<robot name="ability_hand">
+
+	<link name="base" >
+		<inertial>
+			<mass value = "0.400"/>
+			<inertia ixx="978.26" ixy = "87.34" ixz = "322.99" iyy = "1244.78" iyz = "244.74" izz = "456.22" />
+			<origin xyz = "22.41911 -0.15798201 -0.01319866" rpy = "0 0 0"/>
+		</inertial>
+		
+		<visual>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
+			<geometry>
+				<mesh filename="models/FB_palm_ref.STL"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "27.412417 -0.454432 26.510489" rpy = "0.006361 -0.088345 3.069623" />
+			<geometry>
+				<cylinder length = "3.9" radius = "24.05"/>
+			</geometry>
+		</visual>
+	</link>
+	
+	
+	
+	<link name="index_L1" >
+		<inertial>
+			<mass value = "0.00635888"/>
+			<inertia ixx="0.29766" ixy = "-0.06447133" ixz = "-0.00423315" iyy = "3.6947967" iyz = "0.00083028" izz = "3.8176336" />
+			<origin xyz = "22.41911 -0.15798201 -0.01319866" rpy = "0 0 0"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="6" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "19.23500 1.62500 0" rpy = "0 0 0.084474"/>
+			<geometry>	
+				<box size = "38.6070382, 4, 2"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+			<geometry>
+				<mesh filename="models/idx-F1.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<link name="index_L2" >
+		<inertial>
+			<mass value = "0.00645"/>
+			<inertia ixx="0.82671" ixy = "-1.08876" ixz = "-0.00037" iyy = "1.98028" iyz = "0.00081" izz = "2.64638" />
+			<origin rpy = "0 0 0" xyz = "13.36818 -8.75392 -0.02886"/>
+		</inertial>		
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="4" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "15.5333 -8.501 0" rpy = "0 0 -0.500734962"/>
+			<geometry>	
+				<box size = "35.41, 4, 4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "29.159500 -11.643970 -0.148280" rpy = "1.5708 0 -0.420107"/>
+			<geometry>
+				<cylinder length = "3" radius = "4"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin rpy = "0 0 0" xyz = "9.1241 0 0"/>
+			<geometry>
+				<mesh filename="models/idx-F2.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<joint name="index_q1" type="continuous">
+		<parent link="base"/>
+		<child link="index_L1"/>
+		<origin xyz = "-9.49 -13.04 -62.95" rpy = "-1.982050 1.284473 -2.090591" />
+		<axis xyz="0 0 1"/>
+	</joint>
+	<joint name="index_q2" type="continuous">
+		<parent link="index_L1"/>
+		<child link="index_L2"/>
+		<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+		<axis xyz="0 0 1"/>
+	</joint>
+	
+		
+	
+
+	<link name="middle_L1" >
+		<inertial>
+			<mass value = "0.00635888"/>
+			<inertia ixx="0.29766" ixy = "-0.06447133" ixz = "-0.00423315" iyy = "3.6947967" iyz = "0.00083028" izz = "3.8176336" />
+			<origin xyz = "22.41911 -0.15798201 -0.01319866" rpy = "0 0 0"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="6" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "19.23500 1.62500 0" rpy = "0 0 0.084474"/>
+			<geometry>	
+				<box size = "38.6070382, 4, 2"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+			<geometry>
+				<mesh filename="models/idx-F1.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<link name="middle_L2" >
+		<inertial>
+			<mass value = "0.00645"/>
+			<inertia ixx="0.82671" ixy = "-1.08876" ixz = "-0.00037" iyy = "1.98028" iyz = "0.00081" izz = "2.64638" />
+			<origin rpy = "0 0 0" xyz = "13.36818 -8.75392 -0.02886"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="4" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "15.5333 -8.501 0" rpy = "0 0 -0.500734962"/>
+			<geometry>	
+				<box size = "35.41, 4, 4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "29.159500 -11.643970 -0.148280" rpy = "1.5708 0 -0.420107"/>
+			<geometry>
+				<cylinder length = "3" radius = "4"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin rpy = "0 0 0" xyz = "9.1241 0 0"/>
+			<geometry>
+				<mesh filename="models/idx-F2.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<joint name="middle_q1" type="continuous">
+		<parent link="base"/>
+		<child link="middle_L1"/>
+		<origin xyz = "9.653191 -15.310271 -67.853949" rpy = "-1.860531 1.308458 -1.896217" />
+		<axis xyz="0 0 1"/>
+	</joint>
+	<joint name="middle_q2" type="continuous">
+		<parent link="middle_L1"/>
+		<child link="middle_L2"/>
+		<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+		<axis xyz="0 0 1"/>
+	</joint>
+
+
+
+
+
+	<link name="ring_L1" >
+		<inertial>
+			<mass value = "0.00635888"/>
+			<inertia ixx="0.29766" ixy = "-0.06447133" ixz = "-0.00423315" iyy = "3.6947967" iyz = "0.00083028" izz = "3.8176336" />
+			<origin xyz = "22.41911 -0.15798201 -0.01319866" rpy = "0 0 0"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="6" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "19.23500 1.62500 0" rpy = "0 0 0.084474"/>
+			<geometry>	
+				<box size = "38.6070382, 4, 2"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+			<geometry>
+				<mesh filename="models/idx-F1.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<link name="ring_L2" >
+		<inertial>
+			<mass value = "0.00645"/>
+			<inertia ixx="0.82671" ixy = "-1.08876" ixz = "-0.00037" iyy = "1.98028" iyz = "0.00081" izz = "2.64638" />
+			<origin rpy = "0 0 0" xyz = "13.36818 -8.75392 -0.02886"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="4" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "15.5333 -8.501 0" rpy = "0 0 -0.500734962"/>
+			<geometry>	
+				<box size = "35.41, 4, 4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "29.159500 -11.643970 -0.148280" rpy = "1.5708 0 -0.420107"/>
+			<geometry>
+				<cylinder length = "3" radius = "4"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin rpy = "0 0 0" xyz = "9.1241 0 0"/>
+			<geometry>
+				<mesh filename="models/idx-F2.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<joint name="ring_q1" type="continuous">
+		<parent link="base"/>
+		<child link="ring_L1"/>
+		<origin xyz = "29.954260 -14.212492 -67.286105" rpy = "-1.716598 1.321452 -1.675862" />
+		<axis xyz="0 0 1"/>
+	</joint>
+	<joint name="ring_q2" type="continuous">
+		<parent link="ring_L1"/>
+		<child link="ring_L2"/>
+		<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+		<axis xyz="0 0 1"/>
+	</joint>
+
+
+
+
+
+
+
+
+	<link name="pinky_L1" >
+		<inertial>
+			<mass value = "0.00635888"/>
+			<inertia ixx="0.29766" ixy = "-0.06447133" ixz = "-0.00423315" iyy = "3.6947967" iyz = "0.00083028" izz = "3.8176336" />
+			<origin xyz = "22.41911 -0.15798201 -0.01319866" rpy = "0 0 0"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="6" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "19.23500 1.62500 0" rpy = "0 0 0.084474"/>
+			<geometry>	
+				<box size = "38.6070382, 4, 2"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+			<geometry>
+				<mesh filename="models/idx-F1.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<link name="pinky_L2" >
+		<inertial>
+			<mass value = "0.00645"/>
+			<inertia ixx="0.82671" ixy = "-1.08876" ixz = "-0.00037" iyy = "1.98028" iyz = "0.00081" izz = "2.64638" />
+			<origin rpy = "0 0 0" xyz = "13.36818 -8.75392 -0.02886"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length="4" radius="4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "15.5333 -8.501 0" rpy = "0 0 -0.500734962"/>
+			<geometry>	
+				<box size = "35.41, 4, 4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "29.159500 -11.643970 -0.148280" rpy = "1.5708 0 -0.420107"/>
+			<geometry>
+				<cylinder length = "3" radius = "4"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin rpy = "0 0 0" xyz = "9.1241 0 0"/>
+			<geometry>
+				<mesh filename="models/idx-F2.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<joint name="pinky_q1" type="continuous">
+		<parent link="base"/>
+		<child link="pinky_L1"/>
+		<origin xyz = "49.521293 -11.004583 -63.029065" rpy = "-1.765110 1.322220 -1.658383" />
+		<axis xyz="0 0 1"/>
+	</joint>
+	<joint name="pinky_q2" type="continuous">
+		<parent link="pinky_L1"/>
+		<child link="pinky_L2"/>
+		<origin xyz = "38.472723 3.257695 0.000000" rpy = "0 0 0.084474"/>
+		<axis xyz="0 0 1"/>
+	</joint>
+
+
+
+
+
+
+	<link name="thumb_L1" >
+		<inertial>
+			<mass value = "0.00268342"/>
+			<inertia ixx="0.16931" ixy = "-0.076214" ixz = "-0.16959148" iyy = "0.77769934" iyz = "0.0156622" izz = "0.7249122" />
+			<origin rpy = "0 0 0" xyz = "14.606 -1.890854 -3.1155356"/>
+		</inertial>
+		<visual>
+			<origin xyz = "13.851489 -1.900374 -6.866140" rpy = "0.490960 0.456500 -0.136345" />
+			<geometry>
+				<box size = "31.15246724 5 4"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<geometry>
+				<cylinder length = "14.3" radius = "7"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "27.8283501 0 -14.7507000" rpy = "4.450589592585541 0 0" />
+			<geometry>
+				<mesh filename="models/thumb-F1.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<link name="thumb_L2" >
+		<inertial>
+			<mass value = "0.0055"/>
+			<inertia ixx="4.4789082" ixy = "4.4789082" ixz = "-0.62144934" iyy = "15.600996" iyz = "-0.07466143" izz = "17.908554" />
+			<origin rpy = "0 0 0" xyz = "30.020522 5.59476 -4.1504356"/>
+		</inertial>
+		<visual>
+			<origin xyz = "0 0 -3.93482782" rpy = "0 0 0"/> <!-- rotation axis cylinder -->
+			<geometry>
+				<cylinder length = "14.3" radius = "7"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "26.851927 6.766622 -3.934828" rpy = "0.000000 -0.000000 0.462507" />
+			<geometry>
+				<box size = "66.93 4 8"/>
+			</geometry>
+		</visual>
+		<visual>
+			<origin xyz = "56.730453 19.890903 -3.934828" rpy = "1.570800 -0.000000 0.343830" />
+			<geometry>
+				<cylinder length = "7" radius = "7"/>
+			</geometry>
+		</visual>
+		
+		<visual>
+			<origin xyz = "65.18669 23.34021 -3.93483" rpy = "3.141592 0 0.343830"/>
+			<geometry>
+				<mesh filename="models/thumb-F2.STL"/>
+			</geometry>
+		</visual>
+		
+	</link>
+	<joint name="thumb_q1" type="continuous">
+		<parent link="base"/>
+		<child link="thumb_L1"/>
+		<origin xyz = "0 0 0" rpy = "0 0 3.330437"/>
+		<axis xyz="0 0 1"/>
+	</joint>
+	<joint name="thumb_q2" type="continuous">
+		<parent link="thumb_L1"/>
+		<child link="thumb_L2"/>
+		<origin xyz = "27.8283501 0 -14.7507000" rpy = "4.450589592585541 0 0" />
+		<axis xyz="0 0 1"/>
+	</joint>
+	
+</robot>
