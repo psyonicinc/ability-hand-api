@@ -21,10 +21,10 @@ robot.Bodies{1,6}.Joint.HomePosition = get_abh_4bar_driven_angle(robot.Bodies{1,
 robot.Bodies{1,7}.Joint.HomePosition = q(3)*pi/180;
 robot.Bodies{1,8}.Joint.HomePosition = get_abh_4bar_driven_angle(robot.Bodies{1,7}.Joint.HomePosition);
 
-show(robot,'visuals','on','collision','off');
+show(robot,'visuals','on','collision','off', 'frames', 'off');
 
-zlim([-150,50]);
-xlim([-100,100]);
-ylim([-50,50]);
-% view(az,el);onl
-% zoom(1);
+% zlim([-150,50]);
+% xlim([-100,100]);
+% ylim([-50,50]);
+view(az,el);
+% zoom(2);
