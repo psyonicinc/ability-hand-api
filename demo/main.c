@@ -84,7 +84,7 @@ void main()
 			else if (ch == THUMB_ROTATOR)
 				i2c_out.v[ch] = 30.f*(.5*sin(t*3.f+(float)ch)+.5)-80.f;
 		}
-		int rc = send_recieve_floats(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
+		int rc = api_frame_fmt_1(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
 			print_hr_errcode(rc);
 		else

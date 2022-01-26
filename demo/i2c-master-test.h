@@ -50,6 +50,17 @@ typedef union
 	float v[NUM_CHANNELS];
 }float_format_i2c;
 
+/**/
+typedef union {
+	int8_t d8[sizeof(uint32_t)/sizeof(int8_t)];
+	uint8_t u8[sizeof(uint32_t)/sizeof(uint8_t)];
+	uint16_t u16[sizeof(uint32_t)/sizeof(uint16_t)];
+	int16_t i16[sizeof(uint32_t)/sizeof(int16_t)];
+	uint32_t u32;
+	int32_t i32;
+	float f32;	//sizeof(float) == sizeof(uint32_t) on this system
+}u32_fmt_t;
+
 /*Union used for pressure formatting and type conversion*/
 typedef struct
 {
@@ -91,7 +102,8 @@ typedef enum {
 int open_i2c(uint8_t addr);
 int set_grip(grasp_cmd grip_idx, uint8_t speed);
 int set_mode(uint8_t mode);
-int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
+int api_frame_fmt_1(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
+int api_frame_fmt_2(uint8_t mode, float_format_i2c * out, float fpos[NUM_CHANNELS], int16_t iq[NUM_CHANNELS], uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
 
 
 #endif

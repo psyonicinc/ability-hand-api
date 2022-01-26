@@ -1,8 +1,11 @@
 #include "i2c-master-test.h"
+#include "m_mcpy.h"
 
 static int file_i2c;
 uint8_t i2c_tx_buf[I2C_TX_SIZE] = {0};
 uint8_t i2c_rx_buf[I2C_RX_BUF_SIZE] = {0};
+const float fixed_fpos_conv_factor = (150.f/ ((float)(0x7FFF)) );	//should be eval at compile time
+
 
 /*
 Open the I2C port with default settings.
@@ -116,7 +119,7 @@ OUTPUTS:
 
 Returns a nonzero code to indicate I2C error.
 */
-int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt)
+int api_frame_fmt_1(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt)
 {
 	int ret = 0;
 	uint8_t checksum = 0;
@@ -140,6 +143,70 @@ int send_recieve_floats(uint8_t mode, float_format_i2c * out, float_format_i2c *
 			in->d[i] = i2c_rx_buf[i];
 		//for(int i = I2C_Q_RX_SIZE; i < I2C_Q_RX_SIZE+I2C_PS_TX_SIZE; i++)
 		//	pres_fmt->d[i-I2C_Q_RX_SIZE] = i2c_rx_buf[i];
+		for(int sensor = 0; sensor < 5; sensor++)
+		{
+			int start_bidx = I2C_Q_RX_SIZE + 9*sensor;
+			unpack_8bit_into_12bit(&i2c_rx_buf[start_bidx], pres_fmt[sensor].v, NUM_FSR_PER_FINGER);
+		}
+	}
+	
+	*disabled_stat = i2c_rx_buf[I2C_RX_BUF_SIZE-2];
+	
+	checksum = get_checksum(i2c_rx_buf, I2C_RX_BUF_SIZE-1);
+	
+	if(checksum != i2c_rx_buf[I2C_RX_BUF_SIZE-1])
+		ret |= (1 << 2);
+	
+	return ret;
+}
+
+
+/*
+API, low level control mode 2. 
+INPUTS: 
+	mode: The control mode (position, torque, or velocity)
+	out:  Floating point numbers (6) to send to the hand. Interpreted differently for each control mode.
+			-In Position control mode, out.v is a list of angles (in degrees) that the finger will move to.
+			-In Velocity control mode, out.v is a list of velocities in degrees/second
+			-In Torque control mode, out.v is a list of unitless torques. Useful range is -80 to 80
+OUTPUTS:
+	
+	pres_fmt: 		Contains the pressure sensor data ranging from 0-0xFFFF
+	disabled_stat: 	Pass by reference word that indicates the driver disabled status (safety feature)
+		Bit:[ 		0			1				2			3					4						5			]
+			[	index 0/1	middle 0/1		ring 0/1	pinky 0/1		thumb flexor 0/1		thumb rotator 0/1	]
+
+Returns a nonzero code to indicate I2C error.
+*/
+int api_frame_fmt_2(uint8_t mode, float_format_i2c * out, float fpos[NUM_CHANNELS], int16_t iq[NUM_CHANNELS], uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt)
+{
+	int ret = 0;
+	uint8_t checksum = 0;
+	
+	if(mode != READ_ONLY_MODE)
+	{
+		i2c_tx_buf[0] = mode;
+		for(int i = 0; i < I2C_Q_RX_SIZE; i++)
+			i2c_tx_buf[i+1] = out->d[i];
+		
+		i2c_tx_buf[I2C_TX_SIZE-1] = get_checksum(i2c_tx_buf, I2C_TX_SIZE-1); //deliberate break of checksum for testing purposes
+		
+		if (write(file_i2c, i2c_tx_buf, I2C_TX_SIZE) != I2C_TX_SIZE)          //write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)
+			ret |= 1;
+	}
+	
+	if(read(file_i2c, i2c_rx_buf, I2C_RX_BUF_SIZE) != I2C_RX_BUF_SIZE)
+		ret |= (1 << 1);
+	else
+	{
+		/*Load the i2c byte array into an array of type punned words*/
+		u32_fmt_t api_motor_fmt_arr[I2C_Q_RX_SIZE/sizeof(u32_fmt_t)];	//6 total words. each word is a dual int16 containing finger position and current
+		m_mcpy((void*)&api_motor_fmt_arr, (void*)i2c_rx_buf, I2C_Q_RX_SIZE);
+		for(int ch = 0; ch < NUM_CHANNELS; ch++)
+		{
+			fpos[ch] = ((float)api_motor_fmt_arr[ch].i16[0])*fixed_fpos_conv_factor;
+			iq[ch] = (float)api_motor_fmt_arr[ch].i16[1];
+		}
 		for(int sensor = 0; sensor < 5; sensor++)
 		{
 			int start_bidx = I2C_Q_RX_SIZE + 9*sensor;
