@@ -47,7 +47,8 @@ void main()
 	float_format_i2c i2c_out;
 	for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		i2c_out.v[ch] = 0;
-	float_format_i2c i2c_in;
+	float fpos[NUM_CHANNELS] = {0};
+	float iq[NUM_CHANNELS] = {0};
 	
 	pres_fmt_i2c pres_fmt[NUM_CHANNELS] = {0};
 
@@ -84,7 +85,7 @@ void main()
 			else if (ch == THUMB_ROTATOR)
 				i2c_out.v[ch] = 30.f*(.5*sin(t*3.f+(float)ch)+.5)-80.f;
 		}
-		int rc = api_frame_fmt_1(POS_CTL_MODE, &i2c_out, &i2c_in, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
+		int rc = api_frame_fmt_2(POS_CTL_MODE, &i2c_out, fpos, iq, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
 			print_hr_errcode(rc);
 		else
@@ -104,7 +105,7 @@ void main()
 					length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
 				}
 				length += sprintf(buffer+length, "]                             \r\n");
-				length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", i2c_in.v[finger]);
+				length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", fpos[finger]);
 				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
 				length += sprintf(buffer+length, "                                                           \r\n");
 			}

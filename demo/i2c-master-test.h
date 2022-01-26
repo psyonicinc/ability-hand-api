@@ -103,7 +103,7 @@ int open_i2c(uint8_t addr);
 int set_grip(grasp_cmd grip_idx, uint8_t speed);
 int set_mode(uint8_t mode);
 int api_frame_fmt_1(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
-int api_frame_fmt_2(uint8_t mode, float_format_i2c * out, float fpos[NUM_CHANNELS], int16_t iq[NUM_CHANNELS], uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
+int api_frame_fmt_2(uint8_t mode, float_format_i2c * out, float fpos[NUM_CHANNELS], float iq[NUM_CHANNELS], uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt);
 
 
 #endif
