@@ -103,7 +103,7 @@ void main()
 					length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
 				}
 				length += sprintf(buffer+length, "]                             \r\n");
-				length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", fpos[finger]);
+				length += sprintf(buffer+length, "fingerpos: %.2f, current: %.2f                                        \r\n", fpos[finger], iq[finger]);
 				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
 				//length += sprintf(buffer+length, "                                                           \r\n");
 			}
