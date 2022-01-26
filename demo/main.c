@@ -14,7 +14,7 @@ static volatile int gl_leave_loop = 0;
 void int_handler(int tmp)
 {
 	gl_leave_loop = 1;
-}	
+}
 
 uint16_t get_max(uint16_t * list, int listsize)
 {
@@ -49,16 +49,15 @@ void main()
 		i2c_out.v[ch] = 0;
 	float fpos[NUM_CHANNELS] = {0};
 	float iq[NUM_CHANNELS] = {0};
-	
+
 	pres_fmt_i2c pres_fmt[NUM_CHANNELS] = {0};
 
 	set_mode(POS_CTL_MODE);
-		
+
 	/*Setup for demo motion*/
 	uint8_t disabled_stat = 0;
 
 	float start_ts = current_time_sec(&tv);
-	
 	float test_config[NUM_CHANNELS] = {15.f,15.f,15.f,15.f,15.f,-80.f};
 	printf("\033[2J\033[1;1H");
 	char buffer[4096] = {0};
@@ -66,7 +65,7 @@ void main()
 	{
 
 		float t = current_time_sec(&tv) - start_ts;
-		
+
 		/*
 		Pressure Indices:
 		Index: 	0-3
@@ -76,14 +75,14 @@ void main()
 		Thumb: 	16-19
 
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
-		*/				
-		
+		*/
+		float ft = t*3.f;
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
 		{
 			if(ch != THUMB_ROTATOR)
-				i2c_out.v[ch] = 30.f*(.5*sin(t*3.f+(float)ch)+.5)+15.f;
+				i2c_out.v[ch] = 30.f*(-cos(ft+(float)ch)*.5f+.5f)+15.f;
 			else if (ch == THUMB_ROTATOR)
-				i2c_out.v[ch] = 30.f*(.5*sin(t*3.f+(float)ch)+.5)-80.f;
+				i2c_out.v[ch] = 30.f*(-cos(ft+(float)ch)*.5f+.5f)-80.f;
 		}
 		int rc = api_frame_fmt_2(POS_CTL_MODE, &i2c_out, fpos, iq, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
 		if(rc != 0)
@@ -110,7 +109,7 @@ void main()
 			printf("%s", buffer);
 		}
 		usleep(20000);
-	}	
+	}
 	printf("Exit Program\r\n");
 
 }
