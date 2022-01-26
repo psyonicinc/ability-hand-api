@@ -91,14 +91,12 @@ void main()
 		else
 		{
 			const char * name[NUM_CHANNELS] = {"index","middle","ring","pinky","thumb flexor", "thumb rotator"};
-			//printf("\033[2J\033[1;1H");
-			//printf("\033[H");	
 			printf("\033[2J\033[1;1H");
 			int length = 0;
 			for(int finger = 0; finger < 6; finger++)
 			{
 				length += sprintf(buffer+length, "%s:                                               \r\n", name[finger]);
-				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
+				//length += sprintf(buffer+length, "--------------------------------------------------\r\n");
 				length += sprintf(buffer+length, "sensor: [");
 				for(int sensor = 0; sensor < 6; sensor ++)
 				{
@@ -107,7 +105,7 @@ void main()
 				length += sprintf(buffer+length, "]                             \r\n");
 				length += sprintf(buffer+length, "fingerpos: %.2f                                        \r\n", fpos[finger]);
 				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
-				length += sprintf(buffer+length, "                                                           \r\n");
+				//length += sprintf(buffer+length, "                                                           \r\n");
 			}
 			printf("%s", buffer);
 		}
