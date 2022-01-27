@@ -5,7 +5,7 @@ static int file_i2c;
 uint8_t i2c_tx_buf[I2C_TX_SIZE] = {0};
 uint8_t i2c_rx_buf[I2C_RX_BUF_SIZE] = {0};
 const float fixed_fpos_conv_factor = (150.f/ ((float)(0x7FFF)) );	//should be eval at compile time
-const float fixed_iq_to_amps = 1.f;
+const float fixed_iq_to_amps = 1.f/198.685f;
 
 /*
 Open the I2C port with default settings.
