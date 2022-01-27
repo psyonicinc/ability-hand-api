@@ -5,7 +5,7 @@ static int file_i2c;
 uint8_t i2c_tx_buf[I2C_TX_SIZE] = {0};
 uint8_t i2c_rx_buf[I2C_RX_BUF_SIZE] = {0};
 const float fixed_fpos_conv_factor = (150.f/ ((float)(0x7FFF)) );	//should be eval at compile time
-const float fixed_iq_to_amps = 1.f/198.685f;
+const float fixed_iq_to_amps_div = 4603.613636f;
 
 /*
 Open the I2C port with default settings.
@@ -205,7 +205,7 @@ int api_frame_fmt_2(uint8_t mode, float_format_i2c * out, float fpos[NUM_CHANNEL
 		for(int ch = 0; ch < NUM_CHANNELS; ch++)
 		{
 			fpos[ch] = ((float)api_motor_fmt_arr[ch].i16[0])*fixed_fpos_conv_factor;
-			iq[ch] = (float)api_motor_fmt_arr[ch].i16[1]*fixed_iq_to_amps;
+			iq[ch] = (float)api_motor_fmt_arr[ch].i16[1]/fixed_iq_to_amps_div;
 		}
 		for(int sensor = 0; sensor < 5; sensor++)
 		{

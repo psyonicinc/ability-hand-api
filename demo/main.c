@@ -76,7 +76,7 @@ void main()
 
 		Note that the The pressure range is NOT normalized (i.e. will range from 0-0xFFFF).
 		*/
-		float ft = t*3.f;
+		float ft = t*1.f;
 		for(int ch =0; ch < NUM_CHANNELS; ch++)
 		{
 			if(ch != THUMB_ROTATOR)
@@ -94,14 +94,17 @@ void main()
 			int length = 0;
 			for(int finger = 0; finger < 6; finger++)
 			{
-				length += sprintf(buffer+length, "%s:                                               \r\n", name[finger]);
+				length += sprintf(buffer+length, "%s ", name[finger]);
 				//length += sprintf(buffer+length, "--------------------------------------------------\r\n");
-				length += sprintf(buffer+length, "sensor: [");
-				for(int sensor = 0; sensor < 6; sensor ++)
+				if(finger < 5) //there is no pressure sensor on the thumb rotator
 				{
-					length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
+					length += sprintf(buffer+length, "sensor: [");
+					for(int sensor = 0; sensor < 6; sensor ++)
+					{
+						length += sprintf(buffer+length, "%.4d, ", pres_fmt[finger].v[sensor]);
+					}
+					length += sprintf(buffer+length, "]                             \r\n");					
 				}
-				length += sprintf(buffer+length, "]                             \r\n");
 				length += sprintf(buffer+length, "fingerpos: %.2f, current: %.2f                                        \r\n", fpos[finger], iq[finger]);
 				length += sprintf(buffer+length, "--------------------------------------------------\r\n");
 				//length += sprintf(buffer+length, "                                                           \r\n");
