@@ -84,7 +84,9 @@ void main()
 			else if (ch == THUMB_ROTATOR)
 				i2c_out.v[ch] = 30.f*(-cos(ft+(float)ch)*.5f+.5f)-80.f;
 		}
-		int rc = api_frame_fmt_2(POS_CTL_MODE, &i2c_out, fpos, iq, &disabled_stat, pres_fmt);	//no motor motion, just want the pressure sensor data
+		//int rc = api_frame_fmt_2(POS_CTL_MODE, &i2c_out, fpos, iq, &disabled_stat, pres_fmt);
+		int rc = api_frame_fmt_1(POS_CTL_MODE, &i2c_out, fpos, &disabled_stat, pres_fmt);	//current default option. default will be replaced with fmt_2 in future release
+		
 		if(rc != 0)
 			print_hr_errcode(rc);
 		else

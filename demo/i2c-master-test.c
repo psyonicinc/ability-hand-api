@@ -119,7 +119,7 @@ OUTPUTS:
 
 Returns a nonzero code to indicate I2C error.
 */
-int api_frame_fmt_1(uint8_t mode, float_format_i2c * out, float_format_i2c * in, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt)
+int api_frame_fmt_1(uint8_t mode, float_format_i2c * out, float * fpos, uint8_t * disabled_stat, pres_fmt_i2c * pres_fmt)
 {
 	int ret = 0;
 	uint8_t checksum = 0;
@@ -139,8 +139,11 @@ int api_frame_fmt_1(uint8_t mode, float_format_i2c * out, float_format_i2c * in,
 		ret |= (1 << 1);
 	else
 	{
+		float_format_i2c in;
 		for(int i = 0; i < I2C_Q_RX_SIZE; i++)
-			in->d[i] = i2c_rx_buf[i];
+			in.d[i] = i2c_rx_buf[i];
+		for(int i = 0; i < NUM_CHANNELS; i++)
+			fpos[[i] = in.v[i];
 		//for(int i = I2C_Q_RX_SIZE; i < I2C_Q_RX_SIZE+I2C_PS_TX_SIZE; i++)
 		//	pres_fmt->d[i-I2C_Q_RX_SIZE] = i2c_rx_buf[i];
 		for(int sensor = 0; sensor < 5; sensor++)
