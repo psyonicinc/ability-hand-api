@@ -72,7 +72,7 @@ def generateTX(positions):
 	txBuf.append((struct.pack('<B',0x50))[0])
 	
 	## Format Header in byte 1
-	txBuf.append((struct.pack('<B',0x10))[0])
+	txBuf.append((struct.pack('<B',0x12))[0])
 	
 	## Position data for all 6 fingers, scaled to fixed point representation
 	for i in range(0,6):

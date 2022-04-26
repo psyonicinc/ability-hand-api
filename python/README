@@ -14,4 +14,5 @@ Before running, please ensure the hand is in UART communication mode - this can 
 
 ### `finger_wave_live_plot.py`
 
-This example uses the Ability Hand Extended API in mode `0x01`. It sends position commands and plots the received position from the hand as they are received. The position commands sent can be controlled via the terminal window to either do a finger wave, open/close the fingers, or do nothing. Instructions will be printed to the console. 
+This example uses the Ability Hand Extended API in mode `0x12`. It sends position commands and plots the received position from the hand as they are received. The position commands sent can be controlled via the terminal window to either do a finger wave, open/close the fingers, or do nothing. Instructions will be printed to the console. 
+
