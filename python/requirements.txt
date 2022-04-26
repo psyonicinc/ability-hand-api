@@ -1,0 +1,4 @@
+keyboard==0.13.5
+matplotlib==3.5.1
+numpy==1.22.2
+pyserial==3.5
