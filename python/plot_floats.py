@@ -30,7 +30,8 @@ def animate(args):
 	for i in range(0,num_lines):
 		del xbuf[i][0]
 		del ybuf[i][0]
-		xbuf[i].append(args[0])	#we have to make num_lines copies of xbuf to get numpy not to explode. I frankly don't understand why but it is what it is
+		xbuf[i].append(args[0])
+		
 	i = 0
 	for arg in args:
 		if(i > 0):
@@ -47,15 +48,17 @@ def animate(args):
 	ax.autoscale_view(scalex=False, scaley=False)
 	return lines
 
-def plot_floats(n, width, data_gen):
+def plot_floats(n, width, data_gen, xtuple, ytuple, title="", xlabel="", ylabel=""):
 	
 	global fig, ax, lines, xbuf, ybuf, num_lines, bufwidth, tstart
 
 	fig,ax = plt.subplots()
-	plt.setp(ax,ylim = (0,90))	#manually set axis y limits
-	plt.setp(ax,xlim = (0,30))
+	plt.setp(ax,ylim = xtuple)	#manually set axis y limits
+	plt.setp(ax,xlim = ytuple)
 
-	plt.xlabel('Time(s)') 
+	plt.title(title)
+	plt.xlabel(xlabel) 
+	plt.ylabel(ylabel)
 	
 	num_lines = n
 	bufwidth = width

@@ -12,7 +12,11 @@ Before running, please ensure the hand is in UART communication mode - this can 
 
 ## Included Examples
 
-### `finger_wave_live_plot.py`
+### `live_plot_demo.py`
 
-This example uses the Ability Hand Extended API in mode `0x12`. It sends position commands and plots the received position from the hand as they are received. The position commands sent can be controlled via the terminal window to either do a finger wave, open/close the fingers, or do nothing. Instructions will be printed to the console. 
+This example uses the Ability Hand Extended API to live plot data from the hand while providing the option to do basic hand movements with keyboard controls. It can plot either touch or position data using command line parameters to specify:
+- `python3 live_plot_demo.py --touch`
+- `python3 live_plot_demo.py --position`
+
+When plotting touch data it uses the extended API in mode 0x10, for position data it uses 0x12. Instructions on how to move the hand will be printed to the console. This demo is set-up to be work with an Ability Hand with default out of the box settings. However, you can configure this with command line options - use `python3 live_plot_demo.py -h` for a full list of options. 
 

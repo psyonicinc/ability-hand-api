@@ -8,11 +8,17 @@ import sys
 import platform
 import math
 import keyboard
+import argparse
 
 ser = []
 reset_count = 0
 total_count = 0
 tstart = 0
+hand_address = 0x50
+reply_mode = 0x10
+num_lines = 6
+plot_position = False
+plot_touch = False
 
 
 ## Search for Serial Port to use
@@ -65,14 +71,16 @@ def create_misc_msg(cmd):
 
 ## Generate Message to send to hand from array of positions (floating point)
 def generateTX(positions):
+	global reply_mode, hand_address
+	
 	txBuf = []
 	
 	
 	## Address in byte 0
-	txBuf.append((struct.pack('<B',0x50))[0])
+	txBuf.append((struct.pack('<B',hand_address))[0])
 	
 	## Format Header in byte 1
-	txBuf.append((struct.pack('<B',0x12))[0])
+	txBuf.append((struct.pack('<B',reply_mode))[0])
 	
 	## Position data for all 6 fingers, scaled to fixed point representation
 	for i in range(0,6):
@@ -150,21 +158,26 @@ def serialComm():
 	global tstart
 	global reset_count
 	global total_count
+	global num_lines
 	
 	## Upsample the thumb rotator
 	msg = create_misc_msg(0xC2)
 	ser.write(msg)
 	
 	
-	## Resused arrays
+	## Resused arrays for position
 	## Safe "last position" for hand to start at
 	posRead = [15] * 6
 	posRead[5] = -posRead[5]
 	prev_posRead = posRead.copy()
 	lastPosCmd = posRead.copy()
 	
-	## [0] is time, then 6 finger positions
-	plotData = [0] * 7
+	## Reused Arrays for touch data
+	touchRead = [0] * 30
+	prev_touchRead = touchRead.copy()
+	
+	## [0] is time, then data
+	plotData = [0] * (1 + num_lines)
 	
 	##Clear Buffer to start
 	ser.reset_input_buffer()	
@@ -213,6 +226,18 @@ def serialComm():
 						## Bad data, reset serial device - probably framing error
 						if posRead[i] > 150:
 							needReset = True
+					
+					## Extract Touch Data if Available
+					if replyLen == 71:
+						## Extract Data two at a time
+						for i in range(0, 15):
+							dualData = data[(i*3)+24:((i+1)*3)+24]
+							data1 = struct.unpack('<H', dualData[0:2])[0] & 0x0FFF
+							data2 = (struct.unpack('<H', dualData[1:3])[0] & 0xFFF0) >> 4
+							touchRead[i*2] = int(data1)
+							touchRead[(i*2)+1] = int(data2)
+							if data1 > 4096 or data2 > 4096:
+								needReset = True
 			else:
 				needReset = True
 		else: 
@@ -223,11 +248,17 @@ def serialComm():
 			reset_count+=1
 			needReset = False
 			posRead = prev_posRead.copy()
+			touchRead = prev_touchRead.copy()
 		
 		
 		prev_posRead = posRead.copy()
-		for i in range(0,6):
-			plotData[i+1] = posRead[i]
+		prev_touchRead = touchRead.copy()
+		if num_lines == 6:
+			for i in range(0,6):
+				plotData[i+1] = posRead[i]
+		elif num_lines == 30:
+			for i in range(0,30):
+				plotData[i+1] = touchRead[i]
 		
 		total_count +=1
 		yield plotData
@@ -242,18 +273,39 @@ def printInstructions():
 	print("*     Hold DOWN or S to Close Hand         *")
 	print("*     Press Escape to Stop Movement        *")
 	print("********************************************")
+
+
+## Configure for specified plotting
+def start_plot(bufWidth, position, touch):
+	global plot_position
+	global plot_touch
+	global reply_mode
+	global num_lines
+	plot_position = position
+	plot_touch = touch
 	
+	if plot_position:
+		num_lines = 6
+		reply_mode = 0x12
+		plot_floats(num_lines, bufWidth, serialComm, (0,90), (0,30), title="Ability Hand Finger Positions", xlabel="Time(s)", ylabel="Finger Angle (degrees)")
+	elif plot_touch:
+		num_lines = 30
+		reply_mode = 0x10
+		plot_floats(num_lines, bufWidth, serialComm, (0,4500), (0,30), title="Ability Hand Touch Sensor Data", xlabel="Time(s)", ylabel="Raw Touch Data")
+
 
 ## Setup and Launch Line plotting
-def plot_lines(baud, bufWidth):
+def plot_lines(baud, addr, bufWidth, position, touch):
 	global tstart
 	global total_count
 	global f
+	global hand_address
+	hand_address = addr
 	tstart = time.time()
 			
 	if setupSerial(baud):
 		printInstructions()
-		plot_floats(6, bufWidth, serialComm)
+		start_plot(bufWidth, position, touch)
 		ser.close()		
 		print("Completed with " + str(reset_count) + " serial device resets")
 		print("Total Runs: " + str(total_count))
@@ -265,13 +317,32 @@ def plot_lines(baud, bufWidth):
 ## Check the args and run
 if __name__ == "__main__":
 
-	baud = 460800
-	width = 500
-			
-	print("Baud Rate: " + str(baud))
-	print("Buffer Width: " + str(width))
+	##Define all arguments
 	
-	time.sleep(1)
+	parser = argparse.ArgumentParser(description='Psyonic Ability Hand API Live Plotting Demo')
+	parser.add_argument('-b', '--baud', type=int, help="Serial Baud Rate", default=460800)
+	parser.add_argument('-a', '--address', type=int, help='Hand Address', default=0x50)
+	parser.add_argument('-w', '--width', type=int, help='X width of Plot', default=500)
+	parser.add_argument('--position', help="Plot Position Data", action='store_true')
+	parser.add_argument('--touch', help="Plot Touch Sensor Data", action='store_true')
+	args=parser.parse_args()
 	
-	plot_lines(baud, width)  
+	pos = False
+	touch = False
+
+	if args.position:
+		print("Plotting Position Data")
+		pos = True
+	elif args.touch:
+		print("Plotting Touch Sensor Data")
+		touch = True
+	else:
+		sys.exit("Error: --position or --touch argument required")
+	
+	print("Baud Rate: " + str(args.baud))
+	print("Hand Address: " + str(args.address))
+	print("Buffer Width: " + str(args.width))
+
+	
+	plot_lines(args.baud, args.address, args.width, pos, touch)  
 
