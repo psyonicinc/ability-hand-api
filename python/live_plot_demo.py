@@ -221,7 +221,7 @@ def serialComm():
 					## So we can safely do this no matter the format
 					for i in range(0, 6):
 						rawData = struct.unpack('<h', data[i*4:2+(i*4)])[0]
-						posRead[i] = abs(rawData * 150 / 32767)
+						posRead[i] = rawData * 150 / 32767
 						
 						## Bad data, reset serial device - probably framing error
 						if posRead[i] > 150:
