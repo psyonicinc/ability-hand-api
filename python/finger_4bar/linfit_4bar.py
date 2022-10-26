@@ -23,8 +23,10 @@ axs.set_title('Ability Hand Finger 4bar Relationship Across Full Range of Motion
 axs.legend([line1, line2], ['True Value','Linear Approximation'])
 
 #Plot the error function
+error = (q2-linfit_q2)
+error_deg = error * 180/np.pi
 fig2,axs2 = plt.subplots(1,1)
-line3, = axs2.plot(q1*180/np.pi,(q2-linfit_q2)*180/np.pi)
+line3, = axs2.plot(q1*180/np.pi,error_deg)
 axs2.set_title('Error: Best Fit Line to True Value')
 axs2.set_ylabel('Error (deg)')
 axs2.set_xlabel('q1 (deg)')

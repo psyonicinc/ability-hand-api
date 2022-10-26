@@ -83,7 +83,7 @@
 		<axis xyz="0 0 1"/>
 		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
-		<mimic joint = "index_q1" multiplier =  "1.061707401078210" offset = "0.565475650708972"/>
+		<mimic joint = "index_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
 	
 	
@@ -131,7 +131,7 @@
 		<axis xyz="0 0 1"/>
 		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
-		<mimic joint = "middle_q1" multiplier =  "1.061707401078210" offset = "0.565475650708972"/>
+		<mimic joint = "middle_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
 
 
@@ -182,7 +182,7 @@
 		<axis xyz="0 0 1"/>
 		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
-		<mimic joint = "ring_q1" multiplier =  "1.061707401078210" offset = "0.565475650708972"/>
+		<mimic joint = "ring_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
 
 
@@ -236,7 +236,7 @@
 		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<axis xyz="0 0 1"/>
-		<mimic joint = "pinky_q1" multiplier =  "1.061707401078210" offset = "0.565475650708972"/>
+		<mimic joint = "pinky_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
 
 
