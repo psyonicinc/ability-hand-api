@@ -26,7 +26,8 @@ import numpy as np
 	in the URDF model of the Ability Hand, and is valid for the geometry defined in those files.
 	
 	INPUT: q1 (URDF q1 of any of the finger digits)
-	OUTPUT: q2 (URDF q2 for that finger digit)"""
+	OUTPUT: q2 (URDF q2 for that finger digit)
+"""
 def get_abh_4bar_driven_angle(q1):
 	q1 = q1 + 0.084474	#factor in offset imposed by our choice of link frame attachments
 
