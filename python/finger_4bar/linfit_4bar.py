@@ -10,7 +10,7 @@ for i in range(0,q1.size):
 
 #compute best fit line
 c = np.polyfit(q1,q2,1)
-print(c)
+print("bestfit coefficients: ", c)
 linfit_q2 = (q1*c[0]+c[1])
 
 #Plot the true value against the best fit line
@@ -25,6 +25,7 @@ axs.legend([line1, line2], ['True Value','Linear Approximation'])
 #Plot the error function
 error = (q2-linfit_q2)
 error_deg = error * 180/np.pi
+print("max error (deg):", np.max(np.abs(error_deg)))
 fig2,axs2 = plt.subplots(1,1)
 line3, = axs2.plot(q1*180/np.pi,error_deg)
 axs2.set_title('Error: Best Fit Line to True Value')
