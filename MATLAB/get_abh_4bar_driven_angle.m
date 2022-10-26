@@ -1,9 +1,30 @@
 function out = get_abh_4bar_driven_angle(in)
-    L0 = 9.5;
+	%
+	%	Ascii Art Depction of the 4bar linkage mechanism:
+	%
+	%                              L3
+	%                              |
+	%                       OOOOOOOO
+	%                       \    q2/
+	%                        \    /
+	%                         \  /
+	%                          \/
+	%                          /\
+	%                   L1<---/  \
+	%                        /    \
+	%                       /      \--->L2
+	%                      /q1      \
+	%                     ############
+	%                            |
+	%                           L0
+	
+	in = in + 0.084474;	%factor in offset imposed by our choice of link frame attachments
+
+    %L0 = 9.5;
     L1 = 38.6104;
     L2 = 36.875;
     L3 = 9.1241;
-    p3 = [L0,0,0];
+    p3 = [9.47966, -0.62133, 0];	%if X of the base frame was coincident with L3, p3 = [9.5, 0 0]. However, our frame choices are different to make the 0 references for the fingers nice, so this location is a little less convenient.
 
     cq1 = cos(in);
     sq1 = sin(in);
