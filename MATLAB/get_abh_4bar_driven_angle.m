@@ -1,7 +1,4 @@
 function out = get_abh_4bar_driven_angle(in)
-
-    in = in - 4.84*pi/180;  %take out the offset introduced by our kinematic representation of the ability hand
-
     L0 = 9.5;
     L1 = 38.6104;
     L2 = 36.875;
