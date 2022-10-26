@@ -1,22 +1,22 @@
 import numpy as np
 #
-#	Ascii Art Depction of the 4bar linkage mechanism:
+#   Ascii Art Depction of the 4bar linkage mechanism:
 #
-#							   L3
-#							   |
-#						OOOOOOOO
-#						\	 q2/
-#						 \	  /
-#						  \	 /
-#						   \/
-#						   /\
-#					L1<---/	 \
-#						 /	  \
-#						/	   \--->L2
-#					   /q1		\
-#					  ############
-#							 |
-#							L0
+#                              L3
+#                              |
+#                       OOOOOOOO
+#                       \    q2/
+#                        \    /
+#                         \  /
+#                          \/
+#                          /\
+#                   L1<---/  \
+#                        /    \
+#                       /      \--->L2
+#                      /q1      \
+#                     ############
+#                            |
+#                           L0
 
 
 
