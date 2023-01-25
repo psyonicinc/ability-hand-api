@@ -194,18 +194,20 @@ def serialComm():
 		msg = generateTX(posCmd) 
 		ser.write(msg)
 		
-		if 1 == 1:
-			
-			data = ser.read(73)
-			if(len(data) > 0):
-				data = data[1:len(data)]
-				replyFormat = data[0]
-				data = data[1:len(data)]
-			
+		## Read first response byte - format header
+		data = ser.read(1)
+		if len(data) == 1:
+			replyFormat = data[0]
+			## Reply variant 3 length is 
+			if (replyFormat & 0xF) == 2:
+				replyLen = 38
+			else:
+				replyLen = 71
+			##read the rest of the data
+			data = ser.read(replyLen)
 			plotData[0] = t
-			replyLen = 71
 			needReset = False
-			if len(data) == 71:
+			if len(data) == replyLen:
 				## Verify Checksum				
 				sum = replyFormat
 				for byte in data: 
