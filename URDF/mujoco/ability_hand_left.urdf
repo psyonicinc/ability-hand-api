@@ -38,20 +38,14 @@
 			<inertia ixx="0.16931e-6" ixy = "-0.076214e-6" ixz = "-0.16959148e-6" iyy = "0.77769934e-6" iyz = "0.0156622e-6" izz = "0.7249122e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-<!--						
+					
 		<visual name="palm_mesh">
 			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="FB_palm_ref.STL"/>
 			</geometry>
 		</visual>		
-		<visual name="wrist_mesh">
-			<origin rpy = "0 0 0" xyz = "0 0 0"/>
-			<geometry>
-				<mesh filename="WRISTADAPTER.STL"/>
-			</geometry>
-		</visual>		
--->	
+
 		<collision name="palm_hull">
 			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
@@ -68,14 +62,15 @@
 			<inertia ixx="0.29766e-6" ixy = "-0.06447133e-6" ixz = "-0.00423315e-6" iyy = "3.6947967e-6" iyz = "0.00083028e-6" izz = "3.8176336e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-		<!--
+
+
 		<visual name="index_mesh_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
 				<mesh filename="idx-F1.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="index_hull_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
@@ -89,14 +84,15 @@
 			<inertia ixx="0.82671e-6" ixy = "-1.08876e-6" ixz = "-0.00037e-6" iyy = "1.98028e-6" iyz = "0.00081e-6" izz = "2.64638e-6" />
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>		
-		<!--
+		
+		
 		<visual name="index_mesh_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
 				<mesh filename="idx-F2.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="index_hull_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
@@ -132,14 +128,15 @@
 			<inertia ixx="0.29766e-6" ixy = "-0.06447133e-6" ixz = "-0.00423315e-6" iyy = "3.6947967e-6" iyz = "0.00083028e-6" izz = "3.8176336e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-		<!--
+		
+
 		<visual name="middle_mesh_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
 				<mesh filename="idx-F1.STL"/>
 			</geometry>
 		</visual>
-		-->
+
 		<collision name="middle_hull_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
@@ -154,14 +151,14 @@
 			<inertia ixx="0.82671e-6" ixy = "-1.08876e-6" ixz = "-0.00037e-6" iyy = "1.98028e-6" iyz = "0.00081e-6" izz = "2.64638e-6" />
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
-		<!--
+		
 		<visual name="middle_mesh_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
 				<mesh filename="idx-F2.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="middle_hull_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
@@ -198,14 +195,14 @@
 			<inertia ixx="0.29766e-6" ixy = "-0.06447133e-6" ixz = "-0.00423315e-6" iyy = "3.6947967e-6" iyz = "0.00083028e-6" izz = "3.8176336e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-		<!--
+		
 		<visual name="ring_mesh_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
 				<mesh filename="idx-F1.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="ring_hull_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
@@ -220,14 +217,14 @@
 			<inertia ixx="0.82671e-6" ixy = "-1.08876e-6" ixz = "-0.00037e-6" iyy = "1.98028e-6" iyz = "0.00081e-6" izz = "2.64638e-6" />
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
-		<!--
+		
 		<visual name="ring_mesh_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
 				<mesh filename="idx-F2.STL"/>
 			</geometry>
 		</visual>		
-		-->
+		
 		<collision name="ring_hull_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
@@ -267,14 +264,14 @@
 			<inertia ixx="0.29766e-6" ixy = "-0.06447133e-6" ixz = "-0.00423315e-6" iyy = "3.6947967e-6" iyz = "0.00083028e-6" izz = "3.8176336e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-		<!--
+		
 		<visual name="pinky_mesh_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
 				<mesh filename="idx-F1.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="pinky_hull_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
@@ -289,14 +286,14 @@
 			<inertia ixx="0.82671e-6" ixy = "-1.08876e-6" ixz = "-0.00037e-6" iyy = "1.98028e-6" iyz = "0.00081e-6" izz = "2.64638e-6" />
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
-		<!--
+		
 		<visual name="pinky_mesh_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
 				<mesh filename="idx-F2.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="pinky_hull_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
@@ -334,14 +331,14 @@
 			<inertia ixx="0.16931e-6" ixy = "-0.076214e-6" ixz = "-0.16959148e-6" iyy = "0.77769934e-6" iyz = "0.0156622e-6" izz = "0.7249122e-6" />
 			<origin rpy = "0 0 0" xyz = "14.606e-3 -1.890854e-3 -3.1155356e-3"/>
 		</inertial>
-		<!--
+		
 		<visual name="thumb_mesh_1">
 			<origin xyz = "27.8283501e-3 0 -14.7507000e-3" rpy = "4.450589592585541 0 0" />
 			<geometry>
 				<mesh filename="thumb-F1.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="thumb_hull_1">
 			<origin xyz = "27.8283501e-3 0 -14.7507000e-3" rpy = "4.450589592585541 0 0" />
 			<geometry>
@@ -357,14 +354,14 @@
 			<inertia ixx="4.4789082e-6" ixy = "4.4789082e-6" ixz = "-0.62144934e-6" iyy = "15.600996e-6" iyz = "-0.07466143e-6" izz = "17.908554e-6" />
 			<origin rpy = "0 0 0" xyz = "30.020522e-3 5.59476e-3 -4.1504356e-3"/>
 		</inertial>
-		<!--
+		
 		<visual name="thumb_mesh_2">
 			<origin xyz = "65.18669e-3 23.34021e-3 -3.93483e-3" rpy = "3.141592 0 0.343830"/>
 			<geometry>
 				<mesh filename="thumb-F2.STL"/>
 			</geometry>
 		</visual>
-		-->
+		
 		<collision name="thumb_hull_2">
 			<origin xyz = "65.18669e-3 23.34021e-3 -3.93483e-3" rpy = "3.141592 0 0.343830"/>
 			<geometry>
