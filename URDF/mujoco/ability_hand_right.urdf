@@ -200,15 +200,21 @@
 			<inertia ixx="0.29766e-6" ixy = "-0.06447133e-6" ixz = "-0.00423315e-6" iyy = "3.6947967e-6" iyz = "0.00083028e-6" izz = "3.8176336e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-		
+<!-- 		
 		<visual name="ring_mesh_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
 		</visual>
-		
-		
+ -->		
+		<collision name="ring_hull_1">
+			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
+			<geometry>
+				<mesh filename="models/idx-F1-hull.STL"/>
+			</geometry>
+		</collision>
+
 	</link>
 	<link name="ring_L2" >
 		<inertial>
@@ -216,12 +222,21 @@
 			<inertia ixx="0.82671e-6" ixy = "-1.08876e-6" ixz = "-0.00037e-6" iyy = "1.98028e-6" iyz = "0.00081e-6" izz = "2.64638e-6" />
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
+<!-- 		
 		<visual name="ring_mesh_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
 		</visual>		
+ -->		
+ 		<collision name="ring_hull_2">
+			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
+			<geometry>
+				<mesh filename="models/idx-F2-hull.STL"/>
+			</geometry>
+		</collision>		
+
 	</link>
 	<joint name="ring_q1" type="revolute">
 		<parent link="base"/>
@@ -254,14 +269,21 @@
 			<inertia ixx="0.29766e-6" ixy = "-0.06447133e-6" ixz = "-0.00423315e-6" iyy = "3.6947967e-6" iyz = "0.00083028e-6" izz = "3.8176336e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
-		
+<!-- 		
 		<visual name="pinky_mesh_1">
 			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 			<geometry>
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
 		</visual>
-		
+ -->		
+		<visual name="pinky_hull_1">
+			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
+			<geometry>
+				<mesh filename="models/idx-F1-hull.STL"/>
+			</geometry>
+		</visual>
+
 	</link>
 	<link name="pinky_L2" >
 		<inertial>
@@ -269,13 +291,22 @@
 			<inertia ixx="0.82671e-6" ixy = "-1.08876e-6" ixz = "-0.00037e-6" iyy = "1.98028e-6" iyz = "0.00081e-6" izz = "2.64638e-6" />
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
-		<visual name="pinky_mesh_2">
+		
+<!--
+ 		<visual name="pinky_mesh_2">
 			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
 		</visual>
-		
+ -->		
+ 		<collision name="pinky_hull_2">
+			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
+			<geometry>
+				<mesh filename="models/idx-F2-hull.STL"/>
+			</geometry>
+		</collision>
+ 
 	</link>
 	<joint name="pinky_q1" type="revolute">
 		<parent link="base"/>
@@ -307,13 +338,20 @@
 			<origin rpy = "0 0 0" xyz = "14.606e-3 -1.890854e-3 -3.1155356e-3"/>
 		</inertial>
 		
-		<visual name="thumb_mesh_1">
+<!-- 		<visual name="thumb_mesh_1">
 			<origin xyz = " 0.0278283501 1.7436510745838653e-19 0.0147507 " rpy = " 1.832595714594045 -0.0 5.366520605522463e-18 " />
 			<geometry>
 				<mesh filename="models/thumb-F1-MIR.STL"/>
 			</geometry>
 		</visual>
-		
+ -->		
+ 		<collision name="thumb_hull_1">
+			<origin xyz = " 0.0278283501 1.7436510745838653e-19 0.0147507 " rpy = " 1.832595714594045 -0.0 5.366520605522463e-18 " />
+			<geometry>
+				<mesh filename="models/thumb-F1-MIR-hull.STL"/>
+			</geometry>
+		</collision>
+
 	</link>
 	<link name="thumb_L2" >
 		<inertial>
@@ -322,13 +360,21 @@
 			<origin rpy = "0 0 0" xyz = "30.020522e-3 5.59476e-3 -4.1504356e-3"/>
 		</inertial>
 		
-		<visual name="thumb_mesh_2">
+<!--
+ 		<visual name="thumb_mesh_2">
 			<origin xyz = "65.18669e-3 23.34021e-3 3.93483e-3" rpy = "-3.141592 0 0.343830"/>
 			<geometry>
 				<mesh filename="models/thumb-F2.STL"/>
 			</geometry>
 		</visual>
-		
+ -->		
+ 		<collision name="thumb_hull_2">
+			<origin xyz = "65.18669e-3 23.34021e-3 3.93483e-3" rpy = "-3.141592 0 0.343830"/>
+			<geometry>
+				<mesh filename="models/thumb-F2-hull.STL"/>
+			</geometry>
+		</collision>
+ 
 	</link>
 	<joint name="thumb_q1" type="revolute">
 		<parent link="base"/>
