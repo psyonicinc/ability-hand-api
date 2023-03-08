@@ -27,6 +27,11 @@
 				<mesh filename="models/wristmesh.STL"/>
 			</geometry>
 		</visual>		
+		<inertial>	<!-- the mass and inertia here are NOT correct -->
+			<mass value = "0.200"/>
+			<inertia ixx="978.26e-6" ixy = "87.34e-6" ixz = "322.99e-6" iyy = "1244.78e-6" iyz = "244.74e-6" izz = "456.22e-6" />
+			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
+		</inertial>
 	</link>
 	<joint name="wrist2thumb" type="fixed">
 		<parent link="wrist"/>
@@ -36,7 +41,7 @@
   
 	<link name="base" >
 		<inertial>
-			<mass value = "0.400"/>
+			<mass value = "0.200"/>
 			<inertia ixx="978.26e-6" ixy = "87.34e-6" ixz = "322.99e-6" iyy = "1244.78e-6" iyz = "244.74e-6" izz = "456.22e-6" />
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
