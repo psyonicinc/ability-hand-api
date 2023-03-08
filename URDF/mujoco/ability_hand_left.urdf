@@ -31,8 +31,27 @@
 		 <parent link="world"/>
 		 <child link="base"/>
 	 </joint>
+	 
+	<link name="base">
+		<visual name="wrist_mesh">
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
+			<geometry>
+				<mesh filename="wristmesh.STL"/>
+			</geometry>
+		</visual>		
+		<inertial>	<!-- the mass and inertia here are NOT correct -->
+			<mass value = "0.200"/>
+			<inertia ixx="978.26e-6" ixy = "87.34e-6" ixz = "322.99e-6" iyy = "1244.78e-6" iyz = "244.74e-6" izz = "456.22e-6" />
+			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
+		</inertial>
+	</link>
+	<joint name="wrist2thumb" type="fixed">
+		<parent link="base"/>
+		<child link="thumb_base"/>
+		<origin xyz = "24.0476665e-3 3.78124745e-3 32.32964923e-3" rpy = "3.14148426 0.08848813 3.14036612"/>
+	</joint>
 	
-	<link name="base" >
+	<link name="thumb_base" >
 		<inertial>
 			<mass value = "0.400"/>
 			<inertia ixx="0.16931e-6" ixy = "-0.076214e-6" ixz = "-0.16959148e-6" iyy = "0.77769934e-6" iyz = "0.0156622e-6" izz = "0.7249122e-6" />
@@ -103,7 +122,7 @@
 		
 	</link>
 	<joint name="index_q1" type="revolute">
-		<parent link="base"/>
+		<parent link="thumb_base"/>
 		<child link="index_L1"/>
 		<origin xyz = "-9.49e-3 -13.04e-3 -62.95e-3" rpy = "-1.982050 1.284473 -2.090591" />
 		<axis xyz="0 0 1"/>
@@ -168,7 +187,7 @@
 
 	</link>
 	<joint name="middle_q1" type="revolute">
-		<parent link="base"/>
+		<parent link="thumb_base"/>
 		<child link="middle_L1"/>
 		<origin xyz = "9.653191e-3 -15.310271e-3 -67.853949e-3" rpy = "-1.860531 1.308458 -1.896217" />
 		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
@@ -234,7 +253,7 @@
 		
 	</link>
 	<joint name="ring_q1" type="revolute">
-		<parent link="base"/>
+		<parent link="thumb_base"/>
 		<child link="ring_L1"/>
 		<origin xyz = "29.954260e-3 -14.212492e-3 -67.286105e-3" rpy = "-1.716598 1.321452 -1.675862" />
 		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
@@ -303,7 +322,7 @@
 		
 	</link>
 	<joint name="pinky_q1" type="revolute">
-		<parent link="base"/>
+		<parent link="thumb_base"/>
 		<child link="pinky_L1"/>
 		<origin xyz = "49.521293e-3 -11.004583e-3 -63.029065e-3" rpy = "-1.765110 1.322220 -1.658383" />
 		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
@@ -371,7 +390,7 @@
 
 	</link>
 	<joint name="thumb_q1" type="revolute">
-		<parent link="base"/>
+		<parent link="thumb_base"/>
 		<child link="thumb_L1"/>
 		<origin xyz = "0 0 0" rpy = "0 0 3.330437"/>
 		<axis xyz="0 0 1"/>
