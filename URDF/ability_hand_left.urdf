@@ -19,6 +19,27 @@
 -->
 <robot name="ability_hand">
 
+
+	<link name="wrist">
+		<visual name="wrist_mesh">
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
+			<geometry>
+				<mesh filename="models/wristmesh.STL"/>
+			</geometry>
+		</visual>		
+		<inertial>	<!-- the mass and inertia here are NOT correct -->
+			<mass value = "0.200"/>
+			<inertia ixx="978.26e-6" ixy = "87.34e-6" ixz = "322.99e-6" iyy = "1244.78e-6" iyz = "244.74e-6" izz = "456.22e-6" />
+			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
+		</inertial>
+	</link>
+	<joint name="wrist2thumb" type="fixed">
+		<parent link="wrist"/>
+		<child link="base"/>
+		<origin xyz = "24.0476665e-3 3.78124745e-3 32.32964923e-3" rpy = "3.14148426 0.08848813 3.14036612"/>
+	</joint>
+
+
 	<link name="base" >
 		<inertial>
 			<mass value = "0.400"/>
