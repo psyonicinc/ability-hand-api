@@ -88,7 +88,7 @@
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
 		</visual>
-	</link>
+	</link>	
 	<joint name="index_q1" type="revolute">
 		<parent link="thumb_base"/>
 		<child link="index_L1"/>
@@ -106,7 +106,13 @@
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<mimic joint = "index_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
-	
+	<link name="index_anchor"/>
+	<joint name="idx_anchor" type="fixed">
+		<parent link = "index_L2"/>
+		<child link = "index_anchor"/>
+		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+	</joint>
+
 	
 
 	<link name="middle_L1" >
@@ -154,6 +160,12 @@
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<mimic joint = "middle_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
+	<link name="middle_anchor"/>
+	<joint name="mid_anchor" type="fixed">
+		<parent link = "middle_L2"/>
+		<child link = "middle_anchor"/>
+		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+	</joint>
 
 
 
@@ -172,8 +184,6 @@
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
 		</visual>
-		
-		
 	</link>
 	<link name="ring_L2" >
 		<inertial>
@@ -205,11 +215,12 @@
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<mimic joint = "ring_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
-
-
-
-
-
+	<link name="ring_anchor"/>
+	<joint name="rng_anchor" type="fixed">
+		<parent link = "ring_L2"/>
+		<child link = "ring_anchor"/>
+		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+	</joint>
 
 
 
@@ -226,7 +237,6 @@
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
 		</visual>
-		
 	</link>
 	<link name="pinky_L2" >
 		<inertial>
@@ -239,8 +249,7 @@
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
-		</visual>
-		
+		</visual>		
 	</link>
 	<joint name="pinky_q1" type="revolute">
 		<parent link="thumb_base"/>
@@ -259,9 +268,12 @@
 		<axis xyz="0 0 1"/>
 		<mimic joint = "pinky_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
-
-
-
+	<link name="pinky_anchor"/>
+	<joint name="pnky_anchor" type="fixed">
+		<parent link = "pinky_L2"/>
+		<child link = "pinky_anchor"/>
+		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+	</joint>
 
 
 
