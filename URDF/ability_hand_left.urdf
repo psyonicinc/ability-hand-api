@@ -52,12 +52,6 @@
 				<mesh filename="models/FB_palm_ref.STL"/>
 			</geometry>
 		</visual>		
-		<visual name="wrist_mesh">
-			<origin rpy = "3.14159265 -0.08848819  3.14037092" xyz = "26.806e-3 -3.814e-3 30.078e-3"/>
-			<geometry>
-				<mesh filename="models/wristmesh.STL"/>
-			</geometry>
-		</visual>		
 	</link>
 	
 	

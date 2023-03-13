@@ -103,7 +103,7 @@
 	<joint name="idx_anchor" type="fixed">
 		<parent link = "index_L2"/>
 		<child link = "index_anchor"/>
-		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+		<origin rpy = "0 0 0" xyz = "31.5541e-3  -10.44e-3 0.14e-3"/>
 	</joint>
 	
 
@@ -156,7 +156,7 @@
 	<joint name="mid_anchor" type="fixed">
 		<parent link = "middle_L2"/>
 		<child link = "middle_anchor"/>
-		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+		<origin rpy = "0 0 0" xyz = "31.5541e-3  -10.44e-3 0.14e-3"/>
 	</joint>
 
 
@@ -211,7 +211,7 @@
 	<joint name="rng_anchor" type="fixed">
 		<parent link = "ring_L2"/>
 		<child link = "ring_anchor"/>
-		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+		<origin rpy = "0 0 0" xyz = "31.5541e-3  -10.44e-3 0.14e-3"/>
 	</joint>
 
 
@@ -270,7 +270,7 @@
 	<joint name="pnky_anchor" type="fixed">
 		<parent link = "pinky_L2"/>
 		<child link = "pinky_anchor"/>
-		<origin rpy = "0 0 0" xyz = "0.02243 -0.01044 0.00014"/>
+		<origin rpy = "0 0 0" xyz = "31.5541e-3  -10.44e-3 0.14e-3"/>
 	</joint>
 
 
@@ -323,5 +323,11 @@
 		<axis xyz="0 0 1"/>
 		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->		
+	</joint>
+		<link name="thumb_anchor"/>
+	<joint name="thmb_anchor" type="fixed">
+		<parent link = "thumb_L2"/>
+		<child link = "thumb_anchor"/>
+		<origin rpy = "0 0 0" xyz = "63.868144e-3  23.807059e-3 -3.629831e-3"/>
 	</joint>
 </robot>
