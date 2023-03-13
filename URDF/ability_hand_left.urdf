@@ -320,6 +320,6 @@
 	<joint name="thmb_anchor" type="fixed">
 		<parent link = "thumb_L2"/>
 		<child link = "thumb_anchor"/>
-		<origin rpy = "0 0 0" xyz = "63.868144e-3  23.807059e-3 -3.629831e-3"/>
+		<origin rpy = "0 0 0" xyz = "52.0012259e-3  28.0086971e-3 -.884835778e-3"/>
 	</joint>
 </robot>

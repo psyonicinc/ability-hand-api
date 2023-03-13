@@ -324,10 +324,10 @@
 		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->		
 	</joint>
-		<link name="thumb_anchor"/>
+	<link name="thumb_anchor"/>
 	<joint name="thmb_anchor" type="fixed">
 		<parent link = "thumb_L2"/>
 		<child link = "thumb_anchor"/>
-		<origin rpy = "0 0 0" xyz = "63.868144e-3  23.807059e-3 -3.629831e-3"/>
+		<origin rpy = "0 0 0" xyz = "52.00122724e-3 28.00869333e-3 6.98483578e-3"/>
 	</joint>
 </robot>
