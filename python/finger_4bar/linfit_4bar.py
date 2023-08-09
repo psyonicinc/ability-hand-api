@@ -8,6 +8,9 @@ q2 = q1*0.0
 for i in range(0,q1.size):
 	q2[i] = get_abh_4bar_driven_angle(q1[i])
 
+
+
+
 #compute best fit line
 c = np.polyfit(q1,q2,1)
 print("bestfit coefficients: ", c)
