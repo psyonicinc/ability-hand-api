@@ -19,7 +19,7 @@
   </worldbody>
 
   <worldbody>
-    <body name="right_base" pos="0 0 0.05"  euler="0 3.1415 3.1415" gravcomp="0">
+    <body name="right_base" pos="0 0 1.05" euler="-0.5 0 3.1415" gravcomp="0">
       <inertial pos="0.0224191 -0.000157982 -1.31987e-05" quat="0.850371 -0.0113901 -0.220517 0.47761" mass="0.4" diaginertia="0.000893087 0.000893087 0.000893087"/>
       <joint name="right_floating_base" type="free"/>
       <geom name="right_palm_hull" type="mesh" mesh="palm_hull_mir"/>
@@ -78,7 +78,7 @@
   
   
   <worldbody>
-    <body name="left_base" pos="0 0 0.5" euler="0 3.1415 3.1415" gravcomp="0">
+    <body name="left_base" pos="0 0 20.5" euler="-0.5 0 3.1415" gravcomp="0">
       <inertial pos="0.0224191 -0.000157982 -1.31987e-05" quat="0.306728 0.531258 0.293089 0.733336" mass="0.4" diaginertia="8.14795e-07 7.42718e-07 1.14409e-07"/>
       <joint name="left_floating_base" type="free"/>
       <geom name="left_palm_hull" type="mesh" mesh="palm_hull"/>

@@ -87,7 +87,7 @@
 		<child link="index_L1"/>
 		<origin xyz = " 9.49e-3 -13.04e-3 -62.95e-3 " rpy = " -1.1595426535897932 1.284473 -1.0510016535897932 " />
 		<axis xyz="0 0 1"/>
-		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0" upper = "2.0943951" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 	</joint>
 	<joint name="index_q2" type="revolute">
@@ -95,7 +95,7 @@
 		<child link="index_L2"/>
 		<origin xyz = "38.472723e-3 3.257695e-3 0.000000e-3" rpy = "0 0 0.084474"/>
 		<axis xyz="0 0 1"/>
-		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0.0" upper = "2.6586" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<mimic joint = "index_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
@@ -139,7 +139,7 @@
 		<parent link="thumb_base"/>
 		<child link="middle_L1"/>
 		<origin xyz = " -9.653191e-3 -15.310271e-3 -67.853949e-3 " rpy = " -1.2810616535897934 1.308458 -1.2453756535897933 " />
-		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0" upper = "2.0943951" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<axis xyz="0 0 1"/>
 	</joint>
@@ -148,7 +148,7 @@
 		<child link="middle_L2"/>
 		<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 		<axis xyz="0 0 1"/>
-		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0.0" upper = "2.6586" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<mimic joint = "middle_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
@@ -194,7 +194,7 @@
 		<parent link="thumb_base"/>
 		<child link="ring_L1"/>
 		<origin xyz = " -29.95426e-3 -14.212492e-3 -67.286105e-3 " rpy = " -1.424994653589793 1.321452 -1.4657306535897934 " />
-		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0" upper = "2.0943951" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<axis xyz="0 0 1"/>
 	</joint>
@@ -203,7 +203,7 @@
 		<child link="ring_L2"/>
 		<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
 		<axis xyz="0 0 1"/>
-		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0.0" upper = "2.6586" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<mimic joint = "ring_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
 	</joint>
@@ -253,7 +253,7 @@
 		<parent link="thumb_base"/>
 		<child link="pinky_L1"/>
 		<origin xyz = " -49.521293e-3 -11.004583e-3 -63.029065e-3 " rpy = " -1.3764826535897934 1.32222 -1.4832096535897932 " />
-		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0" upper = "2.0943951" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<axis xyz="0 0 1"/>
 	</joint>
@@ -261,7 +261,7 @@
 		<parent link="pinky_L1"/>
 		<child link="pinky_L2"/>
 		<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
-		<limit lower = "0.0" upper = "2.6586" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0.0" upper = "2.6586" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 		<axis xyz="0 0 1"/>
 		<mimic joint = "pinky_q1" multiplier =  "1.05851325" offset = "0.72349796"/>
@@ -313,7 +313,7 @@
 		<child link="thumb_L1"/>
 		<origin xyz = " 0.0 0.0 0.0 " rpy = " 3.141592653589793 -0.0 -0.18884434641020664 " />
 		<axis xyz="0 0 1"/>
-		<limit lower = "-2.0943951" upper = "0" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "-2.0943951" upper = "0" effort = "1.2" velocity = "40.338888721"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->
 	</joint>
 	<joint name="thumb_q2" type="revolute">
@@ -321,7 +321,7 @@
 		<child link="thumb_L2"/>
 		<origin xyz = " 27.8283501e-3 1.7436510745838653e-19 14.7507e-3 " rpy = " 1.832595714594045 -0.0 5.366520605522463e-18 " />
 		<axis xyz="0 0 1"/>
-		<limit lower = "0" upper = "2.0943951" effort = "0.20" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
+		<limit lower = "0" upper = "2.0943951" effort = "6.0" velocity = "8.0677777442"/>		<!-- angles in rad, efforts in N-m, velocity in rad/s -->
 		<dynamics damping = "0.001" friction = "0.001" />	<!-- Friction coefficient is not from quantitative measurement -->		
 	</joint>
 	<link name="thumb_anchor"/>
