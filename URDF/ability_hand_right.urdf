@@ -63,7 +63,7 @@
 			<origin xyz = "22.41911e-3 -0.15798201e-3 -0.01319866e-3" rpy = "0 0 0"/>
 		</inertial>
 		<visual name="index_mesh_1">
-			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
@@ -76,7 +76,7 @@
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>		
 		<visual name="index_mesh_2">
-			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
@@ -115,7 +115,7 @@
 		</inertial>
 		
 		<visual name="middle_mesh_1">
-			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
@@ -129,7 +129,7 @@
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
 		<visual name="middle_mesh_2">
-			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
@@ -171,7 +171,7 @@
 		</inertial>
 		
 		<visual name="ring_mesh_1">
-			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
@@ -184,7 +184,7 @@
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
 		<visual name="ring_mesh_2">
-			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
@@ -228,7 +228,7 @@
 		</inertial>
 		
 		<visual name="pinky_mesh_1">
-			<origin xyz = "38.472723e-3 3.257695e-3 0.000000" rpy = "0 0 0.084474"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F1.STL"/>
 			</geometry>
@@ -242,7 +242,7 @@
 			<origin rpy = "0 0 0" xyz = "13.36818e-3 -8.75392e-3 -0.02886e-3"/>
 		</inertial>
 		<visual name="pinky_mesh_2">
-			<origin rpy = "0 0 0" xyz = "9.1241e-3 0 0"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/idx-F2.STL"/>
 			</geometry>
