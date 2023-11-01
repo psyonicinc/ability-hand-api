@@ -284,7 +284,7 @@ def start_plot(bufWidth, position, touch):
 	
 	if plot_position:
 		num_lines = 6
-		reply_mode = 0x12
+		reply_mode = 0x10
 		plot_floats(num_lines, bufWidth, serialComm, (0,90), (0,30), title="Ability Hand Finger Positions", xlabel="Time(s)", ylabel="Finger Angle (degrees)")
 	elif plot_touch:
 		num_lines = 30
