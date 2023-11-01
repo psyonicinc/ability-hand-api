@@ -295,7 +295,7 @@
 		<visual name="thumb_mesh_2">
 			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
-				<mesh filename="models/thumb-F2.STL"/>
+				<mesh filename="models/thumb-F2-left.STL"/>
 			</geometry>
 		</visual>
 		

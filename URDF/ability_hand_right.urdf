@@ -286,7 +286,7 @@
 		</inertial>
 		
 		<visual name="thumb_mesh_1">
-			<origin xyz = " 27.8283501e-3 1.7436510745838653e-19 14.7507e-3 " rpy = " 1.832595714594045 -0.0 5.366520605522463e-18 " />
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
 				<mesh filename="models/thumb-F1-MIR.STL"/>
 			</geometry>
@@ -301,9 +301,9 @@
 		</inertial>
 		
 		<visual name="thumb_mesh_2">
-			<origin xyz = "65.18669e-3 23.34021e-3 3.93483e-3" rpy = "-3.141592 0 0.343830"/>
+			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
-				<mesh filename="models/thumb-F2.STL"/>
+				<mesh filename="models/thumb-F2-right.STL"/>
 			</geometry>
 		</visual>
 		
