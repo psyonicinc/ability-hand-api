@@ -101,27 +101,15 @@ try:
 							m_print_nparr(rFSR)
 						print('')
 
-						# pstrfm =  ''.join('{:02x}'.format(x) for x in payload)
-						# print("Pass: len: " + str(len(payload)) + ", " + pstrfm)
-
 						bytebuffer = bytes([])
 						stuff_buffer = np.array([])
 						num_reads = num_reads + 1						
 
-					# else:	
-					# 	# print("Fail, "+str(len(payload)))
-					# 	# pstrfm =  ''.join('{:02x}'.format(x) for x in payload)
-					# 	pstrfm =  ''.join('{:02x}'.format(x) for x in bytebuffer)
-					# 	# print("Fail: len: " + str(len(bytebuffer)) + ", " + pstrfm)
-
-
-		if(platform == 'win32'):
 			time.sleep(0.001)
-		
 except KeyboardInterrupt:
 	pass
 	
-print(str(num_writes)+" Writes, "+str(num_reads)+" Reads, "+"Ratio = "+str(num_reads/num_writes))
+print("\r\n"+str(num_writes)+" Writes, "+str(num_reads)+" Reads, "+"Ratio = "+str(num_reads/num_writes))
 
 for s in slist:
 	s.close()
