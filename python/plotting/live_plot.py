@@ -394,6 +394,17 @@ def printInstructions():
 	print("*     Press Escape to Stop Movement        *")
 	print("********************************************")
 
+def printStuffingWarning():
+	print("\r\n\r\n")
+	print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+	print("!                 !!!!!!!!!WARNING!!!!!!!!!                   !")
+	print("!         You are running without the --stuff option          !")
+	print("! Stuffing is required for optimal performance of this script !")
+	print("!     To enable byte stuffing, send We46 and We47             !")
+	print("!     to the hand over BLE, using the developer console       !")
+	print("!     in the Ability Hand App, then re-run with --stuff       !")
+	print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+	print("\r\n\r\n")
 
 ## Configure for specified plotting
 def start_plot(bufWidth, position, touch):
@@ -438,7 +449,6 @@ def plot_lines(baud, addr, bufWidth, position, touch):
 if __name__ == "__main__":
 
 	##Define all arguments
-	
 	parser = argparse.ArgumentParser(description='Psyonic Ability Hand API Live Plotting Demo')
 	parser.add_argument('-b', '--baud', type=int, help="Serial Baud Rate", default=460800)
 	parser.add_argument('-a', '--address', type=int, help='Hand Address', default=0x50)
@@ -450,7 +460,9 @@ if __name__ == "__main__":
 	args=parser.parse_args()
 	
 	stuff_data = args.stuff
-	print("Stuffing = "+str(stuff_data))
+	if(stuff_data == False):
+		printStuffingWarning()
+
 	isRS485 = args.rs485
 	pos = False
 	touch = False
