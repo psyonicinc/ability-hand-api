@@ -63,6 +63,7 @@ try:
 	bytebuffer = bytes([])
 	num_writes = 0
 	num_reads = 0
+	start_time = time.time()
 	while 1:
 		
 		for i in range(0, len(fpos)):
@@ -104,12 +105,14 @@ try:
 						bytebuffer = bytes([])
 						stuff_buffer = np.array([])
 						num_reads = num_reads + 1						
-
-			time.sleep(0.001)
+			if(platform == 'win32'):
+				time.sleep(0.001)
+				
 except KeyboardInterrupt:
 	pass
-	
-print("\r\n"+str(num_writes)+" Writes, "+str(num_reads)+" Reads, "+"Ratio = "+str(num_reads/num_writes))
+end_time = time.time()
 
+print("\r\n"+str(num_writes)+" Writes, "+str(num_reads)+" Reads, "+"Ratio = "+str(num_reads/num_writes))
+print("Avg bandwidth = "+str(num_reads/(end_time-start_time))+"Hz")
 for s in slist:
 	s.close()
