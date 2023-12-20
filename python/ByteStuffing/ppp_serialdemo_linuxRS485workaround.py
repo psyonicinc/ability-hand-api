@@ -5,6 +5,7 @@ import math
 import time
 import numpy as np
 from PPP_stuffing import *
+from sys import platform
 
 """ 
 	Find a serial com port.
@@ -114,9 +115,8 @@ try:
 					# 	# print("Fail: len: " + str(len(bytebuffer)) + ", " + pstrfm)
 
 
-
-
-		# time.sleep(0.001)		
+		if(platform == 'win32'):
+			time.sleep(0.001)
 		
 except KeyboardInterrupt:
 	pass
