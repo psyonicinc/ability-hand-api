@@ -22,6 +22,7 @@ num_lines = 6
 plot_position = False
 plot_touch = False
 stuff_data = False
+isRS485 = False
 
 ## Search for Serial Port to use
 def setupSerial(baud):
@@ -162,6 +163,7 @@ def serialComm():
 	global total_count
 	global num_lines
 	global stuff_data
+	global isRS485
 	
 	## Upsample the thumb rotator
 	msg = create_misc_msg(0xC2)
@@ -244,75 +246,143 @@ def serialComm():
 
 			ser.write(msg)
 			
-			## Read first response byte - format header
-			data = ser.read(1)
-			if len(data) == 1:
-				replyFormat = data[0]
-				## Reply variant 3 length is 
-				if (replyFormat & 0xF) == 2:
-					replyLen = 38
-				else:
-					replyLen = 71
-				##read the rest of the data
-				data = ser.read(replyLen)
-				plotData[0] = t
-				needReset = False
-				if len(data) == replyLen:
-					## Verify Checksum				
-					sum = replyFormat
-					for byte in data: 
-						sum = (sum + byte)%256
-					
-					if sum != 0:
-						needReset = True
+			if(isRS485 == False):
+				## Read first response byte - format header
+				data = ser.read(1)
+				if len(data) == 1:
+					replyFormat = data[0]
+					## Reply variant 3 length is 
+					if (replyFormat & 0xF) == 2:
+						replyLen = 38
 					else:
-						## Extract Position Data
-						## Position Data is included in all formats in same way
-						## So we can safely do this no matter the format
-						for i in range(0, 6):
-							rawData = struct.unpack('<h', data[i*4:2+(i*4)])[0]
-							posRead[i] = rawData * 150 / 32767
-							
-							## Bad data, reset serial device - probably framing error
-							if posRead[i] > 150:
-								needReset = True
+						replyLen = 71
+					##read the rest of the data
+					data = ser.read(replyLen)
+					plotData[0] = t
+					needReset = False
+					if len(data) == replyLen:
+						## Verify Checksum				
+						sum = replyFormat
+						for byte in data: 
+							sum = (sum + byte)%256
 						
-						## Extract Touch Data if Available
-						if replyLen == 71:
-							## Extract Data two at a time
-							for i in range(0, 15):
-								dualData = data[(i*3)+24:((i+1)*3)+24]
-								data1 = struct.unpack('<H', dualData[0:2])[0] & 0x0FFF
-								data2 = (struct.unpack('<H', dualData[1:3])[0] & 0xFFF0) >> 4
-								touchRead[i*2] = int(data1)
-								touchRead[(i*2)+1] = int(data2)
-								if data1 > 4096 or data2 > 4096:
+						if sum != 0:
+							needReset = True
+						else:
+							## Extract Position Data
+							## Position Data is included in all formats in same way
+							## So we can safely do this no matter the format
+							for i in range(0, 6):
+								rawData = struct.unpack('<h', data[i*4:2+(i*4)])[0]
+								posRead[i] = rawData * 150 / 32767
+								
+								## Bad data, reset serial device - probably framing error
+								if posRead[i] > 150:
 									needReset = True
-				else:
+							
+							## Extract Touch Data if Available
+							if replyLen == 71:
+								## Extract Data two at a time
+								for i in range(0, 15):
+									dualData = data[(i*3)+24:((i+1)*3)+24]
+									data1 = struct.unpack('<H', dualData[0:2])[0] & 0x0FFF
+									data2 = (struct.unpack('<H', dualData[1:3])[0] & 0xFFF0) >> 4
+									touchRead[i*2] = int(data1)
+									touchRead[(i*2)+1] = int(data2)
+									if data1 > 4096 or data2 > 4096:
+										needReset = True
+					else:
+						needReset = True
+				else: 
 					needReset = True
-			else: 
-				needReset = True
+					
+				if needReset:
+					ser.reset_input_buffer()	
+					reset_count+=1
+					needReset = False
+					posRead = prev_posRead.copy()
+					touchRead = prev_touchRead.copy()
 				
-			if needReset:
-				ser.reset_input_buffer()	
-				reset_count+=1
-				needReset = False
-				posRead = prev_posRead.copy()
-				touchRead = prev_touchRead.copy()
-			
-			
-			prev_posRead = posRead.copy()
-			prev_touchRead = touchRead.copy()
-			if num_lines == 6:
-				for i in range(0,6):
-					plotData[i+1] = posRead[i]
-			elif num_lines == 30:
-				for i in range(0,30):
-					plotData[i+1] = touchRead[i]
-			
-			total_count +=1
-			yield plotData
-			
+				
+				prev_posRead = posRead.copy()
+				prev_touchRead = touchRead.copy()
+				if num_lines == 6:
+					for i in range(0,6):
+						plotData[i+1] = posRead[i]
+				elif num_lines == 30:
+					for i in range(0,30):
+						plotData[i+1] = touchRead[i]
+				
+				total_count +=1
+				yield plotData
+			else:
+				if 1 == 1:
+					
+					data = ser.read(73)
+					if(len(data) > 1):
+						data = data[1:len(data)]
+						replyFormat = data[0]
+						data = data[1:len(data)]
+					
+					plotData[0] = t
+					replyLen = 71
+					needReset = False
+					if len(data) == 71:
+						## Verify Checksum				
+						sum = replyFormat
+						for byte in data: 
+							sum = (sum + byte)%256
+						
+						if sum != 0:
+							needReset = True
+						else:
+							## Extract Position Data
+							## Position Data is included in all formats in same way
+							## So we can safely do this no matter the format
+							for i in range(0, 6):
+								rawData = struct.unpack('<h', data[i*4:2+(i*4)])[0]
+								posRead[i] = rawData * 150 / 32767
+								
+								## Bad data, reset serial device - probably framing error
+								if posRead[i] > 150:
+									needReset = True
+							
+							## Extract Touch Data if Available
+							if replyLen == 71:
+								## Extract Data two at a time
+								for i in range(0, 15):
+									dualData = data[(i*3)+24:((i+1)*3)+24]
+									data1 = struct.unpack('<H', dualData[0:2])[0] & 0x0FFF
+									data2 = (struct.unpack('<H', dualData[1:3])[0] & 0xFFF0) >> 4
+									touchRead[i*2] = int(data1)
+									touchRead[(i*2)+1] = int(data2)
+									if data1 > 4096 or data2 > 4096:
+										needReset = True
+					else:
+						needReset = True
+				else: 
+					needReset = True
+					
+				if needReset:
+					ser.reset_input_buffer()	
+					reset_count+=1
+					needReset = False
+					posRead = prev_posRead.copy()
+					touchRead = prev_touchRead.copy()
+				
+				
+				prev_posRead = posRead.copy()
+				prev_touchRead = touchRead.copy()
+				if num_lines == 6:
+					for i in range(0,6):
+						plotData[i+1] = posRead[i]
+				elif num_lines == 30:
+					for i in range(0,30):
+						plotData[i+1] = touchRead[i]
+				
+				total_count +=1
+				yield plotData
+
 
 
 ## Print instructions for how to control
@@ -376,10 +446,12 @@ if __name__ == "__main__":
 	parser.add_argument('--position', help="Plot Position Data", action='store_true')
 	parser.add_argument('--touch', help="Plot Touch Sensor Data", action='store_true')
 	parser.add_argument('--stuff', help="Enable forward and reverse byte stuffing for much improved reliability and bandwidth. Ensure We46 and We47 on target ability hand are enabled.",action='store_true')
+	parser.add_argument('--rs485',help="flag to indicate if an RS485 dongle is used",action='store_true')
 	args=parser.parse_args()
 	
 	stuff_data = args.stuff
 	print("Stuffing = "+str(stuff_data))
+	isRS485 = args.rs485
 	pos = False
 	touch = False
 
