@@ -229,7 +229,9 @@ def serialComm():
 							bytebuffer = bytes([])
 							stuff_buffer = np.array([])
 							num_reads = num_reads + 1
-				
+			
+			reset_count = num_writes - num_reads	#this global is like an error counter, so we'll do it like this for stuffing method
+
 			prev_posRead = posRead.copy()
 			prev_touchRead = touchRead.copy()
 			if num_lines == 6:
