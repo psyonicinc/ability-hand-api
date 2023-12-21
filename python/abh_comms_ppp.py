@@ -38,9 +38,8 @@ if __name__ == "__main__":
 			ser = (serial.Serial(p[0],args.baud, timeout = 0, write_timeout = 0))
 			slist.append(ser)
 			print ("connected!", p)
-			# print ("found: ", p)
 		except:
-			print("failded.")
+			print("failed.")
 			pass
 	print( "found ", len(slist), "ports.")
 			
@@ -54,13 +53,6 @@ if __name__ == "__main__":
 			else:
 				print(str(val), end='')
 		print(']',end='')
-
-			
-
-	# for s in slist:
-		# buf = create_misc_msg(0x50, 0xC2) # cmd to enable upsampling of the thumb rotator
-		# print ("writing thumb filter message on com port: ", s)
-		# s.write(buf)
 
 	fpos = [15., 15., 15., 15., 15., -15.]																									
 	try:
