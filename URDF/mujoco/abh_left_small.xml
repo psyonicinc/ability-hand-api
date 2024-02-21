@@ -95,7 +95,8 @@
 	<position name="middle_actuator" joint="middle_q1"/>
 	<position name="ring_actuator" joint="ring_q1"/>
 	<position name="pinky_actuator" joint="pinky_q1"/>
-	<position name="thumbflexor_actuator" joint="thumb_q1"/>
-	<position name="thumbrotator_actuator" joint="thumb_q2"/>
+	<position name="thumbrotator_actuator" joint="thumb_q1"/>
+	<position name="thumbflexor_actuator" joint="thumb_q2"/>
   </actuator>
 </mujoco>
+
