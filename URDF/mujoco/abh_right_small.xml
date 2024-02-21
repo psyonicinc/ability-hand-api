@@ -91,11 +91,12 @@
     </body>
   </worldbody>
   <actuator>
-	<position name="index_actuator" joint="index_q1"/>
-	<position name="middle_actuator" joint="middle_q1"/>
-	<position name="ring_actuator" joint="ring_q1"/>
-	<position name="pinky_actuator" joint="pinky_q1"/>
-	<position name="thumbrotator_actuator" joint="thumb_q1"/>
-	<position name="thumbflexor_actuator" joint="thumb_q2"/>
+    <position name="index_actuator" joint="index_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
+    <position name="middle_actuator" joint="middle_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
+    <position name="ring_actuator" joint="ring_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
+    <position name="pinky_actuator" joint="pinky_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
+    <position name="thumbrotator_actuator" joint="thumb_q1" ctrllimited="true" ctrlrange="-2.0944 0"/>
+    <position name="thumbflexor_actuator" joint="thumb_q2" ctrllimited="true" ctrlrange="0 2.0944"/>
   </actuator>
+
 </mujoco>
