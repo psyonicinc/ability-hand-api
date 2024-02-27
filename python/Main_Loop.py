@@ -56,7 +56,6 @@ class Comm_to_hand:
            data, addr = self.sock.recvfrom(1024)
            Datos = data.decode('utf-8')
            Decoded = eval(Datos)# redundant, but good to keep.
-           Pos = Decoded[0]
            update_graph(Decoded)
            if(Close_Window.is_set()):
                self.sock.close()
@@ -92,8 +91,11 @@ def update_graph(data):
     y_position_buffer[:, :-1] = y_position_buffer[:, 1:]
 
     # Add new data to the end of buffers
-    y_Var1_buffer[:, -1] = y_var1_new
-
+    try:
+        y_Var1_buffer[:, -1] = y_var1_new
+    except:
+        y_Var1_buffer = np.zeros((6, MAX_BUFFER_SIZE))
+    
     y_position_buffer[:, -1] = y_position_new
 
     # Update plots
@@ -103,30 +105,29 @@ def update_graph(data):
     for i in range(6):
         curve_pos[i].setData(x, y_position_buffer[i])
 
-    mode = Req_data.currentText()
-
-    # Split the mode string by "-"
-    parts = mode.split("-")
-    # The last part contains the "Var" information
-    var_info = parts[-1]
-    
     reply_variant = np.bitwise_and(Combobox_Defines.Modes[Req_data.currentText()] , 0x0F) + 1
 
     if(reply_variant == 1 or reply_variant == 2):
         y_touch_new = data[2] 
         y_touch_buffer[:, :-1] = y_touch_buffer[:, 1:]
-        y_touch_buffer[:, -1] = y_touch_new
+        try:
+            y_touch_buffer[:, -1] = y_touch_new
+        except:
+            y_touch_buffer = np.zeros((30, MAX_BUFFER_SIZE))
         for i in range(30):
             curve_touch[i].setData(x, y_touch_buffer[i])
     if(reply_variant == 3):
         y_Var2_new = data[2]  
-        y_Var2_buffer[:, :-1] = y_Var2_new[:, 1:]
-        y_Var2_buffer[:, -1] = y_Var2_new
+        y_Var2_buffer[:, :-1] = y_Var2_buffer[:, 1:]
+        try:
+            y_Var2_buffer[:, -1] = y_Var2_new
+        except:
+            y_Var2_buffer = np.zeros((6, MAX_BUFFER_SIZE))
         for i in range(6):
             curve_touch[i].setData(x, y_Var2_buffer[i])
 
 def Send_INIT_params():
-    timer.start(1) 
+    timer.start(100) 
     Array = []
     Array.append(Combobox_Defines.Comm_Type[Comms.currentText()])
     Array.append(int(Bauds.currentText()))
@@ -248,20 +249,22 @@ def Update_Control_Mode():
             Req_data.addItem(value)
 
 def extract_var():
-    mode = Req_data.currentText()
+    global x,y_position_buffer,y_Var1_buffer,y_Var2_buffer,y_touch_buffer
+    x = np.arange(MAX_BUFFER_SIZE)
+    y_position_buffer = np.zeros((6,MAX_BUFFER_SIZE))
+    y_Var1_buffer = np.zeros((6, MAX_BUFFER_SIZE))
+    y_Var2_buffer = np.zeros((6, MAX_BUFFER_SIZE))
+    y_touch_buffer = np.zeros((30, MAX_BUFFER_SIZE)) # this is set for touch data, if necesary
 
-    # Split the mode string by "-"
-    parts = mode.split("-")
-    # The last part contains the "Var" information
-    var_info = parts[-1]
-    # Return the "Var" part
-    if(var_info == "Var1"):
+    reply_variant = np.bitwise_and(Combobox_Defines.Modes[Req_data.currentText()] , 0x0F) + 1
+
+    if(reply_variant == 1):
         plot2.setTitle("Current")
         plot1.setTitle("Touch")
-    if(var_info == "Var2"):
+    if(reply_variant == 2):
         plot2.setTitle("Velocity")
         plot1.setTitle("Touch")
-    if(var_info == "Var3"):
+    if(reply_variant == 3):
         plot1.setTitle("Current")
         plot2.setTitle("Velocity")        
 

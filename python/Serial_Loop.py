@@ -91,7 +91,7 @@ class AbilityHand:
         barr.append(checksum)
         return barr
 
-    def generateTX(self,positions):
+    def generateTX(self):
         
         txBuf = []
         
@@ -99,16 +99,17 @@ class AbilityHand:
         ## Address in byte 0
         # print(self.hand_address)
         try:
-            txBuf.append((struct.pack('<B',positions[0]))[0])
+            txBuf.append((struct.pack('<B',self.hand_address))[0])
             
             ## Format Header in byte 1
-            txBuf.append((struct.pack('<B',positions[1]))[0])
-            
+            txBuf.append((struct.pack('<B',self.reply_mode))[0])
+            reply_variant = np.bitwise_and(self.reply_mode , 0xF0)
+            if(reply_variant != 0xA0):
             ## Position data for all 6 fingers, scaled to fixed point representation
-            for i in range(0,6):
-                posFixed = int(positions[i+2] * 32767 / 150)
-                txBuf.append((struct.pack('<B',(posFixed & 0xFF)))[0])
-                txBuf.append((struct.pack('<B',(posFixed >> 8) & 0xFF))[0])
+                for i in range(0,6):
+                    posFixed = int(self.CMD[i+2] * 32767 / 150)
+                    txBuf.append((struct.pack('<B',(posFixed & 0xFF)))[0])
+                    txBuf.append((struct.pack('<B',(posFixed >> 8) & 0xFF))[0])
             
             ## calculate checksum
             cksum = 0
@@ -201,7 +202,7 @@ class AbilityHand:
                 # # print(posCmd) 
                 # lastPosCmd = posCmd
                 ## Send Message
-                msg = self.generateTX(self.CMD)
+                msg = self.generateTX()
                 reply_variant = np.bitwise_and(self.CMD[1] , 0x0F) + 1
                 # print(msg)
                 # msg = self.CMD
@@ -232,17 +233,12 @@ class AbilityHand:
                                     bytebuffer = bytes([])
                                     stuff_buffer = np.array([])
                                     num_reads = num_reads + 1
+                                    # print(rI0)
                         
                     self.reset_count = num_writes - num_reads #this global is like an error counter, so we'll do it like this for stuffing method
 
                     prev_posRead = posRead.copy()
                     prev_touchRead = touchRead.copy()
-                    if self.num_lines == 6:
-                        for i in range(0,6):
-                            plotData[i+1] = posRead[i]
-                    elif self.num_lines == 30:
-                        for i in range(0,30):
-                            plotData[i+1] = touchRead[i]
                     
                     self.total_count +=1
                     UDP_Data = []
@@ -257,8 +253,8 @@ class AbilityHand:
                     if(reply_variant == 3):
                         UDP_Data.append(rI)
                         UDP_Data.append(rV) 
+                    # print(UDP_Data)
                     UDP_Data_cleaned = [item.tolist() if isinstance(item, np.ndarray) else item for item in UDP_Data]
-              
                     self.Send_UDP_Data(json.dumps(UDP_Data_cleaned).encode('utf-8'))
                     # yield plotData
                 
@@ -295,15 +291,17 @@ class AbilityHand:
                                     for i in range(0, 6):
                                         rawData = struct.unpack('<h', data[i*4:2+(i*4)])[0]
                                         posRead[i] = rawData * 150 / 32767
-                                        ## Bad data, reset serial device - probably framing error    
+                                        ## Bad data, reset serial device - probably framing error
                                         if posRead[i] > 150:
                                             needReset = True
-                                    if(reply_variant == 1 or reply_variant ==3):
-                                        Var1[i] = rawData *3000/32767
+                                    for i in range(0, 6):
+                                        rawData = struct.unpack('<h', data[2+(i*4):4+(i*4)])[0]
+                                        if(reply_variant == 1 or reply_variant ==3):
+                                            Var1[i] = rawData *3000/32767
                                         if(reply_variant == 2):
                                             Var1[i] = rawData /4
                                         ## Bad data, reset serial device - probably framing error
-                                        if Var1[i] > 150:
+                                        if Var1[i] > 2050:
                                             needReset = True
                                     ## Extract Touch Data if Available
                                     if replyLen == 71:
@@ -321,7 +319,7 @@ class AbilityHand:
                                             rawData = struct.unpack('<h', data[24+i*4:26+i*4])[0]
                                             Var2[i] = rawData 
                                             ## Bad data, reset serial device - probably framing error
-                                            if Var2[i] > 150:
+                                            if Var2[i] > 2050:
                                                 needReset = True
                                                 
                             else:
