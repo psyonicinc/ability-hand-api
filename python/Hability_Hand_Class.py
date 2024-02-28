@@ -115,24 +115,24 @@ class Hability_Hand_CLASS:
         barr.append(chksum)
         return barr
 
-    # def generateTX(self,hand_address,reply_mode, positions):
-    #     txBuf = []
+    def generateTX(self,hand_address,reply_mode, positions):
+        txBuf = []
 
-    #     txBuf.append((struct.pack('<B',hand_address))[0])
-    #     txBuf.append((struct.pack('<B',reply_mode))[0])
+        txBuf.append((struct.pack('<B',hand_address))[0])
+        txBuf.append((struct.pack('<B',reply_mode))[0])
 
-    #     for i in range(0,6):
-    #         posFixed = int(positions[i] * 32767 / 150)
-    #         txBuf.append((struct.pack('<B',(posFixed & 0xFF)))[0])
-    #         txBuf.append((struct.pack('<B',(posFixed >> 8) & 0xFF))[0])
+        for i in range(0,6):
+            posFixed = int(positions[i] * 32767 / 150)
+            txBuf.append((struct.pack('<B',(posFixed & 0xFF)))[0])
+            txBuf.append((struct.pack('<B',(posFixed >> 8) & 0xFF))[0])
 
-    #     cksum = 0
-    #     for b in txBuf:
-    #         cksum = cksum + b
-    #     cksum = (-cksum) & 0xFF
-    #     txBuf.append((struct.pack('<B', cksum))[0])
+        cksum = 0
+        for b in txBuf:
+            cksum = cksum + b
+        cksum = (-cksum) & 0xFF
+        txBuf.append((struct.pack('<B', cksum))[0])
 
-    #     return txBuf
+        return txBuf
 
     def calculatePositions(self, currentPositions, lastCommand):
         moveUp = False
@@ -435,28 +435,27 @@ class Hability_Hand_CLASS:
         parser.add_argument('-a', '--address', type=int, help='Hand Address', default=0x50)
         parser.add_argument('-w', '--width', type=int, help='X width of Plot', default=500)
         parser.add_argument('--position', help="Plot Position Data", action='store_true')
-        # parser.add_argument('--touch', help="Plot Touch Sensor Data", action='store_true')
-        # parser.add_argument('--stuff', help="Enable forward and reverse byte stuffing for much improved reliability and bandwidth. Ensure We46 and We47 on target ability hand are enabled.",action='store_true')
+        parser.add_argument('--touch', help="Plot Touch Sensor Data", action='store_true')
+        parser.add_argument('--stuff', help="Enable forward and reverse byte stuffing for much improved reliability and bandwidth. Ensure We46 and We47 on target ability hand are enabled.",action='store_true')
         parser.add_argument('--rs485',help="flag to indicate if an RS485 dongle is used",action='store_true')
         args = parser.parse_args()
 
-        # self.stuff_data = args.stuff
+        self.stuff_data = args.stuff
         if(self.stuff_data == False):
             self.printStuffingWarning()
 
         self.isRS485 = args.rs485
-        self.isRS485 = True
         pos = False
-        touch = True
+        touch = False
 
-        # if args.position:
-        #     print("Plotting Position Data")
-        #     pos = True
-        # elif args.touch:
-        #     print("Plotting Touch Sensor Data")
-        #     touch = True
-        # else:
-        #     sys.exit("Error: --position or --touch argument required")
+        if args.position:
+            print("Plotting Position Data")
+            pos = True
+        elif args.touch:
+            print("Plotting Touch Sensor Data")
+            touch = True
+        else:
+            sys.exit("Error: --position or --touch argument required")
         
         print("Baud Rate: " + str(args.baud))
         print("Hand Address: " + str(args.address))

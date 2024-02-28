@@ -127,7 +127,7 @@ def update_graph(data):
             curve_touch[i].setData(x, y_Var2_buffer[i])
 
 def Send_INIT_params():
-    timer.start(100) 
+    timer.start(1) 
     Array = []
     Array.append(Combobox_Defines.Comm_Type[Comms.currentText()])
     Array.append(int(Bauds.currentText()))
