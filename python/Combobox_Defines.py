@@ -6,7 +6,5 @@ ByteStuff = {"Disabled":0, "Enabled":1}
 Modes = {"Position-Var1":0x10,
          "Position-Var2":0x11,
          "Pasive-Var1":0xA0,
-         "Pasive-Var2":0xA1,
-         "Pasive-Var3":0xA2,
-         "Position-Var3":0x12
+         "Pasive-Var2":0xA1
         }

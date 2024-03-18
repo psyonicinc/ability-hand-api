@@ -53,6 +53,7 @@ class Comm_to_hand:
     def UDP_Data_receiver(self):
        global Pos 
        while True:
+           
            data, addr = self.sock.recvfrom(1024)
            Datos = data.decode('utf-8')
            Decoded = eval(Datos)# redundant, but good to keep.
@@ -153,7 +154,10 @@ def Exit_function():
     Checksum = (sum(Array) % 256)
     Checksum = (-Checksum) & 0xFF
     Array.append(Checksum) 
-    CLASS_UDP.Send_UDP_Data(json.dumps(Array).encode('utf-8')) 
+    try:
+        CLASS_UDP.Send_UDP_Data(json.dumps(Array).encode('utf-8')) 
+    except:
+        print("No UDP connection Detected")
     Close_Window.set()
     print("adios")
 
@@ -177,20 +181,21 @@ def generateTX(hand_address,reply_mode, positions):
         return txBuf
 ## Generate Message to send to hand from array of positions (floating point)
 def calculate_positions(current_positions, last_command):
-    isFingerWave = True
+    global isFingerWave
+    
     moveUp = False
     moveDown = False
     
-    # if keyboard.is_pressed('esc'):
-    #     isFingerWave = False
-    # elif keyboard.is_pressed('up') or keyboard.is_pressed('w'):
-    #     isFingerWave = False
-    #     moveUp = True
-    # elif keyboard.is_pressed('down') or keyboard.is_pressed('s'):
-    #     isFingerWave = False
-    #     moveDown = True
-    # elif keyboard.is_pressed('space'):
-    #     isFingerWave = True
+    if keyboard.is_pressed('esc'):
+        isFingerWave = False
+    elif keyboard.is_pressed('up') or keyboard.is_pressed('w'):
+        isFingerWave = False
+        moveUp = True
+    elif keyboard.is_pressed('down') or keyboard.is_pressed('s'):
+        isFingerWave = False
+        moveDown = True
+    elif keyboard.is_pressed('space'):
+        isFingerWave = True
     
     positions = [0.0] * 6
     
@@ -229,6 +234,7 @@ def Send_Hand_Data():
     Array.append(Combobox_Defines.Modes[Req_data.currentText()])
     for i in range(6):
             Array.append(int(LastCommand[i]))
+            Pos[i] = LastCommand[i]
     Checksum = (sum(Array) % 256)
     Checksum = (-Checksum) & 0xFF
     Array.append(Checksum)
