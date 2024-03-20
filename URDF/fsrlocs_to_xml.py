@@ -1,18 +1,38 @@
 import numpy as np
 
-locs = np.array([
-    [30.95037374e-3, -15.54446733e-3, 0.00000000],        #toptip
-    [25.10622815e-3, -11.57958764e-3, 0.00000000],        #bottomtip
-    [27.02797318e-3, -14.95400505e-3, 4.00000000e-3],        #left top
-    [12.84956345e-3, -9.67364605e-3, 4.00000000e-3],        #left bottom
-    [27.02797318e-3, -14.95400505e-3, -4.00000000e-3],        #right top 
-    [27.02797318e-3, -14.95400505e-3, -4.00000000e-3],        #right bottom
-])
 
-normref_toptip = np.array([30.00616438e-3,		-13.25623041e-3, 	3.25000000e-3])
-normref_bottomtip = np.array([29.33151346e-3,	-12.66935683e-3, 	3.25000000e-3])
-normref_left = np.array([0,0,4])
-normref_right = np.array([0,0,-4])
+sizetype = "small"
+thumbtype = "left"
+
+if(sizetype == "small"):
+    locs = np.array([
+        [30.95037374e-3, -15.54446733e-3, 0.00000000],        #toptip
+        [25.10622815e-3, -11.57958764e-3, 0.00000000],        #bottomtip
+        [27.02797318e-3, -14.95400505e-3, 4.00000000e-3],        #left top
+        [12.84956345e-3, -9.67364605e-3, 4.00000000e-3],        #left bottom
+        [27.02797318e-3, -14.95400505e-3, -4.00000000e-3],        #right top 
+        [27.02797318e-3, -14.95400505e-3, -4.00000000e-3],        #right bottom
+    ])
+    normref_toptip = np.array([30.00616438e-3,		-13.25623041e-3, 	3.25000000e-3])
+    normref_bottomtip = np.array([29.33151346e-3,	-12.66935683e-3, 	3.25000000e-3])
+    normref_left = np.array([0,0,4])
+    normref_right = np.array([0,0,-4])
+
+elif(sizetype == "large"):
+    locs = np.array([
+        [36.78129329e-3, -19.66347638e-3, 0.00000000],        #toptip
+        [30.87755457e-3, -15.31625126e-3, 0.00000000],        #bottomtip
+        [31.18106868e-3, -17.75288355e-3, 4.00000000e-3],        #left top
+        [16.80497397e-3, -13.08242585e-3, 4.00000000e-3],        #left bottom
+        [31.18106868e-3, -17.75288355e-3, -4.00000000e-3],        #right top
+        [16.80497397e-3, -13.08242585e-3, -4.00000000e-3],        #right bottom
+    ])
+    normref_toptip = np.array([35.41686795e-3,		-16.85118633e-3, 	3.25000000e-3])
+    normref_bottomtip = np.array([34.76690904e-3,	-16.31937847e-3, 	3.25000000e-3])
+    normref_left = np.array([0,0,4])
+    normref_right = np.array([0,0,-4])
+
+
 locreflist = np.array([
     normref_toptip,
     normref_bottomtip,
@@ -32,10 +52,6 @@ def get_rpy(R):
 	roll = np.arctan2(R[2][1],R[2][2])
 	rpy = np.array([roll,pitch,yaw])
 	return rpy
-
-
-
-
 
 """
 	<sensor name="fsr1" >
