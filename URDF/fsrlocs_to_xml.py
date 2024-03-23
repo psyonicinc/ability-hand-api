@@ -1,8 +1,8 @@
 import numpy as np
 
 
-sizetype = "small"
-thumbtype = "left"
+sizetype = "large"
+thumbtype = "right"
 
 if(sizetype == "small"):
     locs = np.array([
@@ -61,8 +61,8 @@ def get_rpy(R):
 """
 name=["index", "middle", "ring", "pinky"]
 for idx in range(0,(30-6)):
-    blk = "<sensor name=\"fsr"+str(idx+1)+"\">\r\n"
-    blk = blk+"    <parent link = \""+name[int(idx/6)]+"_L2\"/>\r\n"
+    blk = "<sensor name=\"fsr"+str(idx+1)+"\">\n"
+    blk = blk+"    <parent link = \""+name[int(idx/6)]+"_L2\"/>\n"
     
     locnorm = (locreflist[idx % 6] - locs[idx % 6])
     locnorm = locnorm / np.sqrt(locnorm.dot(locnorm))
@@ -71,8 +71,8 @@ for idx in range(0,(30-6)):
     yn = np.cross(zn, zbasis)
     xn = np.cross(yn, zn)
     R = np.array([xn,yn,zn]).reshape((3,3))
-    blk = blk+"    <origin xyz = \""+str(locs[idx % 6])+"\" rpy = \""+str(get_rpy(R))+"\"/>\r\n"
-    blk = blk+"</sensor>\r\n"
+    blk = blk+"    <origin xyz = \""+str(locs[idx % 6])+"\" rpy = \""+str(get_rpy(R))+"\"/>\n"
+    blk = blk+"</sensor>\n"
     print(blk)
 
 
@@ -93,7 +93,7 @@ thumblocs = np.array([
     [49.435e-3, 19.437e-3, 10.970e-3],        #right top 
     [38.158e-3, 13.997e-3, 11.211e-3],        #right bottom
 ])
-if(thumbtype == 'left):
+if(thumbtype == "left"):
 	for v in thumblocs:
 		v[2] = -v[2]
 thumb_normref_toptip = np.array([0,0,1])
@@ -110,8 +110,8 @@ thumblocreflist = np.array([
 ])
 
 for idx in range(30-6, 30):
-    blk = "<sensor name=\"fsr"+str(idx+1)+"\">\r\n"
-    blk = blk+"    <parent link = \"thumb_L2\"/>\r\n"
+    blk = "<sensor name=\"fsr"+str(idx+1)+"\">\n"
+    blk = blk+"    <parent link = \"thumb_L2\"/>\n"
     locnorm = thumblocreflist[idx % 6] - thumblocs[idx % 6]
     locnorm = locnorm / np.sqrt(locnorm.dot(locnorm))
     zbasis = np.array([0,0,1])
@@ -119,6 +119,6 @@ for idx in range(30-6, 30):
     yn = np.cross(zn, zbasis)
     xn = np.cross(yn, zn)
     R = np.array([xn,yn,zn]).reshape((3,3))
-    blk = blk+"    <origin xyz = \""+str(thumblocs[idx % 6])+"\" rpy = \""+str(get_rpy(R))+"\"/>\r\n"
-    blk = blk+"</sensor>\r\n"
+    blk = blk+"    <origin xyz = \""+str(thumblocs[idx % 6])+"\" rpy = \""+str(get_rpy(R))+"\"/>\n"
+    blk = blk+"</sensor>\n"
     print(blk)
