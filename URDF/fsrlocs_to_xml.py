@@ -82,18 +82,24 @@ del normref_bottomtip
 del normref_left
 del normref_right
 
+
+
+
 thumblocs = np.array([
-    [1,2,3],        #toptip
-    [4,5,6],        #bottomtip
-    [7,8,9],        #left top
-    [10,11,12],        #left bottom
-    [13,14,15],        #right top 
-    [16,17,18],        #right bottom
+    [55.422e-3, 23.513e-3, 5.055e-3],        #toptip
+    [47.909e-3,	23.120e-3,	5.728e-3],        #bottomtip
+    [48.227e-3, 22.352e-3, -0.805e-3],        #left top
+    [36.868e-3, 17.111e-3, -1.369e-3],        #left bottom
+    [49.435e-3, 19.437e-3, 10.970e-3],        #right top 
+    [38.158e-3, 13.997e-3, 11.211e-3],        #right bottom
 ])
-thumb_normref_toptip = np.array([0,1,0])
-thumb_normref_bottomtip = np.array([0,1,0])
-thumb_normref_left = np.array([0,1,0])
-thumb_normref_right = np.array([0,1,0])
+if(thumbtype == 'left):
+	for v in thumblocs:
+		v[2] = -v[2]
+thumb_normref_toptip = np.array([0,0,1])
+thumb_normref_bottomtip = np.array([0,0,1])
+thumb_normref_left = np.array([36.868e-3, 17.111e-3, -1.369e-3])
+thumb_normref_right = np.array([38.158e-3, 13.997e-3, 11.211e-3])
 thumblocreflist = np.array([
     thumb_normref_toptip,
     thumb_normref_bottomtip,
