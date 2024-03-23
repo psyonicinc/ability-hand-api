@@ -330,4 +330,277 @@
 		<child link = "thumb_anchor"/>
 		<origin rpy = "0 0 0" xyz = "52.00122724e-3 28.00869333e-3 6.98483578e-3"/>
 	</joint>
+
+	<sensor name="fsr1">
+
+		<parent link = "index_L2"/>
+
+		<origin xyz = "[ 0.03095037 -0.01554447  0.        ]" rpy = "[-1.57079633  1.17944437 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr2">
+
+		<parent link = "index_L2"/>
+
+		<origin xyz = "[ 0.02510623 -0.01157959  0.        ]" rpy = "[ 1.57079633 -0.25241514  1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr3">
+
+		<parent link = "index_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401  0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr4">
+
+		<parent link = "index_L2"/>
+
+		<origin xyz = "[ 0.01284956 -0.00967365  0.004     ]" rpy = "[-1.57079633  0.64531527 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr5">
+
+		<parent link = "index_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr6">
+
+		<parent link = "index_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr7">
+
+		<parent link = "middle_L2"/>
+
+		<origin xyz = "[ 0.03095037 -0.01554447  0.        ]" rpy = "[-1.57079633  1.17944437 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr8">
+
+		<parent link = "middle_L2"/>
+
+		<origin xyz = "[ 0.02510623 -0.01157959  0.        ]" rpy = "[ 1.57079633 -0.25241514  1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr9">
+
+		<parent link = "middle_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401  0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr10">
+
+		<parent link = "middle_L2"/>
+
+		<origin xyz = "[ 0.01284956 -0.00967365  0.004     ]" rpy = "[-1.57079633  0.64531527 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr11">
+
+		<parent link = "middle_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr12">
+
+		<parent link = "middle_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr13">
+
+		<parent link = "ring_L2"/>
+
+		<origin xyz = "[ 0.03095037 -0.01554447  0.        ]" rpy = "[-1.57079633  1.17944437 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr14">
+
+		<parent link = "ring_L2"/>
+
+		<origin xyz = "[ 0.02510623 -0.01157959  0.        ]" rpy = "[ 1.57079633 -0.25241514  1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr15">
+
+		<parent link = "ring_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401  0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr16">
+
+		<parent link = "ring_L2"/>
+
+		<origin xyz = "[ 0.01284956 -0.00967365  0.004     ]" rpy = "[-1.57079633  0.64531527 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr17">
+
+		<parent link = "ring_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr18">
+
+		<parent link = "ring_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr19">
+
+		<parent link = "pinky_L2"/>
+
+		<origin xyz = "[ 0.03095037 -0.01554447  0.        ]" rpy = "[-1.57079633  1.17944437 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr20">
+
+		<parent link = "pinky_L2"/>
+
+		<origin xyz = "[ 0.02510623 -0.01157959  0.        ]" rpy = "[ 1.57079633 -0.25241514  1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr21">
+
+		<parent link = "pinky_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401  0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr22">
+
+		<parent link = "pinky_L2"/>
+
+		<origin xyz = "[ 0.01284956 -0.00967365  0.004     ]" rpy = "[-1.57079633  0.64531527 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr23">
+
+		<parent link = "pinky_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr24">
+
+		<parent link = "pinky_L2"/>
+
+		<origin xyz = "[ 0.02702797 -0.01495401 -0.004     ]" rpy = "[-1.57079633  0.50535705 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr25">
+
+		<parent link = "thumb_L2"/>
+
+		<origin xyz = "[0.055422 0.023513 0.005055]" rpy = "[-1.57079633 -0.40123853 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr26">
+
+		<parent link = "thumb_L2"/>
+
+		<origin xyz = "[0.047909 0.02312  0.005728]" rpy = "[-1.57079633 -0.44961601 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr27">
+
+		<parent link = "thumb_L2"/>
+
+		<origin xyz = "[ 0.048227  0.022352 -0.000805]" rpy = "[-1.57079633 -0.43229053 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr28">
+
+		<parent link = "thumb_L2"/>
+
+		<origin xyz = "[ 0.036868  0.017111 -0.001369]" rpy = "[nan nan nan]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr29">
+
+		<parent link = "thumb_L2"/>
+
+		<origin xyz = "[0.049435 0.019437 0.01097 ]" rpy = "[-1.57079633 -0.44946695 -1.57079633]"/>
+
+	</sensor>
+
+
+	<sensor name="fsr30">
+
+		<parent link = "thumb_L2"/>
+
+		<origin xyz = "[0.038158 0.013997 0.011211]" rpy = "[nan nan nan]"/>
+
+	</sensor>
+
+
+
+
 </robot>
