@@ -255,7 +255,7 @@ class AbilityHand:
                         UDP_Data.append(rV) 
                     # print(UDP_Data)
                     UDP_Data_cleaned = [item.tolist() if isinstance(item, np.ndarray) else item for item in UDP_Data]
-                    self.Send_UDP_Data(json.dumps(UDP_Data_cleaned).encode('utf-8'))
+                    self.Send_UDP_Data(json.dumps(UDP_Data_cleaned).encode('utf-8'))            #TODO: change json.dumps to struct.pack and unpack for faster transmission
                     # yield plotData
                 
                 else: #old/original, unstuffed protocol. Terrible performance on traditional operating systems
