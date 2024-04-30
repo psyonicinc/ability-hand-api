@@ -14,7 +14,7 @@ try:
 		abh_api_client.tPos[5] = -abh_api_client.tPos[5]
 
 		abh_api_client.writePos()
-		print(abh_api_client.rPos)
+		print(abh_api_client.rCurrent*abh_api_client.currentConversionRatio)
 
 		time.sleep(0.01)
 
