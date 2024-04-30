@@ -8,7 +8,7 @@ from serial.tools import list_ports
 
 class SerialForwarder:
     def __init__(self, receiver_port=5006, baudrate=460800, destination_addr=("127.0.0.1", 5010), hardload_destination=False):
-        self.baudrate = 460800
+        self.baudrate = baudrate
         self.recv_port = receiver_port
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_sock.settimeout(0.0)
