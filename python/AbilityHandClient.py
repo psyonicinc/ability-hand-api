@@ -5,12 +5,12 @@ import socket
 
 
 class AbilityHandClient:
-    def __init__(self, hand_addr):
+    def __init__(self, hand_addr=0x50):
         self.serial_address = hand_addr
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.soc.settimeout(0.0)
         
-        self.dest_addr = ('127.0.0.1',5006)
+        self.dest_addr = ('127.0.0.1',5006) #default, change to target external machine running serial server node
 
         self.tPos = np.array([15,15,15,15,15,-15])
         self.tCurrent = np.array([0,0,0,0,0,0])
@@ -47,7 +47,9 @@ class AbilityHandClient:
         self.soc.sendto(stuffed_payload, self.dest_addr)
 
 
-
+    def __del__(self):
+        self.soc.close()
+    
     def read(self):
         try:
             pkt, src = self.soc.recvfrom(512)

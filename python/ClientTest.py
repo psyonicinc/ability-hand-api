@@ -1,34 +1,24 @@
 import socket
 import numpy as np
-from PPP_stuffing import *
-from abh_api_core import *
+from AbilityHandClient import *
 import time
 
-
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-client_socket.settimeout(0.0)
-fpos=np.array([15.,15.,15.,15.,15.,-15.])
+abh_api_client = AbilityHandClient()
 print("beginning test")
+
 try:
 	while(True):
-		for i in range(0, len(fpos)):
+		for i in range(0, len(abh_api_client.tPos)):
 			ft = time.time()*3 + i*(2*np.pi)/12
-			fpos[i] = (.5*np.sin(ft)+.5)*45+15
-		fpos[5] = -fpos[5]
-		
-		msg = farr_to_abh_frame(0x50, fpos*32767/160, 0x10 + 1)
-		stuffed_payload = PPP_stuff(bytearray(msg))
+			abh_api_client.tPos[i] = (.5*np.sin(ft)+.5)*45+15
+		abh_api_client.tPos[5] = -abh_api_client.tPos[5]
 
-		client_socket.sendto(stuffed_payload, ('127.0.0.1', 5006))
-		try:
-			pkt, src = client_socket.recvfrom(512)
-			rPos,rI,rV,rFSR = parse_hand_data(pkt)
-			print(rPos)
-		except BlockingIOError:
-			pass
+		abh_api_client.writePos()
+		abh_api_client.read()
 
+		print(abh_api_client.rPos)
 
 		time.sleep(0.01)
 except KeyboardInterrupt:
 	print("stopping")
-	client_socket.close()
+	abh_api_client.soc.close()
