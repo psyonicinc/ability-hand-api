@@ -12,9 +12,9 @@ class AbilityHandClient:
         
         self.dest_addr = ('127.0.0.1',5006) #default, change to target external machine running serial server node
 
-        self.tPos = np.array([15,15,15,15,15,-15])
+        self.tPos = np.array([15.,15.,15.,15.,15.,-15.])
         self.tCurrent = np.array([0,0,0,0,0,0])
-        self.tVelocity = np.array([0,0,0,0,0,0])
+        self.tVelocity = np.array([0.,0.,0.,0.,0.,0.])
         self.tVoltageDuty = np.array([0,0,0,0,0,0])     #-1 to 1
 
         self.rPos = np.array([])
@@ -26,31 +26,8 @@ class AbilityHandClient:
 
         self.reply_mode = 0
 
-    def writePos(self):
-        msg = farr_to_abh_frame(self.serial_address, self.tPos*32767/150, 0x10 + self.reply_mode)
-        stuffed_payload = PPP_stuff(bytearray(msg))
-        self.soc.sendto(stuffed_payload, self.dest_addr)
 
-    def writeVelocity(self):
-        msg = farr_to_abh_frame(self.serial_address, self.tVelocity*32767/3000, 0x20 + self.reply_mode)
-        stuffed_payload = PPP_stuff(bytearray(msg))
-        self.soc.sendto(stuffed_payload, self.dest_addr)
-
-    def writeCurrent(self):
-        msg = farr_to_abh_frame(self.serial_address, self.tCurrent / self.currentConversionRatio, 0x30 + self.reply_mode)
-        stuffed_payload = PPP_stuff(bytearray(msg))
-        self.soc.sendto(stuffed_payload, self.dest_addr)
-
-    def writeVoltageDuty(self):
-        msg = farr_to_abh_frame(self.serial_address, self.tVoltageDuty*3546, 0x40 + self.reply_mode)
-        stuffed_payload = PPP_stuff(bytearray(msg))
-        self.soc.sendto(stuffed_payload, self.dest_addr)
-
-
-    def __del__(self):
-        self.soc.close()
-    
-    def read(self):
+    def __read(self):
         try:
             pkt, src = self.soc.recvfrom(512)
             self.rPos, self.rCurrent, self.rVelocity, self.rFsrs = parse_hand_data(pkt)
@@ -58,4 +35,33 @@ class AbilityHandClient:
             pass
         except ConnectionResetError:
                 pass
+
+    def writePos(self):
+        msg = farr_to_abh_frame(self.serial_address, self.tPos*32767/150, 0x10 + self.reply_mode)
+        stuffed_payload = PPP_stuff(bytearray(msg))
+        self.soc.sendto(stuffed_payload, self.dest_addr)
+        self.__read()
+
+    def writeVelocity(self):
+        msg = farr_to_abh_frame(self.serial_address, self.tVelocity*32767/3000, 0x20 + self.reply_mode)
+        stuffed_payload = PPP_stuff(bytearray(msg))
+        self.soc.sendto(stuffed_payload, self.dest_addr)
+        self.__read()
+
+    def writeCurrent(self):
+        msg = farr_to_abh_frame(self.serial_address, self.tCurrent / self.currentConversionRatio, 0x30 + self.reply_mode)
+        stuffed_payload = PPP_stuff(bytearray(msg))
+        self.soc.sendto(stuffed_payload, self.dest_addr)
+        self.__read()
+
+    def writeVoltageDuty(self):
+        msg = farr_to_abh_frame(self.serial_address, self.tVoltageDuty*3546, 0x40 + self.reply_mode)
+        stuffed_payload = PPP_stuff(bytearray(msg))
+        self.soc.sendto(stuffed_payload, self.dest_addr)
+        self.__read()
+
+
+    def __del__(self):
+        self.soc.close()
+    
 

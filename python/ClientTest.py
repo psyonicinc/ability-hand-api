@@ -7,6 +7,7 @@ abh_api_client = AbilityHandClient()
 print("beginning test")
 
 try:
+	vd = np.array([0,0,0,0,0,0])
 	while(True):
 		for i in range(0, len(abh_api_client.tPos)):
 			ft = time.time()*3 + i*(2*np.pi)/12
@@ -14,11 +15,10 @@ try:
 		abh_api_client.tPos[5] = -abh_api_client.tPos[5]
 
 		abh_api_client.writePos()
-		abh_api_client.read()
-
 		print(abh_api_client.rPos)
 
-		time.sleep(0.01)
+		# time.sleep(1.0)
+
 except KeyboardInterrupt:
 	print("stopping")
 	abh_api_client.soc.close()
