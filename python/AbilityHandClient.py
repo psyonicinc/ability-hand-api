@@ -26,11 +26,12 @@ class AbilityHandClient:
 
         self.reply_mode = 0
 
+        self.read_pkt = bytearray([])
 
     def __read(self):
         try:
-            pkt, src = self.soc.recvfrom(512)
-            self.rPos, self.rCurrent, self.rVelocity, self.rFsrs = parse_hand_data(pkt)
+            self.read_pkt, src = self.soc.recvfrom(512)
+            self.rPos, self.rCurrent, self.rVelocity, self.rFsrs = parse_hand_data(self.read_pkt)
         except BlockingIOError:
             pass
         except ConnectionResetError:
