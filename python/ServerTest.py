@@ -1,4 +1,7 @@
 from SerialForward import *
 
 ser = SerialForwarder()
-ser.run()
+try:
+    ser.run()
+except KeyboardInterrupt:
+    print("done.")

@@ -7,6 +7,8 @@ import time
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client_socket.settimeout(0.0)
+client_socket.bind(('0.0.0.0', 5105))
+
 fpos=[15.,15.,15.,15.,15.,-15.]
 print("beginning test")
 try:
@@ -20,9 +22,15 @@ try:
 		stuffed_payload = PPP_stuff(bytearray(msg))
 
 		client_socket.sendto(stuffed_payload, ('127.0.0.1', 5006))
+		try:
+			pkt, src = client_socket.recvfrom(512)
+			rPos,rI,rV,rFSR = parse_hand_data(pkt)
+			print(rPos[0])
+		except BlockingIOError:
+			pass
+
 
 		time.sleep(0.01)
 except KeyboardInterrupt:
 	print("stopping")
 	client_socket.close()
-	

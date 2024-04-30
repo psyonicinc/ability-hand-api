@@ -44,7 +44,7 @@ class SerialForwarder:
         self.server_sock.close()
         self.ser.close()
 
-
+    
     def run(self):
         stuff_buffer = np.array([])
         while(True):
@@ -55,11 +55,13 @@ class SerialForwarder:
                     self.destination_addr = source
             except BlockingIOError:
                 pass
-
+            except ConnectionResetError:
+                pass
+            
             nb = self.ser.read(512)
             if(len(nb) != 0):
                 npbytes = np.frombuffer(nb, np.uint8)
                 for b in npbytes:
                     payload, stuff_buffer = unstuff_PPP_stream(b, stuff_buffer)
                     if(len(payload)!=0):
-                        self.server_sock.sendto(payload)
+                        self.server_sock.sendto(payload, self.destination_addr)
