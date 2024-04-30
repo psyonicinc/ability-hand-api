@@ -106,6 +106,29 @@ def farr_to_dposition(addr, farr, tx_option):
 
 	return barr
 
+
+
+"""
+	Generic write frame formatting/packing function for ability hand. makes a lot of the stuff in here redundant
+"""
+def farr_to_abh_frame(addr, farr, format_header):
+	barr = []
+	barr.append( (struct.pack('<B', addr))[0] )	#device ID
+	barr.append( (struct.pack('<B',format_header))[0] )	#control mode
+
+	for fp in farr:
+		lim = 32767
+		fp = max(min(fp,lim),-lim)
+		b2 = struct.pack('<h', int(fp))
+		for b in b2:
+			barr.append(b)
+
+	# last step: calculate the checksum and load it into the final byte
+	barr.append(compute_checksum(barr))
+
+	return barr
+
+
 """
 	Test for voltage control mode
 """

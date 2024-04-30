@@ -1,4 +1,4 @@
-from SerialForward import *
+from SerialForwarder import *
 
 ser = SerialForwarder()
 try:

@@ -7,9 +7,7 @@ import time
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client_socket.settimeout(0.0)
-client_socket.bind(('0.0.0.0', 5105))
-
-fpos=[15.,15.,15.,15.,15.,-15.]
+fpos=np.array([15.,15.,15.,15.,15.,-15.])
 print("beginning test")
 try:
 	while(True):
@@ -18,14 +16,14 @@ try:
 			fpos[i] = (.5*np.sin(ft)+.5)*45+15
 		fpos[5] = -fpos[5]
 		
-		msg = farr_to_dposition(0x50, fpos, 1)
+		msg = farr_to_abh_frame(0x50, fpos*32767/160, 0x10 + 1)
 		stuffed_payload = PPP_stuff(bytearray(msg))
 
 		client_socket.sendto(stuffed_payload, ('127.0.0.1', 5006))
 		try:
 			pkt, src = client_socket.recvfrom(512)
 			rPos,rI,rV,rFSR = parse_hand_data(pkt)
-			print(rPos[0])
+			print(rPos)
 		except BlockingIOError:
 			pass
 

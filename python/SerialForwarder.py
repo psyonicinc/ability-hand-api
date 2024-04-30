@@ -1,6 +1,5 @@
 import numpy as np
 from PPP_stuffing import *
-from abh_api_core import *
 import socket
 import serial
 from serial.tools import list_ports
