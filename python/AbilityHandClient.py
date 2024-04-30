@@ -12,15 +12,15 @@ class AbilityHandClient:
         
         self.dest_addr = ('127.0.0.1',5006) #default, change to target external machine running serial server node
 
-        self.tPos = np.array([15.,15.,15.,15.,15.,-15.])
-        self.tCurrent = np.array([0,0,0,0,0,0])
-        self.tVelocity = np.array([0.,0.,0.,0.,0.,0.])
-        self.tVoltageDuty = np.array([0,0,0,0,0,0])     #-1 to 1
+        self.tPos = np.array([15.,15.,15.,15.,15.,-15.],dtype=np.float32)
+        self.tCurrent = np.array([0,0,0,0,0,0],dtype=np.float32)
+        self.tVelocity = np.array([0,0,0,0,0,0],dtype=np.float32)
+        self.tVoltageDuty = np.array([0,0,0,0,0,0],dtype=np.float32)     #-1 to 1
 
-        self.rPos = np.array([])
-        self.rCurrent = np.array([])
-        self.rVelocity = np.array([])
-        self.rFsrs = np.array([])
+        self.rPos = np.array([],dtype=np.float64)
+        self.rCurrent = np.array([],dtype=np.float64)
+        self.rVelocity = np.array([],dtype=np.float64)
+        self.rFsrs = np.array([],dtype=np.float64)
 
         self.currentConversionRatio = 3300/(5*100*4096)
 
