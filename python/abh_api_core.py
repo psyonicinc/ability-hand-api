@@ -1,17 +1,6 @@
 import struct
 import numpy as np
 
-def udp_pkt(farr):
-	barr = []
-	for fp in farr:
-		b4 = struct.pack('<f', fp)
-		for b in b4:
-			barr.append(b)
-	b4 = struct.pack('<L',3000)
-	for b in b4:
-		barr.append(b)
-	return barr
-
 """
 """
 def compute_checksum(barr):
@@ -34,80 +23,6 @@ def send_grip_cmd(addr, cmd, speed):
 	
 	return barr
 
-
-"""
-	For V10, conv ratio = 1/mdrv_iq_conv = 620.606060606
-"""
-def current_to_barr(addr, currents, conv_ratio):
-	
-	#prepare header
-	barr = []
-	barr.append( (struct.pack('<B', addr))[0] )
-	barr.append( (struct.pack('<B', 0x30))[0] )
-	
-	#parse message contents
-	for amps in currents:
-		vf = amps*conv_ratio
-		vi = int(vf)
-		b2 = struct.pack('<h', vi)
-		for b in b2:
-			barr.append(b)
-	
-	#prepare checksum
-	barr.append(compute_checksum(barr))	
-	
-	return barr
-
-
-
-"""
-	Sends the array farr (which should have only 6 elements, or the hand won't do anything)
-	Byte positions:
-		0th: 0x50 
-		1st: AD (control mode)
-		payload: farr as the payload (4 bytes per value),
-		last: checksum
-	Must be 27 total bytes for the hand to do anything in response.
-"""
-def farr_to_barr(addr, farr):
-	barr = []
-	barr.append( (struct.pack('<B', addr))[0] )	#device ID
-	barr.append( (struct.pack('<B',0xAD))[0] )	#control mode
-	#following block of code converts fpos into a floating point byte array and 
-	#loads it into barr bytewise
-	for fp in farr:
-		b4 = struct.pack('<f',fp)
-		for b in b4:
-			barr.append(b)
-	
-	# last step: calculate the checksum and load it into the final byte
-	barr.append(compute_checksum(barr))
-	
-	return barr
-
-"""
-	Test for position control mode
-"""
-def farr_to_dposition(addr, farr, tx_option):
-	barr = []
-	barr.append( (struct.pack('<B', addr))[0] )	#device ID
-	barr.append( (struct.pack('<B',0x10 + tx_option))[0] )	#control mode
-
-	for fp in farr:
-		fscaled = fp * 32767 / 150
-		lim = 32767
-		fscaled = max(min(fscaled,lim),-lim)
-		b2 = struct.pack('<h', int(fscaled))
-		for b in b2:
-			barr.append(b)
-
-	# last step: calculate the checksum and load it into the final byte
-	barr.append(compute_checksum(barr))
-
-	return barr
-
-
-
 """
 	Generic write frame formatting/packing function for ability hand. makes a lot of the stuff in here redundant
 """
@@ -127,22 +42,6 @@ def farr_to_abh_frame(addr, farr, format_header):
 	barr.append(compute_checksum(barr))
 
 	return barr
-
-
-"""
-	Test for voltage control mode
-"""
-def farr_to_vduty(farr):
-	pass
-
-"""
-	Test for current control mode
-"""
-def farr_to_dcurrent(farr):
-	pass
-
-
-
 
 """
 	Sends a 3 byte payload.
