@@ -3,6 +3,7 @@ import time
 
 abh = AbilityHandClient()
 abh.reply_mode=0
+abh.block_read = False
 
 print("beginning test")
 try:
@@ -16,7 +17,7 @@ try:
 		abh.writePos()
 		print(abh.rPos)
 
-		time.sleep(0.01)
+		# time.sleep(0.01)
 
 except KeyboardInterrupt:
 	print("stopping")

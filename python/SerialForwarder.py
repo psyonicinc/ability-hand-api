@@ -6,7 +6,7 @@ from serial.tools import list_ports
 
 
 class SerialForwarder:
-    def __init__(self, receiver_port=5006, baudrate=921600, destination_addr=("127.0.0.1", 5010), hardload_destination=False):
+    def __init__(self, receiver_port=5006, baudrate=460800, destination_addr=("127.0.0.1", 5010), hardload_destination=False):
         self.baudrate = baudrate
         self.recv_port = receiver_port
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -43,9 +43,9 @@ class SerialForwarder:
             print("no port found")
             raise NameError("No Serial Port Found")
     def __del__(self):
-        print("CLosing out with", self.num_writes, "writes and", self.num_reads, "reads")
-        if(self.num_writes != 0):
-            print("Ratio:", self.num_reads/self.num_writes)
+        # print("CLosing out with", self.num_writes, "writes and", self.num_reads, "reads")
+        # if(self.num_writes != 0):
+        #     print("Ratio:", self.num_reads/self.num_writes)
         self.server_sock.close()
         self.ser.close()
 
