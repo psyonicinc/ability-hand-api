@@ -44,12 +44,14 @@ class SerialForwarder:
             raise NameError("No Serial Port Found")
     def __del__(self):
         print("CLosing out with", self.num_writes, "writes and", self.num_reads, "reads")
-        print("Ratio:", self.num_reads/self.num_writes)
+        if(self.num_writes != 0):
+            print("Ratio:", self.num_reads/self.num_writes)
         self.server_sock.close()
         self.ser.close()
 
     def run(self):
-        stuff_buffer = np.array([])
+        stuff_buffer = np.zeros(512, dtype=np.uint8)
+        bidx = 0
         while(True):
             try:
                 pkt,source = self.server_sock.recvfrom(512)
@@ -67,8 +69,11 @@ class SerialForwarder:
             if(len(nb) != 0):
                 npbytes = np.frombuffer(nb, np.uint8)
                 for b in npbytes:
-                    payload, stuff_buffer = unstuff_PPP_stream(b, stuff_buffer)
-                    if(len(payload)!=0):
-                        self.server_sock.sendto(payload, self.destination_addr)
+                    pld, stuff_buffer, bidx, pld_valid = unstuff_PPP_stream_Cstyle_fast(b, stuff_buffer, bidx)
+                    if(pld_valid == True and len(pld) != 0):    #valid zero length pld is possible, so need both conditions
+                        self.server_sock.sendto(pld, self.destination_addr)
                         self.num_reads = self.num_reads + 1
-                        stuff_buffer = np.array([])
+                    # payload, stuff_buffer = unstuff_PPP_stream(b, stuff_buffer)   #NOTE: Proper usage of this function requires NOT erasing stuff_buffer at the end
+                    # if(len(payload)!=0):
+                    #     self.server_sock.sendto(payload, self.destination_addr)
+                    #     self.num_reads = self.num_reads + 1

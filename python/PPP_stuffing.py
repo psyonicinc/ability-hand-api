@@ -90,3 +90,38 @@ def unstuff_PPP_stream(new_byte, stuff_buffer):
 		
 	return payload, stuff_buffer
 	
+
+
+"""
+Python re-implementation with fixed size arrays for (hopefully) a speed boost
+	Inputs:
+		-new_byte: streaming input, new bytes one at a time
+		-pld, preallocated. Invalid if the last return arg is False!
+		-stuff_buffer: fixed size np array, preallocated
+		-bidx: iterator for stuff_buffer allocations
+	Outputs:
+		-pld: the actual payload. Valid only when the final return arg is True
+		-stuff_buffer: input modification
+		-bidx: input modification
+		-pld_valid: last arg, true when the most recent new_byte completes a dataframe, false otherwise. Marks validity of payload
+
+"""
+def unstuff_PPP_stream_Cstyle_fast(new_byte, stuff_buffer, bidx):
+	FRAME_CHAR = np.uint8(0x7E)
+
+	if(bidx < stuff_buffer.size):
+		stuff_buffer[bidx] = new_byte
+		bidx = bidx + 1
+	else:
+		bidx = 0
+		return 0, stuff_buffer, bidx, False
+
+	if(new_byte == FRAME_CHAR):
+		pld = PPP_unstuff(stuff_buffer[0:bidx].tobytes())
+		bidx = 0
+		stuff_buffer[bidx] = new_byte
+		bidx = bidx + 1
+		return pld, stuff_buffer, bidx, True
+	
+	return 0, stuff_buffer, bidx, False
+	
