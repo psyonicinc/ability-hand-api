@@ -41,7 +41,7 @@ class AbilityHandClient:
         msg = farr_to_abh_frame(self.serial_address, self.tPos*32767/150, 0x10 + self.reply_mode)
         stuffed_payload = PPP_stuff(bytearray(msg))
         self.soc.sendto(stuffed_payload, self.dest_addr)
-        self.__read()
+        self.__read()   #note: this reads the data from the PRIOR frame, not the current one
 
     def writeVelocity(self):
         msg = farr_to_abh_frame(self.serial_address, self.tVelocity*32767/3000, 0x20 + self.reply_mode)
