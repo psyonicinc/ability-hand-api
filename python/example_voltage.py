@@ -2,25 +2,19 @@ from AbilityHandClient import *
 import time
 
 abh = AbilityHandClient()
-abh.reply_mode=0
+abh.reply_mode=1
+abh.block_read=False
 
 print("beginning test")
 try:
-	fpos = np.array([15,15,15,15,15,-15])
+	fpos = np.array([30,30,30,30,30,-30])
 	while(True):
-
-		# create position targets
-		for i in range(0, len(abh.tPos)):
-			ft = time.time()*3 + i*(2*np.pi)/12
-			fpos[i] = (.5*np.sin(ft)+.5)*45+15
-		fpos[5] = -fpos[5]
-
 
 		abh.writeVoltageDuty()
 		if(len(abh.rPos) != 0):
-			abh.tVoltageDuty = (fpos-abh.rPos)*0.05
-			# print(abh.rPos)
-		# time.sleep(0.01)
+			abh.tVoltageDuty = (fpos-abh.rPos)*0.05 - abh.rVelocity*.0001
+			print(abh.rVelocity*.0001)	#on windows, may BSOD if there is no delay. print is blocking IO delay with a shorter duration than time.sleep
+		# time.sleep(0.01)	
 
 except KeyboardInterrupt:
 	print("stopping")
