@@ -78,7 +78,7 @@ def parse_hand_data(buffer):
 	
 	#check size match based on reply variant: rejection method 1
 	if reply_variant == 3:
-		if(buf.size != 38):
+		if(buf.size != 39):
 			return positions, current, velocity, fsrs			
 	else:
 		if(buf.size != 72):
@@ -91,7 +91,7 @@ def parse_hand_data(buffer):
 		return positions, current, velocity, fsrs
 			
 	#checksum and size is correct, so proceed to parsing!
-	if(reply_variant == 1 or reply_variant == 2):
+	if(reply_variant == 1 or reply_variant == 2 or reply_variant == 3):
 		bidx = 1
 		positions = np.zeros(6)
 		for ch in range(0,6):
@@ -100,7 +100,7 @@ def parse_hand_data(buffer):
 			positions[ch] = (np.float64(unpacked)*150.0)/32767.0
 			bidx = bidx + 2
 			
-			if(reply_variant == 1):
+			if(reply_variant == 1 or reply_variant == 3):
 				val = bytes(buf[bidx:bidx+2])
 				unpacked = struct.unpack('<h', val)[0]
 				current = np.append(current,np.float64(unpacked))
@@ -110,15 +110,23 @@ def parse_hand_data(buffer):
 				unpacked = struct.unpack('<h', val)[0]
 				velocity = np.append(velocity, np.float64(unpacked)/4 )
 				bidx = bidx + 2
-		
-		fsrs = np.int16(np.zeros(30))
-		## Extract Data two at a time
-		for i in range(0, 15):
-			dualData = buf[(i*3)+25:((i+1)*3)+25]
-			data1 = struct.unpack('<H', dualData[0:2])[0] & 0x0FFF
-			data2 = (struct.unpack('<H', dualData[1:3])[0] & 0xFFF0) >> 4
-			fsrs[i*2] = np.uint16(data1)
-			fsrs[(i*2)+1] = np.uint16(data2)
 
+		if(reply_variant == 1 or reply_variant == 2):
+			fsrs = np.int16(np.zeros(30))
+			## Extract Data two at a time
+			for i in range(0, 15):
+				dualData = buf[(i*3)+25:((i+1)*3)+25]
+				data1 = struct.unpack('<H', dualData[0:2])[0] & 0x0FFF
+				data2 = (struct.unpack('<H', dualData[1:3])[0] & 0xFFF0) >> 4
+				fsrs[i*2] = np.uint16(data1)
+				fsrs[(i*2)+1] = np.uint16(data2)
+		else:
+			for ch in range(0,6):
+				val = bytes(buf[bidx:bidx+2])
+				unpacked = struct.unpack('<h', val)[0]
+				velocity = np.append(velocity, np.float64(unpacked)/4 )
+				bidx = bidx + 2
+
+			
 	
 	return positions, current, velocity, fsrs

@@ -2,8 +2,10 @@ from AbilityHandClient import *
 import time
 
 abh = AbilityHandClient()
-abh.reply_mode=0
-abh.block_read = False
+abh.reply_mode=2
+abh.block_read=False
+abh.dest_addr = ("192.168.123.180" , 5006)
+abh.create_read_thread()
 
 print("beginning test")
 try:
@@ -15,11 +17,12 @@ try:
 		abh.tPos[5] = -abh.tPos[5]
 
 		abh.writePos()
-		print(abh.rPos)
+		with abh.readlock:
+			print(abh.rVelocity)
 
 		# time.sleep(0.01)
 
 except KeyboardInterrupt:
+	abh.close()
 	print("stopping")
-	abh.soc.close()
 
