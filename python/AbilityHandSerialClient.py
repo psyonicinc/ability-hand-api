@@ -57,14 +57,16 @@ class AbilityHandSerialClient:
 
     def __readloop(self):
         print("Starting read thread")
+        stuff_buffer = np.zeros(512, dtype=np.uint8)
+        bidx = 0
         while(self.continue_reading == True):
             nb = self.ser.read(512)
             if(len(nb) != 0):
                 npbytes = np.frombuffer(nb, np.uint8)
                 for b in npbytes:
                     pld, stuff_buffer, bidx, pld_valid = unstuff_PPP_stream_Cstyle_fast(b, stuff_buffer, bidx)
-                    rPos, rCurrent, rVelocity, rFsrs = parse_hand_data(pld)
                     if(pld_valid == True and len(pld) != 0):    #valid zero length pld is possible, so need both conditions
+                        rPos, rCurrent, rVelocity, rFsrs = parse_hand_data(pld)
                         with self.readlock:
                             self.rPos = rPos
                             self.rCurrent = rCurrent
