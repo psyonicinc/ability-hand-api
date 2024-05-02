@@ -2,7 +2,7 @@ from AbilityHandClient import *
 import time
 
 abh = AbilityHandClient()
-abh.reply_mode=2
+abh.reply_mode=2	#1,2, or 3
 abh.block_read=False
 abh.dest_addr = ("192.168.123.180" , 5006)
 abh.create_read_thread()
