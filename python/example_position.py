@@ -4,7 +4,6 @@ import time
 abh = AbilityHandClient()
 abh.reply_mode=2	#1,2, or 3
 abh.block_read=False
-abh.dest_addr = ("192.168.123.180" , 5006)
 abh.create_read_thread()
 
 print("beginning test")
@@ -20,7 +19,7 @@ try:
 		with abh.readlock:
 			print(abh.rVelocity)
 
-		# time.sleep(0.01)
+		time.sleep(0.01)
 
 except KeyboardInterrupt:
 	abh.close()
