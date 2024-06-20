@@ -1,6 +1,6 @@
 from SerialForwarder import *
 
-ser = SerialForwarder()
+ser = SerialForwarder(baudrate=921600)
 try:
     ser.run()
 except KeyboardInterrupt:

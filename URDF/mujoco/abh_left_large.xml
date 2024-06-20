@@ -30,7 +30,7 @@
       <geom name="palm_hull" pos="0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 0.999021 2.70192e-05" type="mesh" mesh="palm_hull"/>
       <body name="index_L1" pos="0.0279216 -0.00927034 0.0958706" quat="-0.714459 -0.129917 0.685906 0.0469401" gravcomp="0">
         <inertial pos="0.0224191 -0.000157982 -1.31987e-05" quat="-0.00406251 0.706621 0.00934715 0.707518" mass="0.00635888" diaginertia="3.81765e-06 3.69601e-06 2.96432e-07"/>
-        <joint name="index_q1" pos="0 0 0" axis="0 0 1" range="0 2.0944" damping="0.001" frictionloss="0.001"/>
+        <joint name="index_q1" pos="0 0 0" axis="0 0 1" range="0 2.0944" damping="0.001" frictionloss="0.001" armature="3e-6"/>
         <geom name="index_mesh_1" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="idx-F1"/>
         <geom name="index_hull_1" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" type="mesh" mesh="idx-F1-hull"/>
         <body name="index_L2" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" gravcomp="0">

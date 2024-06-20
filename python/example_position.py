@@ -4,8 +4,9 @@ import time
 abh = AbilityHandClient()
 abh.reply_mode=2	#1,2, or 3
 abh.block_read=False
-abh.dest_addr = ("192.168.123.180" , 5006)
+abh.dest_addr = ("192.168.123.164" , 34345)
 abh.create_read_thread()
+abh.soc.sendto(bytearray("activate_hose",encoding='utf8'), abh.dest_addr)
 
 print("beginning test")
 try:
