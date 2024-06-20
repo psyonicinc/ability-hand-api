@@ -18,8 +18,9 @@ try:
 		abh.writeVoltageDuty()
 		with abh.readlock:
 			if(len(abh.rPos) != 0):
-				abh.tVoltageDuty = (fpos-abh.rPos)*0.05 - abh.rVelocity*.0001
-				print(abh.rPos)
+				abh.tVoltageDuty = (fpos-abh.rPos)*0.1 - abh.rVelocity*.0001
+				# print(abh.rPos)
+				time.sleep(.0001)
 
 except KeyboardInterrupt:
 	abh.close()

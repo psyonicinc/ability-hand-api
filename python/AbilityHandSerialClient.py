@@ -41,7 +41,7 @@ class AbilityHandSerialClient:
                 serialport = p
                 print("Attempting to connect to", serialport)
                 # try:
-                self.ser = serial.Serial(serialport[0], self.baudrate, timeout=0, write_timeout=0)
+                self.ser = serial.Serial(serialport[0], self.baudrate, timeout=0, write_timeout=1)
                 print("connected!")
                 break
                 # except:

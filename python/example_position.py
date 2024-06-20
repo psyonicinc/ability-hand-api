@@ -21,7 +21,7 @@ try:
 		with abh.readlock:
 			print(abh.rVelocity)
 
-		# time.sleep(0.01)
+		time.sleep(0.01)
 
 except KeyboardInterrupt:
 	abh.close()
