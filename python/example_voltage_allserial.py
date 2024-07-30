@@ -1,7 +1,7 @@
 from AbilityHandSerialClient import *
 import time
 
-abh = AbilityHandSerialClient(baudrate=921600)
+abh = AbilityHandSerialClient(baudrate=460800)
 abh.reply_mode=2	#1, 2, or 3
 abh.create_read_thread()
 
@@ -18,7 +18,7 @@ try:
 		abh.writeVoltageDuty()
 		with abh.readlock:
 			if(len(abh.rPos) != 0):
-				abh.tVoltageDuty = (fpos-abh.rPos)*0.1 - abh.rVelocity*.0001
+				abh.tVoltageDuty = (fpos-abh.rPos)*0.01 - abh.rVelocity*.0001
 				# print(abh.rPos)
 				time.sleep(.0001)
 
