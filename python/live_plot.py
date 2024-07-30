@@ -44,6 +44,12 @@ def setupSerial(baud):
 							print("Connecting to: ", p)
 							found = True
 							break
+				else:
+					port = p
+					print("Connecting to: ", p)
+					found = True
+					break
+
 				if(found == False):
 					print(platform.system(), "Found:", p, p[0])
 				#break
