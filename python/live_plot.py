@@ -32,13 +32,21 @@ def setupSerial(baud):
 	com_ports_list = list(list_ports.comports())
 	port = ""
 
+	found = False
 	for p in com_ports_list:
 		if(p):
 			if platform.system() == 'Linux' or platform.system() == 'Darwin':
 				# if "USB" in p[0]:
-				port = p
-				print("Found:", port)
-				break
+				if platform.system() == 'Darwin':
+					for pstr in p:
+						if('CP2102' in pstr):
+							port = p
+							print("Connecting to: ", p)
+							found = True
+							break
+				if(found == False):
+					print(platform.system(), "Found:", p, p[0])
+				#break
 			elif platform.system() == 'Windows':
 				if "COM" in p[0]:
 					port = p
@@ -49,7 +57,7 @@ def setupSerial(baud):
 		quit()
 		
 	try: 
-		print("Connecting...")
+		print("Connecting to...", port[0])
 		ser = serial.Serial(port[0], baud, timeout = 0)
 		print("Connected!")
 	except: 
@@ -112,17 +120,18 @@ def calculatePositions(currentPositions, lastCommand):
 	## Check keyboard input to see what to do
 	## Up/Down only when pressed
 	## Finger wave continues when key released
-	if keyboard.is_pressed('esc'):
-		isFingerWave = False
-	elif keyboard.is_pressed('up') or keyboard.is_pressed('w'):
-		isFingerWave = False
-		moveUp = True
-	elif keyboard.is_pressed('down') or keyboard.is_pressed('s'):
-		isFingerWave = False
-		moveDown = True
-	elif keyboard.is_pressed('space'):
-		isFingerWave = True
+	# if keyboard.is_pressed('esc'):
+	# 	isFingerWave = False
+	# elif keyboard.is_pressed('up') or keyboard.is_pressed('w'):
+	# 	isFingerWave = False
+	# 	moveUp = True
+	# elif keyboard.is_pressed('down') or keyboard.is_pressed('s'):
+	# 	isFingerWave = False
+	# 	moveDown = True
+	# elif keyboard.is_pressed('space'):
+	# 	isFingerWave = True
 	
+	isFingerWave = True
 	positions = [0.0] * 6
 	
 	

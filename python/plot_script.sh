@@ -14,7 +14,7 @@ echo "Set baud rate to max: 		Wp001:2:0x12"
 echo "If you set baud to max, ensure you call live_plot.py with -b 1000000"
 
 #run script with recommended settings
-sudo python3 live_plot.py --position --stuff
+python3 live_plot.py --position --stuff -b 460800
 
 #other common options
 # sudo python3 live_plot.py --position --stuff -b 1000000	#max baud
