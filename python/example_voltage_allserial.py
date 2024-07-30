@@ -15,7 +15,9 @@ try:
 			fpos[i] = (.5*np.sin(ft)+.5)*45+15
 		fpos[5] = -fpos[5]
 
-		abh.writeVoltageDuty()
+		abh.tPos = fpos
+
+		abh.writePos()
 		with abh.readlock:
 			if(len(abh.rPos) != 0):
 				abh.tVoltageDuty = (fpos-abh.rPos)*0.01 - abh.rVelocity*.0001
