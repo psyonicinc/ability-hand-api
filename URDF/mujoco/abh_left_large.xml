@@ -60,10 +60,10 @@
       </body>
       <body name="thumb_L1" pos="0.0240477 0.00378125 0.0323296" quat="-0.00419696 0.994514 -0.0947972 0.0440301" gravcomp="0">
         <joint name="thumb_q1" pos="0 0 0" axis="0 0 1" range="-2.0944 0" damping="0.1" frictionloss="0.01"/>
-        <geom name="thumb_hull_1" pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" type="mesh" mass=".008" mesh="thumb-F1-hull"/>
+        <geom name="thumb_hull_1" pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" type="mesh" mass=".01" mesh="thumb-F1-hull"/>
         <body name="thumb_L2" pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" gravcomp="0">
           <joint name="thumb_q2" pos="0 0 0" axis="0 0 1" range="0 2.0944" damping="0.1" frictionloss="0.01"/>
-          <geom name="thumb_hull_2" pos="0.0651867 0.0233402 -0.00393483" quat="3.21978e-07 0.985259 0.171069 5.59046e-08" type="mesh" mass=".008" mesh="thumb-F2-hull"/>
+          <geom name="thumb_hull_2" pos="0.0651867 0.0233402 -0.00393483" quat="3.21978e-07 0.985259 0.171069 5.59046e-08" type="mesh" mass=".03" mesh="thumb-F2-hull"/>
         </body>
       </body>
     </body>
