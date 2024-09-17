@@ -1,7 +1,7 @@
 from AbilityHandSerialClient import *
 import time
 
-abh = AbilityHandSerialClient(baudrate=921600)
+abh = AbilityHandSerialClient(baudrate=460800)
 abh.reply_mode=2	#1, 2, or 3
 abh.create_read_thread()
 
