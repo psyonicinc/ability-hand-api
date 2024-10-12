@@ -40,12 +40,12 @@ class AbilityHandSerialClient:
             if(p):
                 serialport = p
                 print("Attempting to connect to", serialport)
-                # try:
-                self.ser = serial.Serial(serialport[0], self.baudrate, timeout=0, write_timeout=1)
-                print("connected!")
-                break
-                # except:
-                    # print("Connect failed.")
+                try:
+                    self.ser = serial.Serial(serialport[0], self.baudrate, timeout=0, write_timeout=1)
+                    print("connected!")
+                    break
+                except:
+                    print("Connect failed.")
         if not serialport:
             print("no port found")
             raise NameError("No Serial Port Found")
