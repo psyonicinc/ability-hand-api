@@ -113,6 +113,10 @@ class AbilityHandSerialClient:
         stuffed_payload = PPP_stuff(bytearray(msg))
         self.ser.write(stuffed_payload)
 
+    def writeGripCommand(self, grip, speed):
+            msg = send_grip_cmd(self.serial_address, grip, speed)
+            stuffed_payload = PPP_stuff(bytearray(msg))
+            self.ser.write(stuffed_payload)
 
     def __del__(self):
         self.continue_reading = False
