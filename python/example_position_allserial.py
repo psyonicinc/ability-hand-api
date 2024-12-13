@@ -10,17 +10,31 @@ try:
 	fpos = np.array([30,30,30,30,30,-30])
 	while(True):
 
-		for i in range(0, len(fpos)):
-			ft = time.time()*3 + i*(2*np.pi)/12
-			fpos[i] = (.5*np.sin(ft)+.5)*45+15
-		fpos[5] = -fpos[5]
 
-		abh.writePos()
-		with abh.readlock:
-			if(len(abh.rPos) != 0):
-				abh.tPos = fpos
-				print(abh.rPos)
-				# time.sleep(.0001)
+		t = time.time()
+		while(time.time() - t < 3):
+			fpos = np.array([1,1,1,1,1,-1])*15
+			fpos[4] = 50
+			fpos[5] = -75
+			abh.writePos()
+			with abh.readlock:
+				if(len(abh.rPos) != 0):
+					abh.tPos = fpos
+					print(abh.rPos)
+					# time.sleep(.0001)
+
+		t = time.time()
+		while(time.time() - t < 300000000000):
+			fpos = np.array([1,1,1,1,1,-1])*90
+			fpos[4] = 50
+			fpos[5] = -75
+			abh.writePos()
+			with abh.readlock:
+				if(len(abh.rPos) != 0):
+					abh.tPos = fpos
+					# print(abh.rPos)
+					print(time.time()-t)
+					# time.sleep(.0001)
 
 except KeyboardInterrupt:
 	abh.close()
