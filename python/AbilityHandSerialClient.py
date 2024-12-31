@@ -9,7 +9,8 @@ from serial.tools import list_ports
 
 
 class AbilityHandSerialClient:
-    def __init__(self, hand_addr=0x50,baudrate=460800):
+    def __init__(self, hand_addr=0x50,baudrate=460800, noprint=0):
+        self.suppress_print_messages = noprint
         self.serial_address = hand_addr
         self.baudrate = baudrate
         self.tPos = np.array([15.,15.,15.,15.,15.,-15.],dtype=np.float32)
@@ -29,7 +30,7 @@ class AbilityHandSerialClient:
         self.startTime=time.time()
         self.num_writes = 0
         self.num_reads = 0
-
+        self.unstuffed_buffer = bytearray([0,0])
 
         self.continue_reading = False
         self.readlock = threading.Lock()
@@ -39,15 +40,19 @@ class AbilityHandSerialClient:
         for p in com_ports_list:
             if(p):
                 serialport = p
-                print("Attempting to connect to", serialport)
+                if(self.suppress_print_messages == 0):
+                    print("Attempting to connect to", serialport)
                 try:
                     self.ser = serial.Serial(serialport[0], self.baudrate, timeout=0, write_timeout=1)
-                    print("connected!")
+                    if(self.suppress_print_messages == 0):
+                        print("connected!")
                     break
                 except:
-                    print("Connect failed.")
+                    if(self.suppress_print_messages == 0):
+                        print("Connect failed.")
         if not serialport:
-            print("no port found")
+            if(self.suppress_print_messages == 0):
+                print("no port found")
             raise NameError("No Serial Port Found")
 
 
@@ -56,7 +61,8 @@ class AbilityHandSerialClient:
         self.continue_reading = False
 
     def __readloop(self):
-        print("Starting read thread")
+        if(self.suppress_print_messages == 0):
+            print("Starting read thread")
         stuff_buffer = np.zeros(512, dtype=np.uint8)
         bidx = 0
         while(self.continue_reading == True):
@@ -66,6 +72,7 @@ class AbilityHandSerialClient:
                 for b in npbytes:
                     pld, stuff_buffer, bidx, pld_valid = unstuff_PPP_stream_Cstyle_fast(b, stuff_buffer, bidx)
                     if(pld_valid == True and len(pld) != 0):    #valid zero length pld is possible, so need both conditions
+                        self.unstuffed_buffer = pld
                         rPos, rCurrent, rVelocity, rFsrs = parse_hand_data(pld)
                         with self.readlock:
                             self.rPos = rPos
@@ -73,7 +80,8 @@ class AbilityHandSerialClient:
                             self.rVelocity = rVelocity
                             self.rFsrs = rFsrs
                             self.num_reads = self.num_reads + 1
-        print("Ending read thread")
+        if(self.suppress_print_messages == 0):
+            print("Ending read thread")
     # def __read(self):
     #     try:
     #         self.read_pkt, src = self.soc.recvfrom(512)
@@ -88,7 +96,16 @@ class AbilityHandSerialClient:
         self.continue_reading = True
         self.readthread = threading.Thread(target=self.__readloop)
         self.readthread.start()
-
+    def writeReadOnly(self):
+            msg = create_misc_msg(self.serial_address, 0xA0)
+            self.num_writes = self.num_writes + 1
+            stuffed_payload = PPP_stuff(bytearray(msg))
+            self.ser.write(stuffed_payload)
+    def writeStandardReadOnly(self):
+            msg = create_misc_msg(self.serial_address, 0x48)
+            self.num_writes = self.num_writes + 1
+            stuffed_payload = PPP_stuff(bytearray(msg))
+            self.ser.write(stuffed_payload)        
     def writePos(self):
         msg = farr_to_abh_frame(self.serial_address, self.tPos*32767/150, 0x10 + self.reply_mode-1)
         self.num_writes = self.num_writes + 1
@@ -123,8 +140,7 @@ class AbilityHandSerialClient:
         runtime = time.time() - self.startTime
         ratio = ((self.num_reads+1)/self.num_writes)    #the way the software works, we'll always drop 1 read
         ctl_freq_Hz = self.num_reads/runtime
-        print(ctl_freq_Hz, "Hz, ratio=", ratio)
+        if(self.suppress_print_messages == 0):
+            print(ctl_freq_Hz, "Hz, ratio=", ratio)
         self.ser.close()
-
-    
 
