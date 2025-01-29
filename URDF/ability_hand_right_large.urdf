@@ -78,7 +78,7 @@
 		<visual name="index_mesh_2">
 			<origin rpy = "0 0 0" xyz = "0 0 0"/>
 			<geometry>
-				<mesh filename="idx-F2-Lg.STL"/>
+				<mesh filename="models/idx-F2-Lg.STL"/>
 			</geometry>
 		</visual>
 	</link>
