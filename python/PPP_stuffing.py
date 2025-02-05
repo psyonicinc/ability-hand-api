@@ -13,60 +13,67 @@ import numpy as np
 	
 	returns a PPP stuffed bytearray
 """
+
+
 def PPP_stuff(input_barr):
-	FRAME_CHAR = np.uint8(0x7E)
-	ESC_CHAR = np.uint8(0x7D)
-	ESC_MASK = np.uint8(0x20)
+    FRAME_CHAR = np.uint8(0x7E)
+    ESC_CHAR = np.uint8(0x7D)
+    ESC_MASK = np.uint8(0x20)
 
-	#to start, convert to np array for array ops
-	working_buf = np.frombuffer(input_barr, dtype=np.uint8).copy()		#copy bc i think this means otherwise we're writing to the original array, but i want this to be a copy
+    # to start, convert to np array for array ops
+    working_buf = np.frombuffer(
+        input_barr, dtype=np.uint8
+    ).copy()  # copy bc i think this means otherwise we're writing to the original array, but i want this to be a copy
+
+    # first logical op, find all instances of the ESC char, prepend the escape char, and xor them with 0x20
+    inds = np.where(working_buf == ESC_CHAR)[0]
+    working_buf[inds] = np.bitwise_xor(working_buf[inds], ESC_MASK)
+    working_buf = np.insert(working_buf, inds, ESC_CHAR)
+
+    # second, find all frame chars in data, prepend the escape char, and xor them with 0x20
+    inds = np.where(working_buf == FRAME_CHAR)[0]
+    working_buf[inds] = np.bitwise_xor(working_buf[inds], ESC_MASK)
+    working_buf = np.insert(working_buf, inds, ESC_CHAR)
+
+    # finally, prepend and postpend the frame characters
+    working_buf = np.insert(working_buf, 0, FRAME_CHAR)
+    working_buf = np.append(working_buf, FRAME_CHAR)
+
+    b = working_buf.tobytes()
+    return b
 
 
-	#first logical op, find all instances of the ESC char, prepend the escape char, and xor them with 0x20
-	inds = np.where(working_buf==ESC_CHAR)[0]
-	working_buf[inds] = np.bitwise_xor(working_buf[inds],ESC_MASK)
-	working_buf = np.insert(working_buf, inds, ESC_CHAR)
-
-	
-	#second, find all frame chars in data, prepend the escape char, and xor them with 0x20
-	inds = np.where(working_buf==FRAME_CHAR)[0]
-	working_buf[inds] = np.bitwise_xor(working_buf[inds],ESC_MASK)
-	working_buf = np.insert(working_buf, inds, ESC_CHAR)
-
-	#finally, prepend and postpend the frame characters 
-	working_buf = np.insert(working_buf, 0, FRAME_CHAR)	
-	working_buf = np.append(working_buf, FRAME_CHAR)
-		
-		
-	b = working_buf.tobytes()
-	return b
-	
 """
 	Unstuff operation, which is basically a helper function for unstuff_PPP_stream
 	
 	also must be a bytearray type object. see above comment and test.py for more information
 """
-def PPP_unstuff(input_barr):
-	FRAME_CHAR = np.uint8(0x7E)
-	ESC_CHAR = np.uint8(0x7D)
-	ESC_MASK = np.uint8(0x20)
 
-	wip = np.frombuffer(input_barr, dtype = np.uint8)
-	working_input = wip.copy()
-	
-	
-	if(working_input[0] != FRAME_CHAR or working_input[working_input.size-1] != FRAME_CHAR):
-		return np.array([])
-	
-	
-	inds = (np.where(working_input==ESC_CHAR)[0] + 1)	#locate all bytes which directly follow an escape character
-	working_input[inds] = np.bitwise_xor(working_input[inds], ESC_MASK)	#xor the
-	working_input = np.delete(working_input, inds-1)
-	
-	b = working_input[1:(working_input.size-1)].tobytes()
-	return b
-	
-	
+
+def PPP_unstuff(input_barr):
+    FRAME_CHAR = np.uint8(0x7E)
+    ESC_CHAR = np.uint8(0x7D)
+    ESC_MASK = np.uint8(0x20)
+
+    wip = np.frombuffer(input_barr, dtype=np.uint8)
+    working_input = wip.copy()
+
+    if (
+        working_input[0] != FRAME_CHAR
+        or working_input[working_input.size - 1] != FRAME_CHAR
+    ):
+        return np.array([])
+
+    inds = (
+        np.where(working_input == ESC_CHAR)[0] + 1
+    )  # locate all bytes which directly follow an escape character
+    working_input[inds] = np.bitwise_xor(working_input[inds], ESC_MASK)  # xor the
+    working_input = np.delete(working_input, inds - 1)
+
+    b = working_input[1 : (working_input.size - 1)].tobytes()
+    return b
+
+
 """
 	Unstuffing, but it queues new bytes as they come in and performs framing logic on the stream.
 	Creates a local buffer starting with the first frame character found, and deletes it to restart every time there's a new frame character
@@ -79,17 +86,20 @@ def PPP_unstuff(input_barr):
 	
 	Hopefully speed isn't a problem... cuz it'll def break if so
 """
+
+
 def unstuff_PPP_stream(new_byte, stuff_buffer):
-	FRAME_CHAR = np.uint8(0x7E)
-	
-	stuff_buffer = np.append(stuff_buffer, np.uint8(new_byte))
-	payload = np.array([]).tobytes()
-	if(new_byte == FRAME_CHAR):
-		payload = PPP_unstuff(stuff_buffer.tobytes())
-		stuff_buffer = np.array([np.uint8(new_byte)])	#reset stuff buffer size and cram the first element with the frame character
-		
-	return payload, stuff_buffer
-	
+    FRAME_CHAR = np.uint8(0x7E)
+
+    stuff_buffer = np.append(stuff_buffer, np.uint8(new_byte))
+    payload = np.array([]).tobytes()
+    if new_byte == FRAME_CHAR:
+        payload = PPP_unstuff(stuff_buffer.tobytes())
+        stuff_buffer = np.array(
+            [np.uint8(new_byte)]
+        )  # reset stuff buffer size and cram the first element with the frame character
+
+    return payload, stuff_buffer
 
 
 """
@@ -106,22 +116,23 @@ Python re-implementation with fixed size arrays for (hopefully) a speed boost
 		-pld_valid: last arg, true when the most recent new_byte completes a dataframe, false otherwise. Marks validity of payload
 
 """
+
+
 def unstuff_PPP_stream_Cstyle_fast(new_byte, stuff_buffer, bidx):
-	FRAME_CHAR = np.uint8(0x7E)
+    FRAME_CHAR = np.uint8(0x7E)
 
-	if(bidx < stuff_buffer.size):
-		stuff_buffer[bidx] = new_byte
-		bidx = bidx + 1
-	else:
-		bidx = 0
-		return 0, stuff_buffer, bidx, False
+    if bidx < stuff_buffer.size:
+        stuff_buffer[bidx] = new_byte
+        bidx = bidx + 1
+    else:
+        bidx = 0
+        return 0, stuff_buffer, bidx, False
 
-	if(new_byte == FRAME_CHAR):
-		pld = PPP_unstuff(stuff_buffer[0:bidx].tobytes())
-		bidx = 0
-		stuff_buffer[bidx] = new_byte
-		bidx = bidx + 1
-		return pld, stuff_buffer, bidx, True
-	
-	return 0, stuff_buffer, bidx, False
-	
+    if new_byte == FRAME_CHAR:
+        pld = PPP_unstuff(stuff_buffer[0:bidx].tobytes())
+        bidx = 0
+        stuff_buffer[bidx] = new_byte
+        bidx = bidx + 1
+        return pld, stuff_buffer, bidx, True
+
+    return 0, stuff_buffer, bidx, False
