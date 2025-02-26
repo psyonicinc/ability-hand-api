@@ -51,6 +51,30 @@ def farr_to_abh_frame(addr, farr, format_header):
 
     return barr
 
+def write_register(hand_addr, val_addr, val):
+    barr = []
+    barr.append((struct.pack("<B", hand_addr))[0])  # device ID
+    barr.append((struct.pack("<B", 0xDE))[0])  # command!
+    b2 = struct.pack("<i", val_addr)
+    for b in b2:
+        barr.append(b)        
+    b2 = struct.pack("<i", val)
+    for b in b2:
+        barr.append(b)        
+    barr.append(compute_checksum(barr))
+    return barr
+
+
+def read_register(hand_addr, val_addr):
+    barr = []
+    barr.append((struct.pack("<B", hand_addr))[0])  # device ID
+    barr.append((struct.pack("<B", 0xDA))[0])  # command!
+    b2 = struct.pack("<i", val_addr)
+    for b in b2:
+        barr.append(b)        
+    barr.append(compute_checksum(barr))
+    return barr
+		
 
 """
 	Sends a 3 byte payload.
@@ -58,8 +82,6 @@ def farr_to_abh_frame(addr, farr, format_header):
 	1st is the misc. command
 	2nd is the checksum!
 """
-
-
 def create_misc_msg(addr, cmd):
     barr = []
     barr.append((struct.pack("<B", addr))[0])  # device ID

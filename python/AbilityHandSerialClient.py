@@ -29,7 +29,7 @@ class AbilityHandSerialClient:
         self.startTime = time.time()
         self.num_writes = 0
         self.num_reads = 0
-        self.unstuffed_buffer = bytearray([0, 0])
+        self.unstuffed_buffer = bytearray([])
 
         self.continue_reading = False
         self.readlock = threading.Lock()
@@ -75,9 +75,9 @@ class AbilityHandSerialClient:
                     if (
                         pld_valid == True and len(pld) != 0
                     ):  # valid zero length pld is possible, so need both conditions
-                        self.unstuffed_buffer = pld
                         rPos, rCurrent, rVelocity, rFsrs = parse_hand_data(pld)
                         with self.readlock:
+                            self.unstuffed_buffer = pld
                             self.rPos = rPos
                             self.rCurrent = rCurrent
                             self.rVelocity = rVelocity
@@ -157,9 +157,10 @@ class AbilityHandSerialClient:
     def __del__(self):
         self.continue_reading = False
         runtime = time.time() - self.startTime
-        ratio = (
-            self.num_reads + 1
-        ) / self.num_writes  # the way the software works, we'll always drop 1 read
+        if(self.num_writes == 0):
+            self.num_writes = 1
+            self.num_reads = 0
+        ratio = (self.num_reads + 1) / self.num_writes  # the way the software works, we'll always drop 1 read
         ctl_freq_Hz = self.num_reads / runtime
         if self.suppress_print_messages == 0:
             print(ctl_freq_Hz, "Hz, ratio=", ratio)
