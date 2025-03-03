@@ -22,7 +22,7 @@
   </worldbody>
   
   <worldbody>
-    <body name="base" pos="0 0 0.1" gravcomp="0">
+    <body name="base" pos="0 0 0.0000001" gravcomp="1">
       <inertial pos="-0.0234454 0.00234459 0.0228783" quat="0.386518 0.610261 0.592118 0.357185" mass="0.6" diaginertia="0.00257632 0.00257632 0.00178617"/>
       <joint name="floating_base" type="free"/>
       <geom name="wrist_mesh" type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="wristmesh"/>
@@ -82,20 +82,27 @@
         <geom name="thumb_mesh_1" pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="thumb-F1-MIR"/>
         <geom name="thumb_hull_1" pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0" type="mesh" mesh="thumb-F1-MIR-hull"/>
         <body name="thumb_L2" pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0" gravcomp="0">
-          <inertial pos="0.0300205 0.00559476 -0.00415044" quat="0.00721249 0.656735 -0.223684 0.720148" mass="0.0055" diaginertia="1.80207e-05 1.70892e-05 2.87855e-06"/>
           <joint name="thumb_q2" pos="0 0 0" axis="0 0 1" range="0 2.0944" damping="0.001" frictionloss="0.001"/>
-          <geom name="thumb_mesh_2" pos="0.0651867 0.0233402 0.00393483" quat="3.21978e-07 -0.985259 -0.171069 5.59046e-08" type="mesh" contype="0" conaffinity="0" group="1" density="0" mesh="thumb-F2"/>
+          <geom name="thumb_mesh_2" pos="0.0651867 0.0233402 0.00393483" quat="3.21978e-07 -0.985259 -0.171069 5.59046e-08" type="mesh" mass="0.0055" contype="0" conaffinity="0" group="1" mesh="thumb-F2"/>
           <geom name="thumb_hull_2" pos="0.0651867 0.0233402 0.00393483" quat="3.21978e-07 -0.985259 -0.171069 5.59046e-08" type="mesh" mesh="thumb-F2-hull"/>
         </body>
       </body>
     </body>
   </worldbody>
+
   <actuator>
-    <position name="index_actuator" joint="index_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
-    <position name="middle_actuator" joint="middle_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
-    <position name="ring_actuator" joint="ring_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
-    <position name="pinky_actuator" joint="pinky_q1" ctrllimited="true" ctrlrange="0 2.0944"/>
-    <position name="thumbrotator_actuator" joint="thumb_q1" ctrllimited="true" ctrlrange="-2.0944 0"/>
-    <position name="thumbflexor_actuator" joint="thumb_q2" ctrllimited="true" ctrlrange="0 2.0944"/>
+    <position name="index_actuator" joint="index_q1" ctrllimited="true" ctrlrange="0 1.74"/>
+    <position name="middle_actuator" joint="middle_q1" ctrllimited="true" ctrlrange="0 1.74"/>
+    <position name="ring_actuator" joint="ring_q1" ctrllimited="true" ctrlrange="0 1.74"/>
+    <position name="pinky_actuator" joint="pinky_q1" ctrllimited="true" ctrlrange="0 1.74"/>
+    <position name="thumbrotator_actuator" joint="thumb_q1" ctrllimited="true" ctrlrange="-1.8 0"/>
+    <position name="thumbflexor_actuator" joint="thumb_q2" ctrllimited="true" ctrlrange="0 1.5"/>
   </actuator>
+  <equality>
+      <joint name="index_link" joint1="index_q2" joint2="index_q1" polycoef="0.72349796 1.05851325  0 0 0"/>
+      <joint name="middle_link" joint1="middle_q2" joint2="middle_q1" polycoef="0.72349796 1.05851325  0 0 0"/>
+      <joint name="ring_link" joint1="ring_q2" joint2="ring_q1" polycoef="0.72349796 1.05851325 0 0 0"/>
+      <joint name="pinky_link" joint1="pinky_q2" joint2="pinky_q1" polycoef="0.72349796 1.05851325 0 0 0"/>
+  </equality>
+
 </mujoco>
