@@ -20,7 +20,8 @@ try:
             if len(abh.rPos) != 0:
                 abh.tPos = fpos
                 print(abh.rPos)
-                # time.sleep(.0001)
+                abh.unstuffed_buffer = bytearray([])
+                time.sleep(.0001)
 
 except KeyboardInterrupt:
     abh.close()

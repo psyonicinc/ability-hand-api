@@ -1,9 +1,10 @@
 from AbilityHandSerialClient import *
 import time
 
-def print_32b_from_bytearray_hack(buf, idx):
-	base_bidx = idx * 4
-	print("0x"+ hex(buf[base_bidx + 3])[2:].zfill(2) + hex(buf[base_bidx + 2])[2:].zfill(2) + hex(buf[base_bidx + 1])[2:].zfill(2) + hex(buf[base_bidx + 0])[2:].zfill(2) )
+def bytearray_to_hex(byte_arr):
+    """Converts a bytearray to a hexadecimal string prefixed with 0x, ensuring two characters per byte."""
+    hex_str = ''.join(f'{b:02X}' for b in byte_arr)  # Ensure two characters per byte
+    return "0x" + hex_str
 
 def write_uart_register(addr, val):
 	barr = write_register(0x50, int(addr), int(val))
@@ -41,12 +42,27 @@ abh = AbilityHandSerialClient(baudrate=460800)
 abh.reply_mode = 2  # 1, 2, or 3
 abh.create_read_thread()
 
+
+#read 
 size = 10
 channel = 5	#thumb rotator
 enumval = 0
-print(write_uart_register(channel*size+enumval, 1000))
-print(read_uart_register(channel*size+enumval))
+print(bytearray_to_hex(write_uart_register(channel*size+enumval, 1000)))
+rv = read_uart_register(channel*size+enumval)
+print(bytearray_to_hex(rv))
+v = struct.unpack("<i", bytearray(rv[4:8]))[0]
+print("reconstructed value:", v)
 
+
+
+rv = read_uart_register(61)
+print(bytearray_to_hex(rv))
+v = struct.unpack("<i", bytearray(rv[4:8]))[0]
+print("reconstructed value:", v)
+rv = read_uart_register(62)
+print(bytearray_to_hex(rv))
+v = struct.unpack("<i", bytearray(rv[4:8]))[0]
+print("reconstructed value:", v)
 
 
 abh.close()

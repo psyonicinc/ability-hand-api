@@ -8,19 +8,24 @@ abh.create_read_thread()
 print("beginning test")
 try:
     fpos = np.array([30, 30, 30, 30, 30, -30])
-    while True:
+    
+    tstart = time.time()
+    while time.time() - tstart < 3:
 
         for i in range(0, len(fpos)):
             ft = time.time() * 3 + i * (2 * np.pi) / 12
             fpos[i] = (0.5 * np.sin(ft) + 0.5) * 45 + 15
         fpos[5] = -fpos[5]
-
+		
+        abh.writeVoltageDuty()
         abh.writeVelocity()
         with abh.readlock:
             if len(abh.rPos) != 0:
                 abh.tVelocity = (fpos - abh.rPos) * 10.11 - abh.rVelocity * 0.0001
-                print(abh.rPos)
+                abh.tVoltageDuty = (fpos - abh.rPos) * 0.01 - abh.rVelocity * 0.0001
+                # print(abh.rPos)
                 # time.sleep(.0001)
+
 
 except KeyboardInterrupt:
     abh.close()
