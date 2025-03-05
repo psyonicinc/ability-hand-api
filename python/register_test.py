@@ -44,17 +44,17 @@ abh.create_read_thread()
 
 
 #read 
-size = 10
+size = 10   #number of elements per finger
 channel = 5	#thumb rotator
-enumval = 0
-print(bytearray_to_hex(write_uart_register(channel*size+enumval, 1000)))
-rv = read_uart_register(channel*size+enumval)
+enumval = 0 #proportional gain
+print(bytearray_to_hex(write_uart_register(channel*size+enumval+1, 1000)))
+rv = read_uart_register(channel*size+enumval+1)
 print(bytearray_to_hex(rv))
 v = struct.unpack("<i", bytearray(rv[4:8]))[0]
 print("reconstructed value:", v)
 
 
-
+#read the 64 bit unique id as two 32bit words from the hand over UART
 rv = read_uart_register(61)
 print(bytearray_to_hex(rv))
 v = struct.unpack("<i", bytearray(rv[4:8]))[0]
