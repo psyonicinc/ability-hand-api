@@ -46,7 +46,7 @@
         </default>
 
         <default class="palm_collision">
-          <geom type="ellipsoid" quat="0.996 0.155 0 0" pos="0 0 0.05" size="0.037 0.012 0.052" solref=".01 1" solimp=".98 .995 .0005" mass="0.3592"/>
+          <geom type="box" quat="0.996 0.155 0 0" pos="0 -.001 0.05" size="0.037 0.012 0.050" solref=".01 1" solimp=".98 .995 .0005" mass="0.3592"/>
         </default>
 
         <default class="proximal_collision">
@@ -185,6 +185,12 @@
         <geom class="thumb_metacarp_vis"/>
         <geom class="thumb_metacarp_collision"/>
         <body name="thumb_mcp" pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0">
+          <site name="fsr29" type="box" size="0.003 0.005 0.0052" pos="0.055422  0.023513 -0.005055" euler="-1.57079633 -0.40123853 -1.57079633" rgba="0 0 1 0.3"/>
+          <site name="fsr25" type="box" size="0.003 0.005 0.0055" pos="0.047909  0.02312  -0.005728" euler="-1.57079633 -0.44961601 -1.57079633" rgba="0 0 1 0.3"/>
+          <site name="fsr26" type="box" size="0.003 0.005 0.0058" pos="0.048227 0.022352 0.000805" euler="-1.57079633 -0.43229053 -1.57079633" rgba="0 0 1 0.3"/>
+          <site name="fsr28" type="box" size="0.005 0.005 0.0038" pos="0.036868 0.017111 0.001369" euler="0. 0. 0." rgba="0 0 1 0.3"/>
+          <site name="fsr24" type="box" size="0.005 0.005 0.0060" pos="0.049435  0.019437 -0.01097" euler="-1.57079633 -0.44946695 -1.5707963" rgba="0 0 1 0.3"/>
+          <site name="fsr27" type="box" size="0.005 0.005 0.0050" pos="0.038158  0.013997 -0.011211" euler="0. -0.  0." rgba="0 0 1 0.3"/>
           <joint class="thumb_mcp_joint" name="thumb_mcp"/>
           <geom class="thumb_prox_collision"/>
           <geom class="thumb_prox_dist_vis"/>
@@ -218,6 +224,12 @@
     <touch site="fsr21"/>
     <touch site="fsr22"/>
     <touch site="fsr23"/>
+    <touch site="fsr24"/>
+    <touch site="fsr25"/>
+    <touch site="fsr26"/>
+    <touch site="fsr27"/>
+    <touch site="fsr28"/>
+    <touch site="fsr29"/>
   </sensor>
 
   <!--Actuators-->
