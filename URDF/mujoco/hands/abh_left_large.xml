@@ -40,7 +40,7 @@
 
       <!--Collisions Primitives-->
       <default class="collisions">
-        <geom rgba="1 1 1 0.2" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
+        <geom rgba="1 1 1 1" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
         <default class="wrist_collision">
           <geom type="cylinder" pos="0 0 0.0025" size="0.018 0.0025" mass="0.01591"/>
         </default>
@@ -117,6 +117,12 @@
           <geom class="proximal_collision"/>
           <geom class="finger_prox_vis"/>
           <body name="index_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+            <site name="fsr5" type="box" size="0.003 0.005 0.0032" pos="0.03678129 -0.01966348  0." euler="-1.57079633  1.11908681 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr1" type="box" size="0.003 0.005 0.0035" pos="0.03087755 -0.01531625  0." euler="1.57079633 -0.25241514  1.5707963" rgba="0 0 1 0.3"/>
+            <site name="fsr2" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288  0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr4" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243  0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr0" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288 -0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr3" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243 -0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
             <joint class="finger_pip_joint" name="index_pip"/>
             <geom class="int_dist_collision"/>
             <geom class="finger_int_dist_vis"/>
@@ -129,6 +135,12 @@
           <geom class="finger_prox_vis"/>
           <body name="middle_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
             <joint class="finger_pip_joint" name="middle_pip"/>
+            <site name="fsr11" type="box" size="0.003 0.005 0.0032" pos="0.03678129 -0.01966348  0." euler="-1.57079633  1.11908681 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr7" type="box" size="0.003 0.005 0.0035" pos="0.03087755 -0.01531625  0." euler="1.57079633 -0.25241514  1.5707963" rgba="0 0 1 0.3"/>
+            <site name="fsr8" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288  0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr10" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243  0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr6" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288 -0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr9" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243 -0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
             <geom class="int_dist_collision"/>
             <geom class="finger_int_dist_vis"/>
           </body>
@@ -140,6 +152,12 @@
           <geom class="finger_prox_vis"/>
           <body name="ring_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
             <joint class="finger_pip_joint" name="ring_pip"/>
+            <site name="fsr17" type="box" size="0.003 0.005 0.0032" pos="0.03678129 -0.01966348  0." euler="-1.57079633  1.11908681 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr13" type="box" size="0.003 0.005 0.0035" pos="0.03087755 -0.01531625  0." euler="1.57079633 -0.25241514  1.5707963" rgba="0 0 1 0.3"/>
+            <site name="fsr14" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288  0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr16" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243  0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr12" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288 -0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr15" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243 -0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
             <geom class="int_dist_collision"/>
             <geom class="finger_int_dist_vis"/>
           </body>
@@ -151,6 +169,12 @@
           <geom class="finger_prox_vis"/>
           <body name="pinky_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
             <joint class="finger_pip_joint" name="pinky_pip"/>
+            <site name="fsr23" type="box" size="0.003 0.005 0.0032" pos="0.03678129 -0.01966348  0." euler="-1.57079633  1.11908681 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr19" type="box" size="0.003 0.005 0.0035" pos="0.03087755 -0.01531625  0." euler="1.57079633 -0.25241514  1.5707963" rgba="0 0 1 0.3"/>
+            <site name="fsr20" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288  0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr22" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243  0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr18" type="box" size="0.003 0.005 0.0038" pos="0.03118107 -0.01775288 -0.004" euler="-1.57079633  0.51757639 -1.57079633" rgba="0 0 1 0.3"/>
+            <site name="fsr21" type="box" size="0.003 0.005 0.0038" pos="0.01680497 -0.01308243 -0.004" euler="-1.57079633  0.66148388 -1.57079633" rgba="0 0 1 0.3"/>
             <geom class="int_dist_collision"/>
             <geom class="finger_int_dist_vis"/>
           </body>
@@ -168,6 +192,33 @@
       </body>
     </body>
   </worldbody>
+
+  <sensor>
+    <touch site="fsr0"/>
+    <touch site="fsr1"/>
+    <touch site="fsr2"/>
+    <touch site="fsr3"/>
+    <touch site="fsr4"/>
+    <touch site="fsr5"/>
+    <touch site="fsr6"/>
+    <touch site="fsr7"/>
+    <touch site="fsr8"/>
+    <touch site="fsr9"/>
+    <touch site="fsr10"/>
+    <touch site="fsr11"/>
+    <touch site="fsr12"/>
+    <touch site="fsr13"/>
+    <touch site="fsr14"/>
+    <touch site="fsr15"/>
+    <touch site="fsr16"/>
+    <touch site="fsr17"/>
+    <touch site="fsr18"/>
+    <touch site="fsr19"/>
+    <touch site="fsr20"/>
+    <touch site="fsr21"/>
+    <touch site="fsr22"/>
+    <touch site="fsr23"/>
+  </sensor>
 
   <!--Actuators-->
   <actuator>
