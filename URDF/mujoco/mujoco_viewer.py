@@ -26,16 +26,13 @@ actuators = [
 
 # Create a viewer
 with mujoco.viewer.launch_passive(model, data) as viewer:
+    # Mimic Joints
+    act_ids = [
+        mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in actuators
+    ]
     while viewer.is_running():
-        # Mimic Joints
-        act_ids = [
-            mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in actuators
-        ]
         for j in range(0, 7, 2):
-            if act_ids[j] != -1 and act_ids[j + 1] != -1:
-                data.ctrl[act_ids[j + 1]] = (
-                    data.ctrl[act_ids[j]] * 1.05851325 + 0.72349796
-                )
+            data.ctrl[act_ids[j + 1]] = data.ctrl[act_ids[j]] * 1.05851325 + 0.72349796
 
         mujoco.mj_step(model, data)
         viewer.sync()

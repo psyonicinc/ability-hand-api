@@ -19,14 +19,14 @@
 
       <!--Visual Meshes-->
       <default class="visual_ah">
-        <geom mass="0" type="mesh" contype="0" conaffinity="0" group="1" rgba="0.1 0.1 0.1 1"/>
+        <geom mass="0" type="mesh" contype="0" conaffinity="0" group="2" rgba="0.1 0.1 0.1 1"/>
 
         <default class="wrist_visual">
           <geom mesh="wrist_mesh" rgba ="0 0 0 1"/>
         </default>
 
         <default class="palm_visual">
-          <geom pos="-0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 -0.999021 -2.70192e-05" mesh="palm_mesh"/>
+          <geom pos="0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 0.999021 2.70192e-05" mesh="palm_mesh"/>
         </default>
 
         <default class="finger_visual">
@@ -41,11 +41,11 @@
           </default>
 
           <default class="thumb_metacarp_vis">
-              <geom pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0" mesh="thumb_metacarp_mesh"/>
+            <geom pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" mesh="thumb_metacarp_mesh"/>
           </default>
 
           <default class="thumb_prox_dist_vis">
-            <geom pos="0.0651867 0.0233402 0.00393483" quat="3.21978e-07 -0.985259 -0.171069 5.59046e-08" mesh="thumb_prox_dist_mesh"/>
+            <geom pos="0.0651867 0.0233402 -0.00393483" quat="3.21978e-07 0.985259 0.171069 5.59046e-08" mesh="thumb_prox_dist_mesh"/>
           </default>
         </default>
       </default>
@@ -53,29 +53,29 @@
 
       <!--Collisions Primitives-->
       <default class="collisions_ah">
-        <geom rgba="1 1 1 0.2" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
+        <geom type="mesh" rgba="1 1 1 1" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
         <default class="wrist_collision">
           <geom type="cylinder" pos="0 0 0.0025" size="0.018 0.0025" mass="0.01591"/>
         </default>
 
         <default class="palm_collision">
-          <geom type="ellipsoid" quat="0.996 0.155 0 0" pos="0 0 0.05" size="0.037 0.012 0.055" solref=".01 1" solimp=".98 .995 .0005" mass="0.3592"/>
+          <geom pos="0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 0.999021 2.70192e-05" mesh="palm_hull_mesh" solref=".01 1" solimp=".98 .995 .0005" mass="0.3592"/>
         </default>
 
         <default class="proximal_collision">
-          <geom type="capsule" quat="0.707 0 0.707 0" pos="0.015 0.002 0" size="0.007 0.017" mass="0.00636"/>
+          <geom pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" mesh="finger_prox_hull_mesh" mass="0.00636"/>
         </default>
 
         <default class="int_dist_collision">
-          <geom type="capsule" pos="0.018 -0.012 0" euler="1.5708 -2.0943951023931953 0" size="0.007 0.017" mass="0.006"/>
+          <geom pos="0.0091241 0 0" mesh="finger_int_dist_hull_mesh" mass="0.006"/>
         </default>
 
         <default class="thumb_metacarp_collision">
-          <geom type="capsule" pos="0.013 0 0.005" quat="0.9238795325112866 0.1 0.6526834323650898 0" size="0.010 0.013" mass="0.002"/>
+          <geom pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" mesh="thumb_metacarp_hull_mesh" mass="0.002"/>
         </default>
 
         <default class="thumb_prox_collision">
-          <geom type="capsule" pos="0.027 0.01 0.005" euler="1.6708 -1.2 0" size="0.010 0.027" mass="0.06"/>
+          <geom pos="0.0651867 0.0233402 -0.00393483" quat="3.21978e-07 0.985259 0.171069 5.59046e-08" mesh="thumb_prox_dist_hull_mesh" mass="0.06"/>
         </default>
       </default>
 
@@ -103,8 +103,30 @@
           <joint range="-2.09 0"/>
           <position ctrlrange="-2.09 0"/>
         </default>
-
       </default>
+
+      <!--FSR--> 
+      <default class="fsr"> 
+        <site type="box" size="0.005 0.003 0.003" rgba="0 0 1 0.3"/>
+        <default class="fsr_0">
+          <site pos="0.02936 -0.01697 -0.00435" quat="-0.00000 0.99573 -0.09227 -0.00000"/>
+        </default>
+        <default class="fsr_1">
+          <site pos="0.02961 -0.01394 0.00000" quat="-0.70237 0.70237 -0.08170 0.08170"/>
+        </default>
+        <default class="fsr_2">
+          <site pos="0.02936 -0.01697 0.00435" quat="0.99573 -0.00000 0.00000 -0.09227"/>
+        </default>
+        <default class="fsr_3">
+          <site size="0.005 0.003 0.0035" pos="0.01472 -0.01100 -0.00435" quat="-0.00000 0.95953 -0.28160 -0.00000"/>
+        </default>
+        <default class="fsr_4">
+          <site size="0.005 0.003 0.0035" pos="0.01472 -0.01099 0.00435" quat="0.95938 -0.00000 0.00000 -0.28211"/>
+        </default>
+        <default class="fsr_5">
+          <site size="0.005 0.003 0.0025" pos="0.03704 -0.01785 0.00000" quat="-0.16551 0.68746 0.16551 0.68746"/>
+        </default>
+      </default>  
     </default>
   </default>
 
@@ -117,11 +139,16 @@
     <mesh file="z1_Link05.stl"/>
     <mesh file="z1_Link06.stl"/>
     <mesh name="wrist_mesh" file="wristmesh.STL"/>
-    <mesh name="palm_mesh" file="FB_palm_ref_MIR.STL"/>
+    <mesh name="palm_mesh" file="FB_palm_ref.STL"/>
+    <mesh name="palm_hull_mesh" file="palm_hull.STL"/>
     <mesh name="finger_prox_mesh" file="idx-F1.STL"/>
+    <mesh name="finger_prox_hull_mesh" file="idx-F1-hull.STL"/>
     <mesh name="finger_int_dist_mesh" file="idx-F2-Lg.STL"/>
-    <mesh name="thumb_metacarp_mesh" file="thumb-F1-MIR.STL"/>
+    <mesh name="finger_int_dist_hull_mesh" file="idx-F2-Lg-hull.STL"/>
+    <mesh name="thumb_metacarp_mesh" file="thumb-F1.STL"/>
+    <mesh name="thumb_metacarp_hull_mesh" file="thumb-F1-hull.STL"/>
     <mesh name="thumb_prox_dist_mesh" file="thumb-F2.STL"/>
+    <mesh name="thumb_prox_dist_hull_mesh" file="thumb-F2-hull.STL"/>
   </asset>
 
   <worldbody>
@@ -167,68 +194,92 @@
                   <joint name="joint6" axis="1 0 0" range="-2.79253 2.79253"/>
                   <geom class="visual" mesh="z1_Link06"/>
                   <geom size="0.0325 0.0255" pos="0.0255 0 0" quat="1 0 1 0" class="collision"/>
-                  <body name="hand" pos="0.051 0 0" quat="1 0 1 0">
-                   <joint name="base_joint"/>
-                   <geom class="wrist_visual"/>
-                   <geom class="wrist_collision"/>
-                   <geom class="palm_visual"/>
-                   <geom class="palm_collision"/>
-                   <!--Index-->
-                   <body name="index_prox" pos="-0.0279216 -0.00927034 0.0958706" quat="0.685906 0.0469401 -0.714459 -0.129917">
-                       <joint class="finger_mcp_joint" name="index_mcp"/>
-                       <geom class="proximal_collision"/>
-                       <geom class="finger_prox_vis"/>
-                       <body name="index_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
-                         <joint class="finger_pip_joint" name="index_pip"/>
-                         <geom class="int_dist_collision"/>
-                         <geom class="finger_int_dist_vis"/>
-                       </body>
-                   </body>
-                   <!--Middle-->
-                   <body name="middle_prox" pos="-0.00841718 -0.0115172 0.0990634" quat="0.704562 0.0715738 -0.698395 -0.103508">
-                       <joint class="finger_mcp_joint" name="middle_mcp"/>
-                       <geom class="proximal_collision"/>
-                       <geom class="finger_prox_vis"/>
-                       <body name="middle_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
-                         <joint class="finger_pip_joint" name="middle_pip"/>
-                         <geom class="int_dist_collision"/>
-                         <geom class="finger_int_dist_vis"/>
-                       </body>
-                   </body>
-                   <!--Ring-->
-                   <body name="ring_prox" pos="0.0117529 -0.0103946 0.0967038" quat="0.721351 0.0986547 -0.681173 -0.0769649">
-                       <joint class="finger_mcp_joint" name="ring_mcp"/>
-                       <geom class="proximal_collision"/>
-                       <geom class="finger_prox_vis"/>
-                       <body name="ring_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
-                         <joint class="finger_pip_joint" name="ring_pip"/>
-                         <geom class="int_dist_collision"/>
-                         <geom class="finger_int_dist_vis"/>
-                       </body>
-                   </body>
-                   <!--Pinky-->
-                   <body name="pinky_prox" pos="0.0308633 -0.00716283 0.0907346" quat="0.719226 0.122363 -0.681748 -0.0544096">
-                       <joint class="finger_mcp_joint" name="pinky_mcp"/>
-                       <geom class="proximal_collision"/>
-                       <geom class="finger_prox_vis"/>
-                       <body name="pinky_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
-                         <joint class="finger_pip_joint" name="pinky_pip"/>
-                         <geom class="int_dist_collision"/>
-                         <geom class="finger_int_dist_vis"/>
-                       </body>
-                   </body>
-                   <!--Thumb-->
-                   <body name="thumb_metacarp" pos="-0.0240477 0.00378125 0.0323296" quat="-0.0947972 0.0440301 -0.00419696 0.994514">
-                     <joint class="thumb_cmc_joint" name="thumb_cmc"/>
-                     <geom class="thumb_metacarp_vis"/>
-                     <geom class="thumb_metacarp_collision"/>
-                     <body name="thumb_mcp" pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0">
-                       <joint class="thumb_mcp_joint" name="thumb_mcp"/>
-                       <geom class="thumb_prox_collision"/>
-                       <geom class="thumb_prox_dist_vis"/>
-                     </body>
-                   </body>
-                 </body>
+                  <body name="ability_hand" pos="0.051 0 0" quat="1 0 1 0" childclass="ability_hand">
+                    <geom class="wrist_visual"/>
+                    <geom class="wrist_collision"/>
+                    <geom class="palm_visual"/>
+                    <geom class="palm_collision"/>
+                    <!--Index-->
+                    <body name="index_prox" pos="0.0279216 -0.00927034 0.0958706" quat="-0.714459 -0.129917 0.685906 0.0469401">
+                        <joint class="finger_mcp_joint" name="index_mcp"/>
+                        <geom class="proximal_collision"/>
+                        <geom class="finger_prox_vis"/>
+                        <body name="index_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                          <site class="fsr_0" name="fsr0"/>
+                          <site class="fsr_1" name="fsr1"/>
+                          <site class="fsr_2" name="fsr2"/>
+                          <site class="fsr_3" name="fsr3"/>
+                          <site class="fsr_4" name="fsr4"/>
+                          <site class="fsr_5" name="fsr5"/>
+                          <joint class="finger_pip_joint" name="index_pip"/>
+                          <geom class="int_dist_collision"/>
+                          <geom class="finger_int_dist_vis"/>
+                        </body>
+                    </body>
+                    <!--Middle-->
+                    <body name="middle_prox" pos="0.00841718 -0.0115172 0.0990634" quat="-0.698395 -0.103508 0.704562 0.0715738">
+                        <joint class="finger_mcp_joint" name="middle_mcp"/>
+                        <geom class="proximal_collision"/>
+                        <geom class="finger_prox_vis"/>
+                        <body name="middle_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                          <joint class="finger_pip_joint" name="middle_pip"/>
+                          <site class="fsr_0" name="fsr6"/>
+                          <site class="fsr_1" name="fsr7"/>
+                          <site class="fsr_2" name="fsr8"/>
+                          <site class="fsr_3" name="fsr9"/>
+                          <site class="fsr_4" name="fsr10"/>
+                          <site class="fsr_5" name="fsr11"/>
+                          <geom class="int_dist_collision"/>
+                          <geom class="finger_int_dist_vis"/>
+                        </body>
+                    </body>
+                    <!--Ring-->
+                    <body name="ring_prox" pos="-0.0117529 -0.0103946 0.0967038" quat="-0.681173 -0.0769649 0.721351 0.0986547">
+                        <joint class="finger_mcp_joint" name="ring_mcp"/>
+                        <geom class="proximal_collision"/>
+                        <geom class="finger_prox_vis"/>
+                        <body name="ring_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                          <joint class="finger_pip_joint" name="ring_pip"/>
+                          <site class="fsr_0" name="fsr12"/>
+                          <site class="fsr_1" name="fsr13"/>
+                          <site class="fsr_2" name="fsr14"/>
+                          <site class="fsr_3" name="fsr15"/>
+                          <site class="fsr_4" name="fsr16"/>
+                          <site class="fsr_5" name="fsr17"/>
+                          <geom class="int_dist_collision"/>
+                          <geom class="finger_int_dist_vis"/>
+                        </body>
+                    </body>
+                    <!--Pinky-->
+                    <body name="pinky_prox" pos="-0.0308633 -0.00716283 0.0907346" quat="-0.681748 -0.0544096 0.719226 0.122363" >
+                        <joint class="finger_mcp_joint" name="pinky_mcp"/>
+                        <geom class="proximal_collision"/>
+                        <geom class="finger_prox_vis"/>
+                        <body name="pinky_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                          <joint class="finger_pip_joint" name="pinky_pip"/>
+                          <site class="fsr_0" name="fsr18"/>
+                          <site class="fsr_1" name="fsr19"/>
+                          <site class="fsr_2" name="fsr20"/>
+                          <site class="fsr_3" name="fsr21"/>
+                          <site class="fsr_4" name="fsr22"/>
+                          <site class="fsr_5" name="fsr23"/>
+                          <geom class="int_dist_collision"/>
+                          <geom class="finger_int_dist_vis"/>
+                        </body>
+                    </body>
+                    <!--Thumb-->
+                    <body name="thumb_metacarp" pos="0.0240477 0.00378125 0.0323296" quat="-0.00419696 0.994514 -0.0947972 0.0440301">
+                      <joint class="thumb_cmc_joint" name="thumb_cmc"/>
+                      <geom class="thumb_metacarp_vis"/>
+                      <geom class="thumb_metacarp_collision"/>
+                      <body name="thumb_mcp" pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0">
+
+                        <joint class="thumb_mcp_joint" name="thumb_mcp"/>
+                        <geom class="thumb_prox_collision"/>
+                        <geom class="thumb_prox_dist_vis"/>
+                      </body>
+                    </body>
+                  </body>
                 </body>
               </body>
             </body>
@@ -237,6 +288,33 @@
       </body>
     </body>
   </worldbody>
+
+  <sensor>
+    <touch site="fsr0"/>
+    <touch site="fsr1"/>
+    <touch site="fsr2"/>
+    <touch site="fsr3"/>
+    <touch site="fsr4"/>
+    <touch site="fsr5"/>
+    <touch site="fsr6"/>
+    <touch site="fsr7"/>
+    <touch site="fsr8"/>
+    <touch site="fsr9"/>
+    <touch site="fsr10"/>
+    <touch site="fsr11"/>
+    <touch site="fsr12"/>
+    <touch site="fsr13"/>
+    <touch site="fsr14"/>
+    <touch site="fsr15"/>
+    <touch site="fsr16"/>
+    <touch site="fsr17"/>
+    <touch site="fsr18"/>
+    <touch site="fsr19"/>
+    <touch site="fsr20"/>
+    <touch site="fsr21"/>
+    <touch site="fsr22"/>
+    <touch site="fsr23"/>
+  </sensor>
 
   <actuator>
     <general class="z1" name="motor1" joint="joint1" ctrlrange="-2.61799 2.61799"/>
@@ -259,6 +337,6 @@
   </actuator>
 
   <keyframe>
-    <key name="home" qpos="0 0.785 -0.261 -0.523 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0.785 -0.261 -0.523 0 0 0 0 0 0 0 0 0 0 0 0"/>
+    <key name="home" qpos="0 0.785 -0.261 -0.523 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0.785 -0.261 -0.523 0 0 0 0 0 0 0 0 0 0 0 0"/>
   </keyframe>
 </mujoco>
