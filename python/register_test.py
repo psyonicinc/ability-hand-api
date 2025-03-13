@@ -42,27 +42,46 @@ abh = AbilityHandSerialClient(baudrate=460800)
 abh.reply_mode = 2  # 1, 2, or 3
 abh.create_read_thread()
 
+index = [3000, 14, 1, 18, 1000, 14, 1, 1773, 4, 3546]
+middle = [3, 4, 1, 21, 0, 10, 1, 1773, 4, 3546]
+ring = [3, 4, 1, 21, 0, 10, 1, 1773, 4, 3546]
+pinky = [3000, 14, 1, 18, 1000, 14, 1, 1773, 4, 3546]
+thumbflexor = [3, 4, 1, 21, 0, 10, 1, 1773, 4, 3546]
+thumbrotator = [500, 0, 5, 3, 14, 6, 1, 1773, 8, 3546]
+gains = [index,middle,ring,pinky,thumbflexor,thumbrotator]
 
 #read 
 size = 10   #number of elements per finger
-channel = 5	#thumb rotator
-enumval = 0 #proportional gain
-print(bytearray_to_hex(write_uart_register(channel*size+enumval+1, 1000)))
-rv = read_uart_register(channel*size+enumval+1)
-print(bytearray_to_hex(rv))
-v = struct.unpack("<i", bytearray(rv[4:8]))[0]
-print("reconstructed value:", v)
+channels = [3, 5]
+for channel in channels:
+	for enumval in range(0,10):
+		addr = channel*size+enumval+1
+		
+		rv = read_uart_register(channel*size+enumval+1)
+		v = struct.unpack("<i", bytearray(rv[4:8]))[0]
+		print("Initial value:", v)
+
+		rc = write_uart_register(addr, gains[channel][enumval])
+		v = struct.unpack("<i", bytearray(rc[0:4]))[0]
+		if(v != 0x4e11fea4):
+			print("failed to write")
+		# else:
+		# 	print("Wrote addr", hex(addr), "success")
+
+		rv = read_uart_register(channel*size+enumval+1)
+		v = struct.unpack("<i", bytearray(rv[4:8]))[0]
+		print("Final value:", v)
 
 
 #read the 64 bit unique id as two 32bit words from the hand over UART
 rv = read_uart_register(61)
-print(bytearray_to_hex(rv))
+# print(bytearray_to_hex(rv))
 v = struct.unpack("<i", bytearray(rv[4:8]))[0]
-print("reconstructed value:", v)
+print("reconstructed value:", hex(v))
 rv = read_uart_register(62)
-print(bytearray_to_hex(rv))
+# print(bytearray_to_hex(rv))
 v = struct.unpack("<i", bytearray(rv[4:8]))[0]
-print("reconstructed value:", v)
+print("reconstructed value:", hex(v))
 
 
 abh.close()
