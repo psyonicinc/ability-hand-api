@@ -5,7 +5,7 @@
     <default class="ability_hand">
 
       <!--Visual Meshes-->
-      <default class="visual">
+      <default class="visual_ah">
         <geom mass="0" type="mesh" contype="0" conaffinity="0" group="1" rgba="0.1 0.1 0.1 1"/>
 
         <default class="wrist_visual">
@@ -39,7 +39,7 @@
       <!--/visual-->
 
       <!--Collisions Primitives-->
-      <default class="collisions">
+      <default class="collisions_ah">
         <geom rgba="1 1 1 1" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
         <default class="wrist_collision">
           <geom type="cylinder" pos="0 0 0.0025" size="0.018 0.0025" mass="0.01591"/>
