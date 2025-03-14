@@ -1,5 +1,5 @@
 <mujoco model="ah scene">
-  <include file="./hands/abh_left_large.xml"/>
+  <include file="./hands/abh_right_large.xml"/>
 
   <statistic center="0 0 0.1" extent="0.6"/>
 
