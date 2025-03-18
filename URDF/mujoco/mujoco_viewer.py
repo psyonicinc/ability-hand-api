@@ -25,8 +25,6 @@ actuators = [
     "thumb_flexor_actuator",
     "thumb_rotator_actuator",
 ]
-
-# Mimic Joints
 act_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in actuators]
 
 # Create a viewer
