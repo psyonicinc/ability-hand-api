@@ -27,6 +27,10 @@
             <geom pos="0.0091241 0 0" mesh="finger_int_dist_mesh"/>
           </default>
 
+          <default class="pinky_int_dist_vis">
+            <geom pos="0.0091241 0 0" mesh="pinky_int_dist_mesh"/>
+          </default>
+
           <default class="thumb_metacarp_vis">
             <geom pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" mesh="thumb_metacarp_mesh"/>
           </default>
@@ -51,6 +55,10 @@
 
         <default class="proximal_collision">
           <geom pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" mesh="finger_prox_hull_mesh" mass="0.00636"/>
+        </default>
+
+        <default class="pinky_int_dist_collision">
+          <geom pos="0.0091241 0 0" mesh="pinky_int_dist_hull_mesh" mass="0.006"/>
         </default>
 
         <default class="int_dist_collision">
@@ -144,6 +152,8 @@
     <mesh name="finger_prox_hull_mesh" file="idx-F1-hull.STL"/>
     <mesh name="finger_int_dist_mesh" file="idx-F2-Lg.STL"/>
     <mesh name="finger_int_dist_hull_mesh" file="idx-F2-Lg-hull.STL"/>
+    <mesh name="pinky_int_dist_mesh" file="idx-F2.STL"/>
+    <mesh name="pinky_int_dist_hull_mesh" file="idx-F2-hull.STL"/>
     <mesh name="thumb_metacarp_mesh" file="thumb-F1.STL"/>
     <mesh name="thumb_metacarp_hull_mesh" file="thumb-F1-hull.STL"/>
     <mesh name="thumb_prox_dist_mesh" file="thumb-F2.STL"/>
@@ -215,14 +225,14 @@
           <geom class="finger_prox_vis"/>
           <body name="pinky_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
             <joint class="finger_pip_joint" name="pinky_pip"/>
-            <site class="fsr_0" name="fsr18"/>
-            <site class="fsr_1" name="fsr19"/>
-            <site class="fsr_2" name="fsr20"/>
-            <site class="fsr_3" name="fsr21"/>
-            <site class="fsr_4" name="fsr22"/>
-            <site class="fsr_5" name="fsr23"/>
-            <geom class="int_dist_collision"/>
-            <geom class="finger_int_dist_vis"/>
+            <site class="fsr_0" name="fsr18" pos="0.02556 -0.01391 -0.00435" quat="0.00000 0.99797 -0.06376 -0.00000"/>
+            <site class="fsr_1" name="fsr19" pos="0.02517 -0.01110 -0.00000" quat="-0.70527 0.70527 -0.05099 0.05099"/>
+            <site class="fsr_2" name="fsr20" pos="0.02556 -0.01391 0.00435" quat="0.99797 -0.00000 0.00000 -0.06376"/>
+            <site class="fsr_3" name="fsr21" pos="0.01310 -0.00943 -0.00435" quat="-0.00000 0.96544 -0.26063 0.00000"/>
+            <site class="fsr_4" name="fsr22" pos="0.01310 -0.00943 0.00435" quat="0.96544 -0.00000 0.00000 -0.26063"/>
+            <site class="fsr_5" name="fsr23" pos="0.03142 -0.01438 0.00000" quat="-0.14469 0.69214 0.14469 0.69214" size="0.005 0.003 0.00385"/>
+            <geom class="pinky_int_dist_collision"/>
+            <geom class="pinky_int_dist_vis"/>
           </body>
       </body>
       <!--Thumb-->
