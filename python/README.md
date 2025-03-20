@@ -43,7 +43,7 @@ to be enabled.  From the PSYONIC app select
 Scan ➡️ SELECT HAND ➡️ Gear Icon ⚙️
 (Top Right) ➡️ Troubleshoot ➡️ Developer Mode
 
-and issue the following comands 
+and issue the following commands 
 individually.
 
 We16  
@@ -138,14 +138,14 @@ commands for reading values [here](docs/Hand.md)
 #### Set and Send Duty Targets
 
 You can also pass a single argument to a set command, and it will apply it to each
-of the fingers.  For example to set a 10% duty to all fingers, issue.  Valid 
-duty range is -100 to 100.
+of the fingers.  For example to set a -10% duty (valid range is [-100,100]) to 
+all fingers, issue.
 
 ```client.set_duty(-10)```
 
-Notice how we any passed one argument. Any of the set commands can take either 
-one argument or will take an array of six values as seen above.  If you pass a 
-single value it will apply it to all fingers equally.
+Any of the set commands can take either one argument or will take an array of 
+six values as seen above.  If you pass a single value it will apply it to all 
+fingers equally.
 
 ---
 
