@@ -15,6 +15,7 @@ class AbstractPacket:
     """
 
     def __init__(self):
+        self.valid = False  # If frame was was properly parsed this becomes true
         self.pos = [0] * 6
         self.vel = [0] * 6
         self.cur = [0] * 6
@@ -77,6 +78,7 @@ class Type1Packet(AbstractPacket):
             self._convert_pos()
             self._convert_cur()
             self._convert_fsr()
+            self.valid = True
         else:
             if config.write_log:
                 logging.warning(f"Bad sized Type 1 Frame: {buffer}")
@@ -118,6 +120,7 @@ class Type2Packet(AbstractPacket):
             self._convert_pos()
             self._convert_vel()
             self._convert_fsr()
+            self.valid = True
         else:
             if config.write_log:
                 logging.warning(f"Bad sized Type 2 Frame: {buffer}")
@@ -152,6 +155,7 @@ class Type3Packet(AbstractPacket):
             self._convert_pos()
             self._convert_vel()
             self._convert_cur()
+            self.valid = True
         else:
             if config.write_log:
                 logging.warning(f"Bad size type 3 frame: {buffer}")
