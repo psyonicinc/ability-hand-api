@@ -287,7 +287,7 @@
                       <geom mesh="link7_3" material="black" class="visual"/>
                       <geom name="fr3_link7_collision" class="collision" mesh="link7_coll"/>
                       <site name="attachment_site" pos="0 0 0.107"/>
-                      <body name="ability_hand" pos="0 0 0.11" euler="0 0 -2.3" childclass="ability_hand">
+                      <body name="ability_hand" pos="0 0 0.107" euler="0 0 -2.3" childclass="ability_hand">
                         <geom class="wrist_visual"/>
                         <geom name="wrist_coll" class="wrist_collision"/>
                         <geom class="palm_visual"/>
