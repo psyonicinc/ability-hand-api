@@ -26,7 +26,7 @@ def __init__(port: str = None,
              read_thread: bool = True,
              write_thread: bool = True,
              auto_start_threads: bool = True,
-             simulated: str = "",
+             simulated: bool = False,
              rate_hz=500)
 ```
 
@@ -57,7 +57,7 @@ read and write threads, you will need to create your own.
 - `read_thread` - Creates a thread for parsing incoming bytes / status and reads at 1/(2*rate_hz) intervals
 - `write_thread` - Creates a thread for writing self._command at 1/rate_hz intervals
 - `auto_start_threads` - Automatically calls self.start_threads if True
-- `simulated` - Argument for using various simulators in the future
+- `simulated` - Will create a virtual serial connection
 - `rate_hz` - Rate argument that controls reads and write intervals.  If you wish to increase this you will need to increase the hands baud rate typically 921600 can handle a rate of 750 and 1000000 w/ RS485 can handle a rate of 1000
 
 <a id="ah_serial_client.AHSerialClient.start_threads"></a>
@@ -90,7 +90,7 @@ Args
 #### send\_command
 
 ```python
-def send_command(command: bytearray | bytes | List[int] = None) -> None
+def send_command(command: None | bytearray | bytes | List[int] = None) -> None
 ```
 
 Manually send command using the serial connection, if no command given
@@ -187,7 +187,7 @@ If passing an array argument use the following index map:
 #### set\_grip
 
 ```python
-def set_grip(grip: int, speed=0xFF)
+def set_grip(grip: int, speed=0xFF, addr=None)
 ```
 
 Set grip command, see API for different grip commands
@@ -198,6 +198,7 @@ Set grip command, see API for different grip commands
 - `speed` - When this value is between 1 and 254, the finger period will
   vary linearly between 2 seconds and .29 seconds. When this byte is 255,
   the finger period will be set to .2 seconds.
+- `addr` - Hand address, will use default if not passed
 
 <a id="ah_serial_client.AHSerialClient.print_stats"></a>
 

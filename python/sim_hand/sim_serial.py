@@ -5,8 +5,8 @@ class Serial:
         self.buffer = []  # Unlimited buffer size allowed
 
     def read(self, read_size):
-        return_buff = self.buffer[0 : read_size]
-        self.buffer = self.buffer[read_size :]
+        return_buff = self.buffer[0:read_size]
+        self.buffer = self.buffer[read_size:]
         return return_buff
 
     def write(self, msg: bytearray):

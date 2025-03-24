@@ -25,7 +25,10 @@ actuators = [
     "thumb_flexor_actuator",
     "thumb_rotator_actuator",
 ]
-act_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in actuators]
+act_ids = [
+    mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+    for i in actuators
+]
 if -1 in act_ids:
     print("Could not find ability hand joints in scene")
     exit(1)

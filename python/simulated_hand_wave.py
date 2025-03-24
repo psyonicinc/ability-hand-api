@@ -5,9 +5,13 @@ import os
 from sim_hand.mujoco import AHMujocoSim
 from ah_wrapper.ah_serial_client import AHSerialClient
 
+
 def main():
     client = AHSerialClient(simulated=True, write_thread=False)
-    sim = AHMujocoSim(hand=client.hand, scene=os.path.join('mujoco', 'unitree_z1', 'scene.xml'))
+    sim = AHMujocoSim(
+        hand=client.hand,
+        scene=os.path.join("mujoco", "unitree_z1", "scene.xml"),
+    )
     try:
         pos = [30, 30, 30, 30, 30, -30]
         while True:
@@ -23,6 +27,7 @@ def main():
     finally:
         client.close()
         sim.mujuco_thread.join()
+
 
 if __name__ == "__main__":
     main()

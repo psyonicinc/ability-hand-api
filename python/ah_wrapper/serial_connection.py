@@ -48,7 +48,7 @@ class SerialConnectionBase(ABC):
     @abstractmethod
     def _connect(self, port: str, baud_rate: int):
         pass
-    
+
     def read(self, read_size: int = 512) -> bytes | None:
         try:
             with self.rw_lock:
@@ -66,7 +66,7 @@ class SerialConnectionBase(ABC):
         except Exception as e:
             if config.write_log:
                 logging.warning(e)
-                
+
     def close(self) -> None:
         try:
             with self.rw_lock:
@@ -202,6 +202,3 @@ class SerialConnection(SerialConnectionBase):
                         logging.info(e)
 
         return None, None  # No connection found
-
-
-

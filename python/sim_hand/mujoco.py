@@ -9,7 +9,7 @@ from pygments.lexers.csound import newline
 
 
 class AHMujocoSim:
-    def __init__(self, scene: str, hand: Hand, simulated_feedback = True):
+    def __init__(self, scene: str, hand: Hand, simulated_feedback=True):
         self.hand = hand
         self.simulated_feedback = simulated_feedback
         self.mujuco_thread = threading.Thread(target=self.mujoco_loop)
@@ -30,11 +30,14 @@ class AHMujocoSim:
         # Load the XML model
         self.model = mujoco.MjModel.from_xml_path(scene)
         self.data = mujoco.MjData(self.model)
-        self.act_ids = [mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in actuators]
+        self.act_ids = [
+            mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+            for i in actuators
+        ]
         if -1 in self.act_ids:
             print("Cannot find all AH actuators in scene")
             exit(1)
-        self.controllable_ids = [self.act_ids[i] for i in range(0,7,2)]
+        self.controllable_ids = [self.act_ids[i] for i in range(0, 7, 2)]
         self.controllable_ids.append(self.act_ids[-2])
         self.controllable_ids.append(self.act_ids[-1])
 
@@ -62,9 +65,11 @@ class AHMujocoSim:
                 # position_error =  radians(target_position[i]) - current_position[i]
                 # control_signal = self.Kp * position_error
                 # TODO I imagine the built in position controller is conflicting with this controller, revisit in future
-                #self.data.ctrl[self.controllable_ids[i]] = control_signal
+                # self.data.ctrl[self.controllable_ids[i]] = control_signal
                 # TODO just set to target position always instead for now
-                self.data.ctrl[self.controllable_ids[i]] = radians(target_position[i])
+                self.data.ctrl[self.controllable_ids[i]] = radians(
+                    target_position[i]
+                )
             elif target_velocity:
                 # velocity_error = radians(target_velocity[i]) - current_velocity[i]
                 # control_signal = self.Kv * velocity_error
@@ -73,15 +78,14 @@ class AHMujocoSim:
     def mujoco_loop(self):
         with mujoco.viewer.launch_passive(self.model, self.data) as viewer:
             while viewer.is_running():
-
                 self.controller()
 
                 # Mimic L1 joints -> L2 joints
                 for j in range(0, 7, 2):
                     self.data.ctrl[self.act_ids[j + 1]] = (
-                            self.data.ctrl[self.act_ids[j]] * 1.05851325 + 0.72349796
+                        self.data.ctrl[self.act_ids[j]] * 1.05851325
+                        + 0.72349796
                     )
 
                 mujoco.mj_step(self.model, self.data)
                 viewer.sync()
-
