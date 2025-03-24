@@ -236,7 +236,7 @@
                     <joint name="joint7" class="size3"/>
                     <geom material="gray" mesh="end_tool"/>
                     <site name="attachment_site"/>
-                    <body name="ability_hand" pos="0 0 0.01" childclass="ability_hand">
+                    <body name="ability_hand" pos="0 0 0" childclass="ability_hand">
                       <geom class="wrist_visual"/>
                       <geom name="wrist_coll" class="wrist_collision"/>
                       <geom class="palm_visual"/>
