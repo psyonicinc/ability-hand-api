@@ -100,7 +100,7 @@ class AHSerialClient:
         self._unstuffer = PPPUnstuff(buffer_size=read_size)
 
         if simulated:
-            from sim_hand.sim_serial_connection import SimSerialConnection
+            from ah_simulators.sim_serial_connection import SimSerialConnection
 
             self._conn = SimSerialConnection(
                 port=port, baud_rate=baud_rate, read_size=read_size

@@ -2,7 +2,7 @@ import time
 from math import sin, pi
 import os
 
-from sim_hand.mujoco import AHMujocoSim
+from ah_simulators.mujoco import AHMujocoSim
 from ah_wrapper.ah_serial_client import AHSerialClient
 
 
@@ -10,7 +10,7 @@ def main():
     client = AHSerialClient(simulated=True, write_thread=False)
     sim = AHMujocoSim(
         hand=client.hand,
-        scene=os.path.join("mujoco", "unitree_z1", "scene.xml"),
+        scene=os.path.join("ah_simulators/mujoco", "unitree_z1", "scene.xml"),
     )
     try:
         pos = [30, 30, 30, 30, 30, -30]

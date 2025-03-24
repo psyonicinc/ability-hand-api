@@ -2,7 +2,7 @@ import struct
 import logging
 
 import config
-from .functions import DEGREES_CONSTANT_INV, VELOCITY_CONSTANT_INV, C
+from ah_wrapper.functions import DEGREES_CONSTANT_INV, VELOCITY_CONSTANT_INV, C
 
 V_CONSTANT = 3.3 / 4096.0
 C_1 = 121591.0

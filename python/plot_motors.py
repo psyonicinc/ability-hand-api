@@ -2,7 +2,6 @@ import time
 import threading
 from math import pi, sin
 
-from ah_wrapper.ah_api import create_pos_msg
 from ah_wrapper.ah_serial_client import AHSerialClient
 from plotting.plots import RealTimePlotMotors
 

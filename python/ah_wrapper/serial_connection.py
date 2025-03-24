@@ -14,7 +14,7 @@ import config
 
 
 class SerialConnectionBase(ABC):
-    """Serial Connection Interface so we can simulate it in sim_hand and abstract
+    """Serial Connection Interface so we can simulate it in simulators and abstract
     away the try and excepts involved with reading and writing to a serial connection
     """
 

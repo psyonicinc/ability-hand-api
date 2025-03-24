@@ -1,12 +1,13 @@
-## Ability Hand - Mujoco 
+## Ability Hand Simulators
+
+### Mujoco 
 
 <div style="text-align: center;">
     <img src="./images/unitree_z1.png" alt="Ability Hand on Unitree Z1" width="400" />
 </div>
   
 
-The follow repository offers a mujoco XML description of all four different 
-types of Ability Hands.  Collisions are detected using a simplified version of
+Inlcuded in the API are a collection of Mujoco scenes in XML format.  Collisions are detected using a simplified version of
 meshes of the hand and inertia is calcuated by applying the known masses to the
 simplified meshes.  The touch sensors of the Ability Hand are also simulated.  
 To launch the hand alone use

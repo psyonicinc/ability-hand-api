@@ -174,3 +174,6 @@ cython_debug/
 hand_wave_vel.py
 # Voltage example
 hand_wave_vol.py
+
+# Mujoco Logs
+*MUJOCO_LOG.TXT
