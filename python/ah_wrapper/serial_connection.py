@@ -48,15 +48,32 @@ class SerialConnectionBase(ABC):
     @abstractmethod
     def _connect(self, port: str, baud_rate: int):
         pass
+    
+    def read(self, read_size: int = 512) -> bytes | None:
+        try:
+            with self.rw_lock:
+                msg = self._serial.read(read_size)
+            return msg
+        except Exception as e:
+            if config.write_log:
+                logging.warning(e)
 
-    def _read(self, read_size: int):
-        pass
-
-    def _write(self, msg: bytes | bytearray | List[int]):
-        pass
-
-    def _close(self):
-        pass
+    def write(self, msg: bytes | bytearray | List[int]) -> None:
+        try:
+            with self.rw_lock:
+                self._serial.write(msg)
+                self.n_writes += 1
+        except Exception as e:
+            if config.write_log:
+                logging.warning(e)
+                
+    def close(self) -> None:
+        try:
+            with self.rw_lock:
+                self._serial.close()
+        except Exception as e:
+            if config.write_log:
+                logging.warning(e)
 
 
 class SerialConnection(SerialConnectionBase):
@@ -186,28 +203,5 @@ class SerialConnection(SerialConnectionBase):
 
         return None, None  # No connection found
 
-    def read(self, read_size: int = 512) -> bytes | None:
-        try:
-            with self.rw_lock:
-                msg = self._serial.read(read_size)
-            return msg
-        except Exception as e:
-            if config.write_log:
-                logging.warning(e)
 
-    def write(self, msg: bytes | bytearray | List[int]) -> None:
-        try:
-            with self.rw_lock:
-                self._serial.write(msg)
-                self.n_writes += 1
-        except Exception as e:
-            if config.write_log:
-                logging.warning(e)
 
-    def close(self) -> None:
-        try:
-            with self.rw_lock:
-                self._serial.close()
-        except Exception as e:
-            if config.write_log:
-                logging.warning(e)
