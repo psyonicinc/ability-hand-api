@@ -26,15 +26,17 @@ actuators = [
     "thumb_rotator_actuator",
 ]
 act_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in actuators]
+if -1 in act_ids:
+    print("Could not find ability hand joints in scene")
+    exit(1)
 
 # Create a viewer
 with mujoco.viewer.launch_passive(model, data) as viewer:
     while viewer.is_running():
-        if -1 not in act_ids:
-            for j in range(0, 7, 2):
-                data.ctrl[act_ids[j + 1]] = (
-                    data.ctrl[act_ids[j]] * 1.05851325 + 0.72349796
-                )
+        for j in range(0, 7, 2):
+            data.ctrl[act_ids[j + 1]] = (
+                data.ctrl[act_ids[j]] * 1.05851325 + 0.72349796
+            )
 
         mujoco.mj_step(model, data)
         viewer.sync()

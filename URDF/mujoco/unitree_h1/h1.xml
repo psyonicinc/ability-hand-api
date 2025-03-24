@@ -126,7 +126,7 @@
 
       <!--FSR--> 
       <default class="fsr"> 
-        <site type="box" size="0.005 0.003 0.003" rgba="0 0 1 0.3"/>
+        <site type="box" size="0.005 0.003 0.003" rgba="0 0 1 0.3" group="3"/>
         <default class="fsr_0">
           <site pos="0.02936 -0.01697 -0.00435" quat="-0.00000 0.99573 -0.09227 -0.00000"/>
         </default>
