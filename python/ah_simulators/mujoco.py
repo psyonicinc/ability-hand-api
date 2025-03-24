@@ -5,12 +5,12 @@ import mujoco.viewer
 from math import radians
 
 from ah_wrapper.hand import Hand
-from pygments.lexers.csound import newline
 
 
 class AHMujocoSim:
-    def __init__(self, scene: str, hand: Hand, simulated_feedback=True):
+    def __init__(self, scene: str, hand: Hand, left_hand = None, simulated_feedback=True):
         self.hand = hand
+        self.left_hand = left_hand
         self.simulated_feedback = simulated_feedback
         self.mujuco_thread = threading.Thread(target=self.mujoco_loop)
 
@@ -27,7 +27,9 @@ class AHMujocoSim:
             "thumb_flexor_actuator",
             "thumb_rotator_actuator",
         ]
-        # Load the XML model
+        l_actuators = ["l_" + i for i in actuators]
+
+            # Load the XML model
         self.model = mujoco.MjModel.from_xml_path(scene)
         self.data = mujoco.MjData(self.model)
         self.act_ids = [
@@ -37,6 +39,14 @@ class AHMujocoSim:
         if -1 in self.act_ids:
             print("Cannot find all AH actuators in scene")
             exit(1)
+        if left_hand:
+            self.l_act_ids = [mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) for i in l_actuators]
+            if -1  in self.l_act_ids:
+                print("Cannot find all Left AH actuators in scene")
+            self.l_controllable_ids = [self.l_act_ids[i] for i in range(0, 7, 2)]
+            self.l_controllable_ids.append(self.l_act_ids[-2])
+            self.l_controllable_ids.append(self.l_act_ids[-1])
+
         self.controllable_ids = [self.act_ids[i] for i in range(0, 7, 2)]
         self.controllable_ids.append(self.act_ids[-2])
         self.controllable_ids.append(self.act_ids[-1])
@@ -86,6 +96,13 @@ class AHMujocoSim:
                         self.data.ctrl[self.act_ids[j]] * 1.05851325
                         + 0.72349796
                     )
+
+                if self.left_hand:
+                    for j in range(0, 7, 2):
+                        self.data.ctrl[self.l_act_ids[j + 1]] = (
+                                self.data.ctrl[self.l_act_ids[j]] * 1.05851325
+                                + 0.72349796
+                        )
 
                 mujoco.mj_step(self.model, self.data)
                 viewer.sync()
