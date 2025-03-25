@@ -27,6 +27,7 @@ def main():
             l_client.set_position(
                 positions=pos, reply_mode=2
             )  # Update command
+            client.send_command()
             time.sleep(1 / client.rate_hz)
     except KeyboardInterrupt:
         pass
