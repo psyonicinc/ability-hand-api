@@ -15,7 +15,9 @@ class AbstractPacket:
     """
 
     def __init__(self):
-        self.valid = False  # If frame was was properly parsed this becomes true
+        self.valid = (
+            False  # If frame was was properly parsed this becomes true
+        )
         self.pos = [0] * 6
         self.vel = [0] * 6
         self.cur = [0] * 6

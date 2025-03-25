@@ -193,7 +193,9 @@ class AHSerialClient:
                                     )
                                 else:
                                     if config.write_log:
-                                        logging.warning(f"Invalid frame {frame}")
+                                        logging.warning(
+                                            f"Invalid frame {frame}"
+                                        )
                                         logging.warning(f"Invalid msg {msg}")
                             except:
                                 if config.write_log:
