@@ -27,6 +27,8 @@ Examples of popular robots have been integrated from Mujoco's [menagerie](https:
 - UFACTORY xArm7 : ```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/ufactory_xarm7/scene.xml```
 - Unitree G1 : ```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/unitree_g1/scene.xml```
 - Unitree H1 : ```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/unitree_h1/scene.xml```
+- UR5e : ```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/universal_robots_ur5e/scene.xml```
+- UR10e : ```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/universal_robots_ur10e/scene.xml```
 
 ### Integrating with Python Wrapper
 
