@@ -171,33 +171,34 @@ class AHSerialClient:
                     if frame:
                         self.n_reads += 1
                         parsed = parse_packet(byte_array=frame)
-                        try:
-                            if type(parsed) == Type3Packet:
-                                self.hand._update_cur(
-                                    positions=parsed.pos,
-                                    velocity=parsed.vel,
-                                    current=parsed.cur,
-                                )
-                            elif type(parsed) == Type2Packet:
-                                self.hand._update_cur(
-                                    positions=parsed.pos,
-                                    velocity=parsed.vel,
-                                    fsr=parsed.fsr,
-                                )
-                            elif type(parsed) == Type1Packet:
-                                self.hand._update_cur(
-                                    positions=parsed.pos,
-                                    current=parsed.cur,
-                                    fsr=parsed.fsr,
-                                )
-                            else:
+                        if parsed is not None and parsed.valid:
+                            try:
+                                if type(parsed) == Type3Packet:
+                                    self.hand._update_cur(
+                                        positions=parsed.pos,
+                                        velocity=parsed.vel,
+                                        current=parsed.cur,
+                                    )
+                                elif type(parsed) == Type2Packet:
+                                    self.hand._update_cur(
+                                        positions=parsed.pos,
+                                        velocity=parsed.vel,
+                                        fsr=parsed.fsr,
+                                    )
+                                elif type(parsed) == Type1Packet:
+                                    self.hand._update_cur(
+                                        positions=parsed.pos,
+                                        current=parsed.cur,
+                                        fsr=parsed.fsr,
+                                    )
+                                else:
+                                    if config.write_log:
+                                        logging.warning(f"Invalid frame {frame}")
+                                        logging.warning(f"Invalid msg {msg}")
+                            except:
                                 if config.write_log:
-                                    logging.warning(f"Invalid frame {frame}")
-                                    logging.warning(f"Invalid msg {msg}")
-                        except:
-                            if config.write_log:
-                                logging.warning(f"Bad frame {frame}")
-                                logging.warning(f"Bad msg {msg}")
+                                    logging.warning(f"Bad frame {frame}")
+                                    logging.warning(f"Bad msg {msg}")
             time.sleep(
                 self._wait_time_s / 2
             )  # Sleeping on the job sometimes good
