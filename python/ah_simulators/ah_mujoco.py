@@ -31,23 +31,29 @@ class Controller:
         ]
         if -1 in self.act_ids:
             print("Cannot find all AH actuators in scene")
-            
+
         self.controllable_ids = [self.act_ids[i] for i in range(0, 7, 2)]
         self.controllable_ids.append(self.act_ids[-2])
         self.controllable_ids.append(self.act_ids[-1])
-        
+
         self.Kp = 10
         self.Kv = 0.09
-        
+
     def actuate(self, data):
         current_position = [data.qpos[i] for i in self.controllable_ids]
         current_velocity = [data.qvel[i] for i in self.controllable_ids]
         # TODO some reason qpos for rotator and flexor are swapped but data.ctrl is not
-        current_position[-1], current_position[-2] = current_position[-2], current_position[-1]
-        current_velocity[-1], current_velocity[-2] = current_velocity[-2], current_velocity[-1]
+        current_position[-1], current_position[-2] = (
+            current_position[-2],
+            current_position[-1],
+        )
+        current_velocity[-1], current_velocity[-2] = (
+            current_velocity[-2],
+            current_velocity[-1],
+        )
         target_position = self.hand.get_tar_position()
         target_velocity = self.hand.get_tar_velocity()
-        
+
         for i in range(6):
             if target_position:
                 # position_error =  radians(target_position[i]) - current_position[i]
@@ -64,23 +70,25 @@ class Controller:
                 pass
 
         self.mimic_joints(data)
-    
+
     def mimic_joints(self, data):
         for j in range(0, 7, 2):
             data.ctrl[self.act_ids[j + 1]] = (
-                    data.ctrl[self.act_ids[j]] * 1.05851325
-                    + 0.72349796
+                data.ctrl[self.act_ids[j]] * 1.05851325 + 0.72349796
             )
 
+
 class AHMujocoSim:
-    def __init__(self, scene: str, hand: Hand, left_hand = None):
+    def __init__(self, scene: str, hand: Hand, left_hand=None):
         self.mujuco_thread = threading.Thread(target=self.mujoco_loop)
 
         # Load the XML model
         self.model = mujoco.MjModel.from_xml_path(scene)
         self.controller = Controller(hand=hand, model=self.model)
         if left_hand:
-            self.l_controller = Controller(hand=left_hand, left_hand=True, model=self.model)
+            self.l_controller = Controller(
+                hand=left_hand, left_hand=True, model=self.model
+            )
         else:
             self.l_controller = None
         self.data = mujoco.MjData(self.model)

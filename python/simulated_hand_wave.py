@@ -12,7 +12,9 @@ def main():
     sim = AHMujocoSim(
         hand=client.hand,
         left_hand=l_client.hand,
-        scene=os.path.join("ah_simulators", "mujoco_xml", "unitree_g1", "scene.xml"),
+        scene=os.path.join(
+            "ah_simulators", "mujoco_xml", "unitree_g1", "scene.xml"
+        ),
     )
     try:
         pos = [30, 30, 30, 30, 30, -30]
@@ -22,7 +24,9 @@ def main():
                 pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
             pos[5] = -pos[5]
             client.set_position(positions=pos, reply_mode=2)  # Update command
-            l_client.set_position(positions=pos, reply_mode=2)  # Update command
+            l_client.set_position(
+                positions=pos, reply_mode=2
+            )  # Update command
             time.sleep(1 / client.rate_hz)
     except KeyboardInterrupt:
         pass
