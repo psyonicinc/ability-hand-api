@@ -31,8 +31,8 @@ Examples of popular robots have been integrated from Mujoco's [menagerie](https:
 ### Integrating with Python Wrapper
 
 You can control the mujoco hand using the same serial client as the real 
-hand but just make the serial connection virtual by passing the `simulated=True`
-argument for example from the root python directory create a AHMujocoSim class
+hand and make the serial connection virtual by passing the `simulated=True`
+argument. For example from the root python directory create a AHMujocoSim class
 and pass in the Hand class and select a scene.
 
 ```python
@@ -44,6 +44,9 @@ client = AHSerialClient(simulated=True, write_thread="False")
 sim = AHMujocoSim(hand=client.hand, scene='ah_simulators/mujoco_xml/unitree_g1/scene.xml')
 client.set_position(90)
 ```
+
+You can also pass a non-simulated client's hand to the simulator and use it to
+visually represent what the hand is doing.
 
 The mujoco simulator reads the targets from the hand class and applies them to 
 the joints in the simulator.  At this time only position control works, but 
