@@ -2,15 +2,17 @@ import time
 from math import sin, pi
 import os
 
-from ah_simulators.mujoco import AHMujocoSim
+from ah_simulators.ah_mujoco import AHMujocoSim
 from ah_wrapper.ah_serial_client import AHSerialClient
 
 
 def main():
     client = AHSerialClient(simulated=True, write_thread=False)
+    l_client = AHSerialClient(simulated=True, write_thread=False)
     sim = AHMujocoSim(
         hand=client.hand,
-        scene=os.path.join("ah_simulators/mujoco", "unitree_z1", "scene.xml"),
+        left_hand=l_client.hand,
+        scene=os.path.join("ah_simulators", "mujoco_xml", "unitree_g1", "scene.xml"),
     )
     try:
         pos = [30, 30, 30, 30, 30, -30]
@@ -20,7 +22,7 @@ def main():
                 pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
             pos[5] = -pos[5]
             client.set_position(positions=pos, reply_mode=2)  # Update command
-            client.send_command()  # Send command
+            l_client.set_position(positions=pos, reply_mode=2)  # Update command
             time.sleep(1 / client.rate_hz)
     except KeyboardInterrupt:
         pass
