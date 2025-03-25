@@ -53,6 +53,8 @@ You can also run the simulated hand wave example in the root python directory
 
 ```python3 simulated_hand_wave.py```
 
+This is also a great example for how to control two hands at the same time.
+
 ### Simulating Four Bar Linkage
 
 The hand is a 4 bar linkage mechanism forming an 'X'. 4 bar linkages are not 
