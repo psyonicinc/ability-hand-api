@@ -37,7 +37,7 @@ class AHSerialClient:
         read_thread: bool = True,
         write_thread: bool = True,
         auto_start_threads: bool = True,
-        simulated: str = "",
+        simulated: bool = False,
         rate_hz=500,
     ):
         """
@@ -67,7 +67,7 @@ class AHSerialClient:
             read_thread: Creates a thread for parsing incoming bytes / status and reads at 1/(2*rate_hz) intervals
             write_thread: Creates a thread for writing self._command at 1/rate_hz intervals
             auto_start_threads: Automatically calls self.start_threads if True
-            simulated:  Argument for using various simulators in the future
+            simulated:  Will create a virtual serial connection
             rate_hz: Rate argument that controls reads and write intervals.  If you wish to increase this you will need to increase the hands baud rate typically 921600 can handle a rate of 750 and 1000000 w/ RS485 can handle a rate of 1000
         """
         if config.write_log:
@@ -80,10 +80,6 @@ class AHSerialClient:
         # Variables
         self.reply_mode = reply_mode
         self._read_size = read_size
-        # Command is what write thread will send constantly, change with lock using self.set_command
-        self._command = create_pos_msg(
-            reply_mode, positions=[30, 30, 30, 30, 30, -30]
-        )
         self._cmd_lock = threading.Lock()
         self._wait_time_s = 1 / rate_hz
         self._write_thread = None
@@ -104,7 +100,7 @@ class AHSerialClient:
         self._unstuffer = PPPUnstuff(buffer_size=read_size)
 
         if simulated:
-            from sim_hand.sim_serial_connection import SimSerialConnection
+            from ah_simulators.sim_serial_connection import SimSerialConnection
 
             self._conn = SimSerialConnection(
                 port=port, baud_rate=baud_rate, read_size=read_size
@@ -118,6 +114,9 @@ class AHSerialClient:
                 read_timeout=read_timeout,
                 write_timeout=write_timeout,
             )
+
+        # Initial hand position
+        self.set_position(30)
 
         # Setup threads
         if read_thread:
@@ -258,6 +257,9 @@ class AHSerialClient:
                 reply_mode=reply_mode, positions=positions, addr=addr
             )
         )
+        if type(positions) != list:
+            positions = [positions] * 6
+            positions[-1] *= -1
         self.hand.update_tar(positions=positions)
 
     def set_velocity(
@@ -283,6 +285,9 @@ class AHSerialClient:
                 reply_mode=reply_mode, velocities=velocities, addr=addr
             )
         )
+        if type(velocities) != list:
+            velocities = [velocities] * 6
+            velocities[-1] *= -1
         self.hand.update_tar(velocities=velocities)
 
     def set_duty(
@@ -306,6 +311,9 @@ class AHSerialClient:
         self.set_command(
             create_duty_msg(reply_mode=reply_mode, duties=duties, addr=addr)
         )
+        if type(duties) != list:
+            duties = [duties] * 6
+            duties[-1] *= -1
         self.hand.update_tar(duties=duties)
 
     def set_torque(
@@ -331,6 +339,9 @@ class AHSerialClient:
                 reply_mode=reply_mode, currents=currents, addr=addr
             )
         )
+        if type(currents) != list:
+            currents = [currents] * 6
+            currents[-1] *= -1
         self.hand.update_tar(currents=currents)
 
     def set_grip(self, grip: int, speed=0xFF, addr=None):

@@ -1,0 +1,937 @@
+<mujoco model="g1_29dof_rev_1_0">
+  <compiler angle="radian" meshdir="assets"/>
+
+  <option integrator="implicitfast"/>
+
+  <default>
+    <default class="g1">
+      <site rgba="1 0 0 1" size="0.01" group="5"/>
+      <joint armature="0.01" frictionloss="0.3"/>
+      <position kp="500" dampratio="1" inheritrange="1"/>
+      <default class="visual">
+        <geom group="2" type="mesh" contype="0" conaffinity="0" density="0" material="metal"/>
+      </default>
+      <default class="collision">
+        <geom group="3" type="mesh"/>
+        <default class="foot">
+          <geom type="sphere" size="0.005" priority="1" friction="0.6" condim="3"/>
+        </default>
+      </default>
+    </default>
+
+    <default class="ability_hand">
+
+      <!--Visual Meshes-->
+      <default class="visual_ah">
+        <geom mass="0" type="mesh" contype="0" conaffinity="0" group="1" rgba="0.1 0.1 0.1 1"/>
+
+        <default class="wrist_visual">
+          <geom mesh="wrist_mesh" rgba ="0 0 0 1"/>
+        </default>
+
+        <default class="palm_visual">
+          <geom pos="-0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 -0.999021 -2.70192e-05" mesh="palm_mesh"/>
+        </default>
+
+        <default class="finger_visual">
+          <geom rgba="0.15 0.15 0.15 1"/>
+
+          <default class="finger_prox_vis">
+            <geom pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" mesh="finger_prox_mesh"/>
+          </default>
+
+          <default class="finger_int_dist_vis">
+            <geom pos="0.0091241 0 0" mesh="finger_int_dist_mesh"/>
+          </default>
+
+          <default class="pinky_int_dist_vis">
+            <geom pos="0.0091241 0 0" mesh="pinky_int_dist_mesh"/>
+          </default>
+
+          <default class="thumb_metacarp_vis">
+            <geom pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0" mesh="thumb_metacarp_mesh"/>
+          </default>
+
+          <default class="thumb_prox_dist_vis">
+            <geom  pos="0.0651867 0.0233402 0.00393483" quat="3.21978e-07 -0.985259 -0.171069 5.59046e-08" mesh="thumb_prox_dist_mesh"/>
+          </default>
+        </default>
+      </default>
+      <!--/visual-->
+
+      <!--Collisions Primitives-->
+      <default class="collisions_ah">
+        <geom type="mesh" rgba="1 1 1 1" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
+        <default class="wrist_collision">
+          <geom type="cylinder" pos="0 0 0.0025" size="0.018 0.0025" mass="0.01591"/>
+        </default>
+
+        <default class="palm_collision">
+          <geom pos="-0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 -0.999021 -2.70192e-05" mesh="palm_hull_mesh" solref=".01 1" solimp=".98 .995 .0005" mass="0.3592"/>
+        </default>
+
+        <default class="proximal_collision">
+          <geom pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" mesh="finger_prox_hull_mesh" mass="0.00636"/>
+        </default>
+
+        <default class="int_dist_collision">
+          <geom pos="0.0091241 0 0" mesh="finger_int_dist_hull_mesh" mass="0.006"/>
+        </default>
+
+        <default class="pinky_int_dist_collision">
+          <geom pos="0.0091241 0 0" mesh="pinky_int_dist_hull_mesh" mass="0.006"/>
+        </default>
+
+        <default class="thumb_metacarp_collision">
+          <geom pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0" mesh="thumb_metacarp_hull_mesh" mass="0.002"/>
+        </default>
+
+        <default class="thumb_prox_collision">
+          <geom  pos="0.0651867 0.0233402 0.00393483" quat="3.21978e-07 -0.985259 -0.171069 5.59046e-08" mesh="thumb_prox_dist_hull_mesh" mass="0.06"/>
+        </default>
+      </default>
+
+      <!--Joints-->
+      <default class="joints">
+        <joint type="hinge" pos="0 0 0" axis="0 0 1" damping="0.01" frictionloss="0.1"/>
+        <position kp="1" kv="0" ctrllimited="true"/>
+
+        <default class="finger_mcp_joint">
+          <joint range="0 1.74"/>
+          <position ctrlrange="0 1.74"/>
+        </default>
+
+        <default class="finger_pip_joint">
+          <joint range="0.766 2.61"/>
+          <position ctrlrange="0.766 2.61"/>
+        </default>
+
+        <default class="thumb_mcp_joint">
+          <joint range="0 1.91"/>
+          <position ctrlrange="0 1.91"/>
+        </default>
+
+        <default class="thumb_cmc_joint">
+          <joint range="-2.09 0"/>
+          <position ctrlrange="-2.09 0"/>
+        </default>
+      </default>
+
+      <!--FSR--> 
+      <default class="fsr"> 
+        <site type="box" size="0.005 0.003 0.003" rgba="0 0 1 0.3" group="3"/>
+        <default class="fsr_0">
+          <site pos="0.02936 -0.01697 -0.00435" quat="-0.00000 0.99573 -0.09227 -0.00000"/>
+        </default>
+        <default class="fsr_1">
+          <site size="0.005 0.003 0.0035" pos="0.02961 -0.01394 0.00000" quat="-0.70237 0.70237 -0.08170 0.08170"/>
+        </default>
+        <default class="fsr_2">
+          <site pos="0.02936 -0.01697 0.00435" quat="0.99573 -0.00000 0.00000 -0.09227"/>
+        </default>
+        <default class="fsr_3">
+          <site size="0.005 0.003 0.0035" pos="0.01472 -0.01100 -0.00435" quat="-0.00000 0.95953 -0.28160 -0.00000"/>
+        </default>
+        <default class="fsr_4">
+          <site size="0.005 0.003 0.0035" pos="0.01472 -0.01099 0.00435" quat="0.95938 -0.00000 0.00000 -0.28211"/>
+        </default>
+        <default class="fsr_5">
+          <site size="0.005 0.003 0.0025" pos="0.03704 -0.01785 0.00000" quat="-0.16551 0.68746 0.16551 0.68746"/>
+        </default>
+        <default class="t_fsr_0">
+          <site size="0.005 0.003 0.006" pos="0.04747 0.01988 -0.001239" quat="-0.40374 0.89107 0.18885 -0.08557"/>
+        </default>
+        <default class="t_fsr_1">
+          <site size="0.005 0.003 0.0065" pos="0.04721 0.02124 0.006439" quat="0.77611 -0.59553 -0.12621 0.16449"/>
+        </default>
+        <default class="t_fsr_2">
+          <site  size="0.005 0.003 0.004" pos="0.04896 0.01654 0.01241" quat="0.96520 -0.15936 -0.03377 0.20456"/>
+        </default>
+        <default class="t_fsr_3">
+          <site size="0.005 0.003 0.0065" pos="0.03739 0.01536 -0.001289" quat="-0.40374 0.89107 0.18885 -0.08557"/>
+        </default>
+        <default class="t_fsr_4">
+          <site size="0.005 0.003 0.004" pos="0.03888 0.01200 0.01244" quat="0.96520 -0.15936 -0.03377 0.20456"/>
+        </default>
+        <default class="t_fsr_5">
+          <site size="0.005 0.003 0.007" pos="0.05591 0.02160 0.00558" quat="0.76035 -0.61095 0.20037 -0.09196"/>
+        </default>
+      </default>  
+
+    </default>
+
+    <default class="l_ability_hand">
+
+      <!--Visual Meshes-->
+      <default class="l_visual_ah">
+        <geom mass="0" type="mesh" contype="0" conaffinity="0" group="1" rgba="0.1 0.1 0.1 1"/>
+
+        <default class="l_wrist_visual">
+          <geom mesh="wrist_mesh" rgba ="0 0 0 1"/>
+        </default>
+
+        <default class="l_palm_visual">
+          <geom pos="0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 0.999021 2.70192e-05" mesh="l_palm_mesh"/>
+        </default>
+
+        <default class="l_finger_visual">
+          <geom rgba="0.15 0.15 0.15 1"/>
+
+          <default class="l_finger_prox_vis">
+            <geom pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" mesh="finger_prox_mesh"/>
+          </default>
+
+          <default class="l_finger_int_dist_vis">
+            <geom pos="0.0091241 0 0" mesh="finger_int_dist_mesh"/>
+          </default>
+
+          <default class="l_pinky_int_dist_vis">
+            <geom pos="0.0091241 0 0" mesh="pinky_int_dist_mesh"/>
+          </default>
+
+          <default class="l_thumb_metacarp_vis">
+            <geom pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" mesh="l_thumb_metacarp_mesh"/>
+          </default>
+
+          <default class="l_thumb_prox_dist_vis">
+            <geom pos="0.0651867 0.0233402 -0.00393483" quat="3.21978e-07 0.985259 0.171069 5.59046e-08" mesh="thumb_prox_dist_mesh"/>
+          </default>
+        </default>
+      </default>
+      <!--/visual-->
+
+      <!--Collisions Primitives-->
+      <default class="l_collisions_ah">
+        <geom type="mesh" rgba="1 1 1 1" group="3" solref=".01 .99" solimp=".95 .99 .002"/>
+        <default class="l_wrist_collision">
+          <geom type="cylinder" pos="0 0 0.0025" size="0.018 0.0025" mass="0.01591"/>
+        </default>
+
+        <default class="l_palm_collision">
+          <geom pos="0.0240477 0.00378125 0.0323296" quat="0.0442297 0.00061027 0.999021 2.70192e-05" mesh="l_palm_hull_mesh" solref=".01 1" solimp=".98 .995 .0005" mass="0.3592"/>
+        </default>
+
+        <default class="l_proximal_collision">
+          <geom pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244" mesh="finger_prox_hull_mesh" mass="0.00636"/>
+        </default>
+
+        <default class="l_pinky_int_dist_collision">
+          <geom pos="0.0091241 0 0" mesh="pinky_int_dist_hull_mesh" mass="0.006"/>
+        </default>
+
+        <default class="l_int_dist_collision">
+          <geom pos="0.0091241 0 0" mesh="finger_int_dist_hull_mesh" mass="0.006"/>
+        </default>
+
+        <default class="l_thumb_metacarp_collision">
+          <geom pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0" mesh="l_thumb_metacarp_hull_mesh" mass="0.002"/>
+        </default>
+
+        <default class="l_thumb_prox_collision">
+          <geom pos="0.0651867 0.0233402 -0.00393483" quat="3.21978e-07 0.985259 0.171069 5.59046e-08" mesh="thumb_prox_dist_hull_mesh" mass="0.06"/>
+        </default>
+      </default>
+
+      <!--Joints-->
+      <default class="l_joints">
+        <joint type="hinge" pos="0 0 0" axis="0 0 1" damping="0.01" frictionloss="0.1"/>
+        <position kp="1" kv="0" ctrllimited="true"/>
+
+        <default class="l_finger_mcp_joint">
+          <joint range="0 1.74"/>
+          <position ctrlrange="0 1.74"/>
+        </default>
+
+        <default class="l_finger_pip_joint">
+          <joint range="0.766 2.61"/>
+          <position ctrlrange="0.766 2.61"/>
+        </default>
+
+        <default class="l_thumb_mcp_joint">
+          <joint range="0 1.91"/>
+          <position ctrlrange="0 1.91"/>
+        </default>
+
+        <default class="l_thumb_cmc_joint">
+          <joint range="-2.09 0"/>
+          <position ctrlrange="-2.09 0"/>
+        </default>
+      </default>
+
+      <!--FSR--> 
+      <default class="l_fsr"> 
+        <site type="box" size="0.005 0.003 0.003" rgba="0 0 1 0.3" group="3"/>
+        <default class="l_fsr_0">
+          <site pos="0.02936 -0.01697 -0.00435" quat="-0.00000 0.99573 -0.09227 -0.00000"/>
+        </default>
+        <default class="l_fsr_1">
+          <site size="0.005 0.003 0.0035" pos="0.02961 -0.01394 0.00000" quat="-0.70237 0.70237 -0.08170 0.08170"/>
+        </default>
+        <default class="l_fsr_2">
+          <site pos="0.02936 -0.01697 0.00435" quat="0.99573 -0.00000 0.00000 -0.09227"/>
+        </default>
+        <default class="l_fsr_3">
+          <site size="0.005 0.003 0.0035" pos="0.01472 -0.01100 -0.00435" quat="-0.00000 0.95953 -0.28160 -0.00000"/>
+        </default>
+        <default class="l_fsr_4">
+          <site size="0.005 0.003 0.0035" pos="0.01472 -0.01099 0.00435" quat="0.95938 -0.00000 0.00000 -0.28211"/>
+        </default>
+        <default class="l_fsr_5">
+          <site size="0.005 0.003 0.0025" pos="0.03704 -0.01785 0.00000" quat="-0.16551 0.68746 0.16551 0.68746"/>
+        </default>
+        <default class="l_t_fsr_0">
+          <site size="0.005 0.003 0.006" pos="0.04747 0.01988 -0.00874" quat="-0.40374 0.89107 0.18885 -0.08557"/>
+        </default>
+        <default class="l_t_fsr_1">
+          <site size="0.005 0.003 0.006" pos="0.04721 0.02124 -0.00106" quat="0.77611 -0.59553 -0.12621 0.16449"/>
+        </default>
+        <default class="l_t_fsr_2">
+          <site  size="0.005 0.003 0.004" pos="0.04896 0.01654 0.00491" quat="0.96520 -0.15936 -0.03377 0.20456"/>
+        </default>
+        <default class="l_t_fsr_3">
+          <site size="0.005 0.003 0.0065" pos="0.03739 0.01536 -0.00879" quat="-0.40374 0.89107 0.18885 -0.08557"/>
+        </default>
+        <default class="l_t_fsr_4">
+          <site size="0.005 0.003 0.004" pos="0.03888 0.01200 0.00494" quat="0.96520 -0.15936 -0.03377 0.20456"/>
+        </default>
+        <default class="l_t_fsr_5">
+          <site size="0.005 0.003 0.0065" pos="0.05591 0.02160 -0.00192" quat="0.76035 -0.61095 0.20037 -0.09196"/>
+        </default>
+      </default>  
+
+    </default>
+  </default>
+
+  <asset>
+    <material name="black" rgba="0.2 0.2 0.2 1"/>
+    <material name="metal" rgba="0.7 0.7 0.7 1"/>
+
+    <mesh file="pelvis.STL"/>
+    <mesh file="pelvis_contour_link.STL"/>
+    <mesh file="left_hip_pitch_link.STL"/>
+    <mesh file="left_hip_roll_link.STL"/>
+    <mesh file="left_hip_yaw_link.STL"/>
+    <mesh file="left_knee_link.STL"/>
+    <mesh file="left_ankle_pitch_link.STL"/>
+    <mesh file="left_ankle_roll_link.STL"/>
+    <mesh file="right_hip_pitch_link.STL"/>
+    <mesh file="right_hip_roll_link.STL"/>
+    <mesh file="right_hip_yaw_link.STL"/>
+    <mesh file="right_knee_link.STL"/>
+    <mesh file="right_ankle_pitch_link.STL"/>
+    <mesh file="right_ankle_roll_link.STL"/>
+    <mesh name="waist_yaw_link" file="waist_yaw_link_rev_1_0.STL"/>
+    <mesh name="waist_roll_link" file="waist_roll_link_rev_1_0.STL"/>
+    <mesh name="torso_link" file="torso_link_rev_1_0.STL"/>
+    <mesh file="logo_link.STL"/>
+    <mesh file="head_link.STL"/>
+    <mesh file="left_shoulder_pitch_link.STL"/>
+    <mesh file="left_shoulder_roll_link.STL"/>
+    <mesh file="left_shoulder_yaw_link.STL"/>
+    <mesh file="left_elbow_link.STL"/>
+    <mesh file="left_wrist_roll_link.STL"/>
+    <mesh file="left_wrist_pitch_link.STL"/>
+    <mesh file="left_wrist_yaw_link.STL"/>
+    <mesh file="left_rubber_hand.STL"/>
+    <mesh file="right_shoulder_pitch_link.STL"/>
+    <mesh file="right_shoulder_roll_link.STL"/>
+    <mesh file="right_shoulder_yaw_link.STL"/>
+    <mesh file="right_elbow_link.STL"/>
+    <mesh file="right_wrist_roll_link.STL"/>
+    <mesh file="right_wrist_pitch_link.STL"/>
+    <mesh file="right_wrist_yaw_link.STL"/>
+    <mesh file="right_rubber_hand.STL"/>
+    <mesh name="wrist_mesh" file="wristmesh.STL"/>
+    <mesh name="palm_mesh" file="FB_palm_ref_MIR.STL"/>
+    <mesh name="l_palm_mesh" file="FB_palm_ref.STL"/>
+    <mesh name="palm_hull_mesh" file="palm_hull_mir.STL"/>
+    <mesh name="l_palm_hull_mesh" file="palm_hull.STL"/>
+    <mesh name="finger_prox_mesh" file="idx-F1.STL"/>
+    <mesh name="finger_prox_hull_mesh" file="idx-F1-hull.STL"/>
+    <mesh name="finger_int_dist_mesh" file="idx-F2-Lg.STL"/>
+    <mesh name="finger_int_dist_hull_mesh" file="idx-F2-Lg-hull.STL"/>
+    <mesh name="pinky_int_dist_mesh" file="idx-F2.STL"/>
+    <mesh name="pinky_int_dist_hull_mesh" file="idx-F2-hull.STL"/>
+    <mesh name="thumb_metacarp_mesh" file="thumb-F1-MIR.STL"/>
+    <mesh name="l_thumb_metacarp_mesh" file="thumb-F1.STL"/>
+    <mesh name="thumb_metacarp_hull_mesh" file="thumb-F1-MIR-hull.STL"/>
+    <mesh name="l_thumb_metacarp_hull_mesh" file="thumb-F1-hull.STL"/>
+    <mesh name="thumb_prox_dist_mesh" file="thumb-F2.STL"/>
+    <mesh name="thumb_prox_dist_hull_mesh" file="thumb-F2-hull.STL"/>
+  </asset>
+
+  <worldbody>
+    <light pos="1 0 3.5" dir="0 0 -1" directional="true"/>
+    <body name="pelvis" pos="0 0 0.793" childclass="g1">
+      <inertial pos="0 0 -0.07605" quat="1 0 -0.000399148 0" mass="3.813" diaginertia="0.010549 0.0093089 0.0079184"/>
+      <freejoint name="floating_base_joint"/>
+      <geom class="visual" material="black" mesh="pelvis"/>
+      <geom class="visual" mesh="pelvis_contour_link"/>
+      <geom class="collision" mesh="pelvis_contour_link"/>
+      <site name="imu_in_pelvis" pos="0.04525 0 -0.08339" size="0.01"/>
+      <body name="left_hip_pitch_link" pos="0 0.064452 -0.1027">
+        <inertial pos="0.002741 0.047791 -0.02606" quat="0.954862 0.293964 0.0302556 0.030122" mass="1.35"
+          diaginertia="0.00181517 0.00153422 0.00116212"/>
+        <joint name="left_hip_pitch_joint" axis="0 1 0" range="-2.5307 2.8798" actuatorfrcrange="-88 88"/>
+        <geom class="visual" material="black" mesh="left_hip_pitch_link"/>
+        <geom class="collision" material="black" mesh="left_hip_pitch_link"/>
+        <body name="left_hip_roll_link" pos="0 0.052 -0.030465" quat="0.996179 0 -0.0873386 0">
+          <inertial pos="0.029812 -0.001045 -0.087934" quat="0.977808 -1.97119e-05 0.205576 -0.0403793" mass="1.52"
+            diaginertia="0.00254986 0.00241169 0.00148755"/>
+          <joint name="left_hip_roll_joint" axis="1 0 0" range="-0.5236 2.9671" actuatorfrcrange="-139 139"/>
+          <geom class="visual" mesh="left_hip_roll_link"/>
+          <geom class="collision" mesh="left_hip_roll_link"/>
+          <body name="left_hip_yaw_link" pos="0.025001 0 -0.12412">
+            <inertial pos="-0.057709 -0.010981 -0.15078" quat="0.600598 0.15832 0.223482 0.751181" mass="1.702"
+              diaginertia="0.00776166 0.00717575 0.00160139"/>
+            <joint name="left_hip_yaw_joint" axis="0 0 1" range="-2.7576 2.7576" actuatorfrcrange="-88 88"/>
+            <geom class="visual" mesh="left_hip_yaw_link"/>
+            <geom class="collision" mesh="left_hip_yaw_link"/>
+            <body name="left_knee_link" pos="-0.078273 0.0021489 -0.17734" quat="0.996179 0 0.0873386 0">
+              <inertial pos="0.005457 0.003964 -0.12074" quat="0.923418 -0.0327699 0.0158246 0.382067" mass="1.932"
+                diaginertia="0.0113804 0.0112778 0.00146458"/>
+              <joint name="left_knee_joint" axis="0 1 0" range="-0.087267 2.8798" actuatorfrcrange="-139 139"/>
+              <geom class="visual" mesh="left_knee_link"/>
+              <geom class="collision" mesh="left_knee_link"/>
+              <body name="left_ankle_pitch_link" pos="0 -9.4445e-05 -0.30001">
+                <inertial pos="-0.007269 0 0.011137" quat="0.603053 0.369225 0.369225 0.603053" mass="0.074"
+                  diaginertia="1.89e-05 1.40805e-05 6.9195e-06"/>
+                <joint name="left_ankle_pitch_joint" axis="0 1 0" range="-0.87267 0.5236" actuatorfrcrange="-50 50"/>
+                <geom class="visual" mesh="left_ankle_pitch_link"/>
+                <geom class="collision" mesh="left_ankle_pitch_link"/>
+                <body name="left_ankle_roll_link" pos="0 0 -0.017558">
+                  <inertial pos="0.026505 0 -0.016425" quat="-0.000481092 0.728482 -0.000618967 0.685065" mass="0.608"
+                    diaginertia="0.00167218 0.0016161 0.000217621"/>
+                  <joint name="left_ankle_roll_joint" axis="1 0 0" range="-0.2618 0.2618" actuatorfrcrange="-50 50"/>
+                  <geom class="visual" material="black" mesh="left_ankle_roll_link"/>
+                  <geom class="foot" pos="-0.05 0.025 -0.03"/>
+                  <geom class="foot" pos="-0.05 -0.025 -0.03"/>
+                  <geom class="foot" pos="0.12 0.03 -0.03"/>
+                  <geom class="foot" pos="0.12 -0.03 -0.03"/>
+                  <site name="left_foot"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="right_hip_pitch_link" pos="0 -0.064452 -0.1027">
+        <inertial pos="0.002741 -0.047791 -0.02606" quat="0.954862 -0.293964 0.0302556 -0.030122" mass="1.35"
+          diaginertia="0.00181517 0.00153422 0.00116212"/>
+        <joint name="right_hip_pitch_joint" axis="0 1 0" range="-2.5307 2.8798" actuatorfrcrange="-88 88"/>
+        <geom class="visual" material="black" mesh="right_hip_pitch_link"/>
+        <geom class="collision" material="black" mesh="right_hip_pitch_link"/>
+        <body name="right_hip_roll_link" pos="0 -0.052 -0.030465" quat="0.996179 0 -0.0873386 0">
+          <inertial pos="0.029812 0.001045 -0.087934" quat="0.977808 1.97119e-05 0.205576 0.0403793" mass="1.52"
+            diaginertia="0.00254986 0.00241169 0.00148755"/>
+          <joint name="right_hip_roll_joint" axis="1 0 0" range="-2.9671 0.5236" actuatorfrcrange="-139 139"/>
+          <geom class="visual" mesh="right_hip_roll_link"/>
+          <geom class="collision" mesh="right_hip_roll_link"/>
+          <body name="right_hip_yaw_link" pos="0.025001 0 -0.12412">
+            <inertial pos="-0.057709 0.010981 -0.15078" quat="0.751181 0.223482 0.15832 0.600598" mass="1.702"
+              diaginertia="0.00776166 0.00717575 0.00160139"/>
+            <joint name="right_hip_yaw_joint" axis="0 0 1" range="-2.7576 2.7576" actuatorfrcrange="-88 88"/>
+            <geom class="visual" mesh="right_hip_yaw_link"/>
+            <geom class="collision" mesh="right_hip_yaw_link"/>
+            <body name="right_knee_link" pos="-0.078273 -0.0021489 -0.17734" quat="0.996179 0 0.0873386 0">
+              <inertial pos="0.005457 -0.003964 -0.12074" quat="0.923439 0.0345276 0.0116333 -0.382012" mass="1.932"
+                diaginertia="0.011374 0.0112843 0.00146452"/>
+              <joint name="right_knee_joint" axis="0 1 0" range="-0.087267 2.8798" actuatorfrcrange="-139 139"/>
+              <geom class="visual" mesh="right_knee_link"/>
+              <geom class="collision" mesh="right_knee_link"/>
+              <body name="right_ankle_pitch_link" pos="0 9.4445e-05 -0.30001">
+                <inertial pos="-0.007269 0 0.011137" quat="0.603053 0.369225 0.369225 0.603053" mass="0.074"
+                  diaginertia="1.89e-05 1.40805e-05 6.9195e-06"/>
+                <joint name="right_ankle_pitch_joint" axis="0 1 0" range="-0.87267 0.5236" actuatorfrcrange="-50 50"/>
+                <geom class="visual" mesh="right_ankle_pitch_link"/>
+                <geom class="collision" mesh="right_ankle_pitch_link"/>
+                <body name="right_ankle_roll_link" pos="0 0 -0.017558">
+                  <inertial pos="0.026505 0 -0.016425" quat="0.000481092 0.728482 0.000618967 0.685065" mass="0.608"
+                    diaginertia="0.00167218 0.0016161 0.000217621"/>
+                  <joint name="right_ankle_roll_joint" axis="1 0 0" range="-0.2618 0.2618" actuatorfrcrange="-50 50"/>
+                  <geom class="visual" material="black" mesh="right_ankle_roll_link"/>
+                  <geom class="foot" pos="-0.05 0.025 -0.03"/>
+                  <geom class="foot" pos="-0.05 -0.025 -0.03"/>
+                  <geom class="foot" pos="0.12 0.03 -0.03"/>
+                  <geom class="foot" pos="0.12 -0.03 -0.03"/>
+                  <site name="right_foot"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="waist_yaw_link">
+        <inertial pos="0.003494 0.000233 0.018034" quat="0.289697 0.591001 -0.337795 0.672821" mass="0.214"
+          diaginertia="0.000163531 0.000107714 0.000102205"/>
+        <joint name="waist_yaw_joint" axis="0 0 1" range="-2.618 2.618" actuatorfrcrange="-88 88"/>
+        <geom class="visual" mesh="waist_yaw_link"/>
+        <body name="waist_roll_link" pos="-0.0039635 0 0.044">
+          <inertial pos="0 2.3e-05 0" quat="0.5 0.5 -0.5 0.5" mass="0.086" diaginertia="8.245e-06 7.079e-06 6.339e-06"/>
+          <joint name="waist_roll_joint" axis="1 0 0" range="-0.52 0.52" actuatorfrcrange="-50 50"/>
+          <geom class="visual" mesh="waist_roll_link"/>
+          <body name="torso_link">
+            <inertial pos="0.00203158 0.000339683 0.184568" quat="0.999803 -6.03319e-05 0.0198256 0.00131986"
+              mass="7.818" diaginertia="0.121847 0.109825 0.0273735"/>
+            <joint name="waist_pitch_joint" axis="0 1 0" range="-0.52 0.52" actuatorfrcrange="-50 50"/>
+            <geom class="visual" mesh="torso_link"/>
+            <geom class="collision" mesh="torso_link"/>
+            <geom pos="0.0039635 0 -0.044" quat="1 0 0 0" class="visual" material="black" mesh="logo_link"/>
+            <geom pos="0.0039635 0 -0.044" quat="1 0 0 0" class="collision" material="black" mesh="logo_link"/>
+            <geom pos="0.0039635 0 -0.044" quat="1 0 0 0" class="visual" material="black" mesh="head_link"/>
+            <geom pos="0.0039635 0 -0.044" quat="1 0 0 0" class="collision" material="black" mesh="head_link"/>
+            <site name="imu_in_torso" pos="-0.03959 -0.00224 0.14792" size="0.01"/>
+            <body name="left_shoulder_pitch_link" pos="0.0039563 0.10022 0.24778"
+              quat="0.990264 0.139201 1.38722e-05 -9.86868e-05">
+              <inertial pos="0 0.035892 -0.011628" quat="0.654152 0.0130458 -0.326267 0.68225" mass="0.718"
+                diaginertia="0.000465864 0.000432842 0.000406394"/>
+              <joint name="left_shoulder_pitch_joint" axis="0 1 0" range="-3.0892 2.6704" actuatorfrcrange="-25 25"/>
+              <geom class="visual" mesh="left_shoulder_pitch_link"/>
+              <geom size="0.03 0.025" pos="0 0.04 -0.01" quat="0.707107 0 0.707107 0" type="cylinder"
+                rgba="0.7 0.7 0.7 1" class="collision"/>
+              <body name="left_shoulder_roll_link" pos="0 0.038 -0.013831" quat="0.990268 -0.139172 0 0">
+                <inertial pos="-0.000227 0.00727 -0.063243" quat="0.701256 -0.0196223 -0.00710317 0.712604" mass="0.643"
+                  diaginertia="0.000691311 0.000618011 0.000388977"/>
+                <joint name="left_shoulder_roll_joint" axis="1 0 0" range="-1.5882 2.2515" actuatorfrcrange="-25 25"/>
+                <geom class="visual" mesh="left_shoulder_roll_link"/>
+                <geom size="0.03 0.015" pos="-0.004 0.006 -0.053" type="cylinder" rgba="0.7 0.7 0.7 1" class="collision"/>
+                <body name="left_shoulder_yaw_link" pos="0 0.00624 -0.1032">
+                  <inertial pos="0.010773 -0.002949 -0.072009" quat="0.716879 -0.0964829 -0.0679942 0.687134"
+                    mass="0.734" diaginertia="0.00106187 0.00103217 0.000400661"/>
+                  <joint name="left_shoulder_yaw_joint" axis="0 0 1" range="-2.618 2.618" actuatorfrcrange="-25 25"/>
+                  <geom class="visual" mesh="left_shoulder_yaw_link"/>
+                  <geom class="collision" mesh="left_shoulder_yaw_link"/>
+                  <body name="left_elbow_link" pos="0.015783 0 -0.080518">
+                    <inertial pos="0.064956 0.004454 -0.010062" quat="0.541765 0.636132 0.388821 0.388129" mass="0.6"
+                      diaginertia="0.000443035 0.000421612 0.000259353"/>
+                    <joint name="left_elbow_joint" axis="0 1 0" range="-1.0472 2.0944" actuatorfrcrange="-25 25"/>
+                    <geom class="visual" mesh="left_elbow_link"/>
+                    <geom class="collision" mesh="left_elbow_link"/>
+                    <body name="left_wrist_roll_link" pos="0.1 0.00188791 -0.01">
+                      <inertial pos="0.0171394 0.000537591 4.8864e-07" quat="0.575338 0.411667 -0.574906 0.411094"
+                        mass="0.085445" diaginertia="5.48211e-05 4.96646e-05 3.57798e-05"/>
+                      <joint name="left_wrist_roll_joint" axis="1 0 0" range="-1.97222 1.97222"
+                        actuatorfrcrange="-25 25"/>
+                      <geom class="visual" mesh="left_wrist_roll_link"/>
+                      <geom class="collision" mesh="left_wrist_roll_link"/>
+                      <body name="left_wrist_pitch_link" pos="0.038 0 0">
+                        <inertial pos="0.0229999 -0.00111685 -0.00111658" quat="0.249998 0.661363 0.293036 0.643608"
+                          mass="0.48405" diaginertia="0.000430353 0.000429873 0.000164648"/>
+                        <joint name="left_wrist_pitch_joint" axis="0 1 0" range="-1.61443 1.61443"
+                          actuatorfrcrange="-5 5"/>
+                        <geom class="visual" mesh="left_wrist_pitch_link"/>
+                        <geom class="collision" mesh="left_wrist_pitch_link"/>
+                        <body name="left_wrist_yaw_link" pos="0.046 0 0">
+                          <inertial pos="0.0708244 0.000191745 0.00161742" quat="0.510571 0.526295 0.468078 0.493188"
+                            mass="0.254576" diaginertia="0.000646113 0.000559993 0.000147566"/>
+                          <joint name="left_wrist_yaw_joint" axis="0 0 1" range="-1.61443 1.61443"
+                            actuatorfrcrange="-5 5"/>
+                          <geom class="visual" mesh="left_wrist_yaw_link"/>
+                          <geom class="collision" mesh="left_wrist_yaw_link"/>
+                          <body name="l_ability_hand" pos="0.0415 -0.003 0" euler="0 1.57079 3.14159" childclass="l_ability_hand">
+                            <geom class="l_wrist_visual"/>
+                            <geom class="l_wrist_collision"/>
+                            <geom class="l_palm_visual"/>
+                            <geom class="l_palm_collision"/>
+                            <!--Index-->
+                            <body name="l_index_prox" pos="0.0279216 -0.00927034 0.0958706" quat="-0.714459 -0.129917 0.685906 0.0469401">
+                                <joint class="l_finger_mcp_joint" name="l_index_mcp"/>
+                                <geom class="l_proximal_collision"/>
+                                <geom class="l_finger_prox_vis"/>
+                                <body name="l_index_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <site class="l_fsr_0" name="l_fsr0"/>
+                                  <site class="l_fsr_1" name="l_fsr1"/>
+                                  <site class="l_fsr_2" name="l_fsr2"/>
+                                  <site class="l_fsr_3" name="l_fsr3"/>
+                                  <site class="l_fsr_4" name="l_fsr4"/>
+                                  <site class="l_fsr_5" name="l_fsr5"/>
+                                  <joint class="l_finger_pip_joint" name="l_index_pip"/>
+                                  <geom class="l_int_dist_collision"/>
+                                  <geom class="l_finger_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Middle-->
+                            <body name="l_middle_prox" pos="0.00841718 -0.0115172 0.0990634" quat="-0.698395 -0.103508 0.704562 0.0715738">
+                                <joint class="l_finger_mcp_joint" name="l_middle_mcp"/>
+                                <geom class="l_proximal_collision"/>
+                                <geom class="l_finger_prox_vis"/>
+                                <body name="l_middle_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <joint class="l_finger_pip_joint" name="l_middle_pip"/>
+                                  <site class="l_fsr_0" name="l_fsr6"/>
+                                  <site class="l_fsr_1" name="l_fsr7"/>
+                                  <site class="l_fsr_2" name="l_fsr8"/>
+                                  <site class="l_fsr_3" name="l_fsr9"/>
+                                  <site class="l_fsr_4" name="l_fsr10"/>
+                                  <site class="l_fsr_5" name="l_fsr11"/>
+                                  <geom class="l_int_dist_collision"/>
+                                  <geom class="l_finger_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Ring-->
+                            <body name="l_ring_prox" pos="-0.0117529 -0.0103946 0.0967038" quat="-0.681173 -0.0769649 0.721351 0.0986547">
+                                <joint class="l_finger_mcp_joint" name="l_ring_mcp"/>
+                                <geom class="l_proximal_collision"/>
+                                <geom class="l_finger_prox_vis"/>
+                                <body name="l_ring_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <joint class="l_finger_pip_joint" name="l_ring_pip"/>
+                                  <site class="l_fsr_0" name="l_fsr12"/>
+                                  <site class="l_fsr_1" name="l_fsr13"/>
+                                  <site class="l_fsr_2" name="l_fsr14"/>
+                                  <site class="l_fsr_3" name="l_fsr15"/>
+                                  <site class="l_fsr_4" name="l_fsr16"/>
+                                  <site class="l_fsr_5" name="l_fsr17"/>
+                                  <geom class="l_int_dist_collision"/>
+                                  <geom class="l_finger_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Pinky-->
+                            <body name="l_pinky_prox" pos="-0.0308633 -0.00716283 0.0907346" quat="-0.681748 -0.0544096 0.719226 0.122363" >
+                                <joint class="l_finger_mcp_joint" name="l_pinky_mcp"/>
+                                <geom class="l_proximal_collision"/>
+                                <geom class="l_finger_prox_vis"/>
+                                <body name="l_pinky_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <joint class="l_finger_pip_joint" name="l_pinky_pip"/>
+                                  <site class="l_fsr_0" name="l_fsr18" pos="0.02556 -0.01391 -0.00435" quat="0.00000 0.99797 -0.06376 -0.00000"/>
+                                  <site class="l_fsr_1" name="l_fsr19" pos="0.02517 -0.01110 -0.00000" quat="-0.70527 0.70527 -0.05099 0.05099"/>
+                                  <site class="l_fsr_2" name="l_fsr20" pos="0.02556 -0.01391 0.00435" quat="0.99797 -0.00000 0.00000 -0.06376"/>
+                                  <site class="l_fsr_3" name="l_fsr21" pos="0.01310 -0.00943 -0.00435" quat="-0.00000 0.96544 -0.26063 0.00000"/>
+                                  <site class="l_fsr_4" name="l_fsr22" pos="0.01310 -0.00943 0.00435" quat="0.96544 -0.00000 0.00000 -0.26063"/>
+                                  <site class="l_fsr_5" name="l_fsr23" pos="0.03142 -0.01438 0.00000" quat="-0.14469 0.69214 0.14469 0.69214" size="0.005 0.003 0.00385"/>
+                                  <geom class="l_pinky_int_dist_collision"/>
+                                  <geom class="l_pinky_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Thumb-->
+                            <body name="l_thumb_metacarp" pos="0.0240477 0.00378125 0.0323296" quat="-0.00419696 0.994514 -0.0947972 0.0440301">
+                              <joint class="l_thumb_cmc_joint" name="l_thumb_cmc"/>
+                              <geom class="l_thumb_metacarp_vis"/>
+                              <geom class="l_thumb_metacarp_collision"/>
+                              <body name="l_thumb_mcp" pos="0.0278284 0 -0.0147507" quat="-0.608761 0.793353 0 0">
+                                <joint class="l_thumb_mcp_joint" name="l_thumb_mcp"/>
+                                <site class="l_t_fsr_0" name="l_fsr24"/>
+                                <site class="l_t_fsr_1" name="l_fsr25"/>
+                                <site class="l_t_fsr_2" name="l_fsr26"/>
+                                <site class="l_t_fsr_3" name="l_fsr27"/>
+                                <site class="l_t_fsr_4" name="l_fsr28"/>
+                                <site class="l_t_fsr_5" name="l_fsr29"/>
+                                <geom class="l_thumb_prox_collision"/>
+                                <geom class="l_thumb_prox_dist_vis"/>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="right_shoulder_pitch_link" pos="0.0039563 -0.10021 0.24778"
+              quat="0.990264 -0.139201 1.38722e-05 9.86868e-05">
+              <inertial pos="0 -0.035892 -0.011628" quat="0.68225 -0.326267 0.0130458 0.654152" mass="0.718"
+                diaginertia="0.000465864 0.000432842 0.000406394"/>
+              <joint name="right_shoulder_pitch_joint" axis="0 1 0" range="-3.0892 2.6704" actuatorfrcrange="-25 25"/>
+              <geom class="visual" mesh="right_shoulder_pitch_link"/>
+              <geom size="0.03 0.025" pos="0 -0.04 -0.01" quat="0.707107 0 0.707107 0" type="cylinder"
+                rgba="0.7 0.7 0.7 1" class="collision"/>
+              <body name="right_shoulder_roll_link" pos="0 -0.038 -0.013831" quat="0.990268 0.139172 0 0">
+                <inertial pos="-0.000227 -0.00727 -0.063243" quat="0.712604 -0.00710317 -0.0196223 0.701256"
+                  mass="0.643" diaginertia="0.000691311 0.000618011 0.000388977"/>
+                <joint name="right_shoulder_roll_joint" axis="1 0 0" range="-2.2515 1.5882" actuatorfrcrange="-25 25"/>
+                <geom class="visual" mesh="right_shoulder_roll_link"/>
+                <geom size="0.03 0.015" pos="-0.004 -0.006 -0.053" type="cylinder" rgba="0.7 0.7 0.7 1"
+                  class="collision"/>
+                <body name="right_shoulder_yaw_link" pos="0 -0.00624 -0.1032">
+                  <inertial pos="0.010773 0.002949 -0.072009" quat="0.687134 -0.0679942 -0.0964829 0.716879"
+                    mass="0.734" diaginertia="0.00106187 0.00103217 0.000400661"/>
+                  <joint name="right_shoulder_yaw_joint" axis="0 0 1" range="-2.618 2.618" actuatorfrcrange="-25 25"/>
+                  <geom class="visual" mesh="right_shoulder_yaw_link"/>
+                  <geom class="collision" mesh="right_shoulder_yaw_link"/>
+                  <body name="right_elbow_link" pos="0.015783 0 -0.080518">
+                    <inertial pos="0.064956 -0.004454 -0.010062" quat="0.388129 0.388821 0.636132 0.541765" mass="0.6"
+                      diaginertia="0.000443035 0.000421612 0.000259353"/>
+                    <joint name="right_elbow_joint" axis="0 1 0" range="-1.0472 2.0944" actuatorfrcrange="-25 25"/>
+                    <geom class="visual" mesh="right_elbow_link"/>
+                    <geom class="collision" mesh="right_elbow_link"/>
+                    <body name="right_wrist_roll_link" pos="0.1 -0.00188791 -0.01">
+                      <inertial pos="0.0171394 -0.000537591 4.8864e-07" quat="0.411667 0.575338 -0.411094 0.574906"
+                        mass="0.085445" diaginertia="5.48211e-05 4.96646e-05 3.57798e-05"/>
+                      <joint name="right_wrist_roll_joint" axis="1 0 0" range="-1.97222 1.97222"
+                        actuatorfrcrange="-25 25"/>
+                      <geom class="visual" mesh="right_wrist_roll_link"/>
+                      <geom class="collision" mesh="right_wrist_roll_link"/>
+                      <body name="right_wrist_pitch_link" pos="0.038 0 0">
+                        <inertial pos="0.0229999 0.00111685 -0.00111658" quat="0.643608 0.293036 0.661363 0.249998"
+                          mass="0.48405" diaginertia="0.000430353 0.000429873 0.000164648"/>
+                        <joint name="right_wrist_pitch_joint" axis="0 1 0" range="-1.61443 1.61443"
+                          actuatorfrcrange="-5 5"/>
+                        <geom class="visual" mesh="right_wrist_pitch_link"/>
+                        <geom class="collision" mesh="right_wrist_pitch_link"/>
+                        <body name="right_wrist_yaw_link" pos="0.046 0 0">
+                          <inertial pos="0.0708244 -0.000191745 0.00161742" quat="0.493188 0.468078 0.526295 0.510571"
+                            mass="0.254576" diaginertia="0.000646113 0.000559993 0.000147566"/>
+                          <joint name="right_wrist_yaw_joint" axis="0 0 1" range="-1.61443 1.61443"
+                            actuatorfrcrange="-5 5"/>
+                          <geom class="visual" mesh="right_wrist_yaw_link"/>
+                          <geom class="collision" mesh="right_wrist_yaw_link"/>
+                          <body name="ability_hand" pos="0.0415 -0.003 0" euler="0 1.57079 0" childclass="ability_hand">
+                            <geom class="wrist_visual"/>
+                            <geom name="wrist_coll" class="wrist_collision"/>
+                            <geom class="palm_visual"/>
+                            <geom name="palm_coll" class="palm_collision"/>
+                            <!--Index-->
+                            <body name="index_prox" pos="-0.0279216 -0.00927034 0.0958706" quat="0.685906 0.0469401 -0.714459 -0.129917">
+                                <joint class="finger_mcp_joint" name="index_mcp"/>
+                                <geom name="idx_prox_coll" class="proximal_collision"/>
+                                <geom class="finger_prox_vis"/>
+                                <body name="index_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <site class="fsr_0" name="fsr0"/>
+                                  <site class="fsr_1" name="fsr1"/>
+                                  <site class="fsr_2" name="fsr2"/>
+                                  <site class="fsr_3" name="fsr3"/>
+                                  <site class="fsr_4" name="fsr4"/>
+                                  <site class="fsr_5" name="fsr5"/>
+                                  <joint class="finger_pip_joint" name="index_pip"/>
+                                  <geom class="int_dist_collision"/>
+                                  <geom class="finger_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Middle-->
+                            <body name="middle_prox" pos="-0.00841718 -0.0115172 0.0990634" quat="0.704562 0.0715738 -0.698395 -0.103508">
+                                <joint class="finger_mcp_joint" name="middle_mcp"/>
+                                <geom class="proximal_collision"/>
+                                <geom class="finger_prox_vis"/>
+                                <body name="middle_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <joint class="finger_pip_joint" name="middle_pip"/>
+                                  <site class="fsr_0" name="fsr6"/>
+                                  <site class="fsr_1" name="fsr7"/>
+                                  <site class="fsr_2" name="fsr8"/>
+                                  <site class="fsr_3" name="fsr9"/>
+                                  <site class="fsr_4" name="fsr10"/>
+                                  <site class="fsr_5" name="fsr11"/>
+                                  <geom class="int_dist_collision"/>
+                                  <geom class="finger_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Ring-->
+                            <body name="ring_prox" pos="0.0117529 -0.0103946 0.0967038" quat="0.721351 0.0986547 -0.681173 -0.0769649">
+                                <joint class="finger_mcp_joint" name="ring_mcp"/>
+                                <geom class="proximal_collision"/>
+                                <geom class="finger_prox_vis"/>
+                                <body name="ring_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <joint class="finger_pip_joint" name="ring_pip"/>
+                                  <site class="fsr_0" name="fsr12"/>
+                                  <site class="fsr_1" name="fsr13"/>
+                                  <site class="fsr_2" name="fsr14"/>
+                                  <site class="fsr_3" name="fsr15"/>
+                                  <site class="fsr_4" name="fsr16"/>
+                                  <site class="fsr_5" name="fsr17"/>
+                                  <geom class="int_dist_collision"/>
+                                  <geom class="finger_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Pinky-->
+                            <body name="pinky_prox" pos="0.0308633 -0.00716283 0.0907346" quat="0.719226 0.122363 -0.681748 -0.0544096">
+                                <joint class="finger_mcp_joint" name="pinky_mcp"/>
+                                <geom class="proximal_collision"/>
+                                <geom class="finger_prox_vis"/>
+                                <body name="pinky_int_dist" pos="0.0384727 0.0032577 0" quat="0.999108 0 0 0.0422244">
+                                  <joint class="finger_pip_joint" name="pinky_pip"/>
+                                  <site class="fsr_0" name="fsr18" pos="0.02556 -0.01391 -0.00435" quat="0.00000 0.99797 -0.06376 -0.00000"/>
+                                  <site class="fsr_1" name="fsr19" pos="0.02517 -0.01110 -0.00000" quat="-0.70527 0.70527 -0.05099 0.05099"/>
+                                  <site class="fsr_2" name="fsr20" pos="0.02556 -0.01391 0.00435" quat="0.99797 -0.00000 0.00000 -0.06376"/>
+                                  <site class="fsr_3" name="fsr21" pos="0.01310 -0.00943 -0.00435" quat="-0.00000 0.96544 -0.26063 0.00000"/>
+                                  <site class="fsr_4" name="fsr22" pos="0.01310 -0.00943 0.00435" quat="0.96544 -0.00000 0.00000 -0.26063"/>
+                                  <site class="fsr_5" name="fsr23" pos="0.03142 -0.01438 0.00000" quat="-0.14469 0.69214 0.14469 0.69214" size="0.005 0.003 0.00385"/>
+                                  <geom class="pinky_int_dist_collision"/>
+                                  <geom class="pinky_int_dist_vis"/>
+                                </body>
+                            </body>
+                            <!--Thumb-->
+                            <body name="thumb_metacarp" pos="-0.0240477 0.00378125 0.0323296" quat="-0.0947972 0.0440301 -0.00419696 0.994514">
+                              <joint class="thumb_cmc_joint" name="thumb_cmc"/>
+                              <geom class="thumb_metacarp_vis"/>
+                              <geom class="thumb_metacarp_collision"/>
+                              <body name="thumb_mcp" pos="0.0278284 0 0.0147507" quat="0.608761 0.793353 0 0">
+                                <joint class="thumb_mcp_joint" name="thumb_mcp"/>
+                                <site class="t_fsr_0" name="fsr24"/>
+                                <site class="t_fsr_1" name="fsr25"/>
+                                <site class="t_fsr_2" name="fsr26"/>
+                                <site class="t_fsr_3" name="fsr27"/>
+                                <site class="t_fsr_4" name="fsr28"/>
+                                <site class="t_fsr_5" name="fsr29"/>
+                                <geom class="thumb_prox_collision"/>
+                                <geom class="thumb_prox_dist_vis"/>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position class="g1" name="left_hip_pitch_joint" joint="left_hip_pitch_joint"/>
+    <position class="g1" name="left_hip_roll_joint" joint="left_hip_roll_joint"/>
+    <position class="g1" name="left_hip_yaw_joint" joint="left_hip_yaw_joint"/>
+    <position class="g1" name="left_knee_joint" joint="left_knee_joint"/>
+    <position class="g1" name="left_ankle_pitch_joint" joint="left_ankle_pitch_joint"/>
+    <position class="g1" name="left_ankle_roll_joint" joint="left_ankle_roll_joint"/>
+
+    <position class="g1" name="right_hip_pitch_joint" joint="right_hip_pitch_joint"/>
+    <position class="g1" name="right_hip_roll_joint" joint="right_hip_roll_joint"/>
+    <position class="g1" name="right_hip_yaw_joint" joint="right_hip_yaw_joint"/>
+    <position class="g1" name="right_knee_joint" joint="right_knee_joint"/>
+    <position class="g1" name="right_ankle_pitch_joint" joint="right_ankle_pitch_joint"/>
+    <position class="g1" name="right_ankle_roll_joint" joint="right_ankle_roll_joint"/>
+
+    <position class="g1" name="waist_yaw_joint" joint="waist_yaw_joint"/>
+    <position class="g1" name="waist_roll_joint" joint="waist_roll_joint"/>
+    <position class="g1" name="waist_pitch_joint" joint="waist_pitch_joint"/>
+
+    <position class="g1" name="left_shoulder_pitch_joint" joint="left_shoulder_pitch_joint"/>
+    <position class="g1" name="left_shoulder_roll_joint" joint="left_shoulder_roll_joint"/>
+    <position class="g1" name="left_shoulder_yaw_joint" joint="left_shoulder_yaw_joint"/>
+    <position class="g1" name="left_elbow_joint" joint="left_elbow_joint"/>
+    <position class="g1" name="left_wrist_roll_joint" joint="left_wrist_roll_joint"/>
+    <position class="g1" name="left_wrist_pitch_joint" joint="left_wrist_pitch_joint"/>
+    <position class="g1" name="left_wrist_yaw_joint" joint="left_wrist_yaw_joint"/>
+
+    <position class="g1" name="right_shoulder_pitch_joint" joint="right_shoulder_pitch_joint"/>
+    <position class="g1" name="right_shoulder_roll_joint" joint="right_shoulder_roll_joint"/>
+    <position class="g1" name="right_shoulder_yaw_joint" joint="right_shoulder_yaw_joint"/>
+    <position class="g1" name="right_elbow_joint" joint="right_elbow_joint"/>
+    <position class="g1" name="right_wrist_roll_joint" joint="right_wrist_roll_joint"/>
+    <position class="g1" name="right_wrist_pitch_joint" joint="right_wrist_pitch_joint"/>
+    <position class="g1" name="right_wrist_yaw_joint" joint="right_wrist_yaw_joint"/>
+
+    <position class="finger_mcp_joint" name="index_mcp_actuator" joint="index_mcp"/>
+    <position class="finger_pip_joint" name="_index_pip_actuator" joint="index_pip"/>
+    <position class="finger_mcp_joint" name="middle_mcp_actuator" joint="middle_mcp"/>
+    <position class="finger_pip_joint" name="_middle_pip_actuator" joint="middle_pip"/>
+    <position class="finger_mcp_joint" name="ring_mcp_actuator" joint="ring_mcp"/>
+    <position class="finger_pip_joint" name="_ring_pip_actuator" joint="ring_pip"/>
+    <position class="finger_mcp_joint" name="pinky_mcp_actuator" joint="pinky_mcp"/>
+    <position class="finger_pip_joint" name="_pinky_pip_actuator" joint="pinky_pip"/>
+    <position class="thumb_mcp_joint" name="thumb_flexor_actuator" joint="thumb_mcp"/>
+    <position class="thumb_cmc_joint" name="thumb_rotator_actuator" joint="thumb_cmc"/>
+
+    <position class="l_finger_mcp_joint" name="l_index_mcp_actuator" joint="l_index_mcp"/>
+    <position class="l_finger_pip_joint" name="l__index_pip_actuator" joint="l_index_pip"/>
+    <position class="l_finger_mcp_joint" name="l_middle_mcp_actuator" joint="l_middle_mcp"/>
+    <position class="l_finger_pip_joint" name="l__middle_pip_actuator" joint="l_middle_pip"/>
+    <position class="l_finger_mcp_joint" name="l_ring_mcp_actuator" joint="l_ring_mcp"/>
+    <position class="l_finger_pip_joint" name="l__ring_pip_actuator" joint="l_ring_pip"/>
+    <position class="l_finger_mcp_joint" name="l_pinky_mcp_actuator" joint="l_pinky_mcp"/>
+    <position class="l_finger_pip_joint" name="l__pinky_pip_actuator" joint="l_pinky_pip"/>
+    <position class="l_thumb_mcp_joint" name="l_thumb_flexor_actuator" joint="l_thumb_mcp"/>
+    <position class="l_thumb_cmc_joint" name="l_thumb_rotator_actuator" joint="l_thumb_cmc"/>
+  </actuator>
+
+  <sensor>
+    <gyro site="imu_in_torso" name="imu-torso-angular-velocity" cutoff="34.9" noise="0.0005"/>
+    <accelerometer site="imu_in_torso" name="imu-torso-linear-acceleration" cutoff="157" noise="0.01"/>
+    <gyro site="imu_in_pelvis" name="imu-pelvis-angular-velocity" cutoff="34.9" noise="0.0005"/>
+    <accelerometer site="imu_in_pelvis" name="imu-pelvis-linear-acceleration" cutoff="157" noise="0.01"/>
+    <touch site="fsr0"/>
+    <touch site="fsr1"/>
+    <touch site="fsr2"/>
+    <touch site="fsr3"/>
+    <touch site="fsr4"/>
+    <touch site="fsr5"/>
+    <touch site="fsr6"/>
+    <touch site="fsr7"/>
+    <touch site="fsr8"/>
+    <touch site="fsr9"/>
+    <touch site="fsr10"/>
+    <touch site="fsr11"/>
+    <touch site="fsr12"/>
+    <touch site="fsr13"/>
+    <touch site="fsr14"/>
+    <touch site="fsr15"/>
+    <touch site="fsr16"/>
+    <touch site="fsr17"/>
+    <touch site="fsr18"/>
+    <touch site="fsr19"/>
+    <touch site="fsr20"/>
+    <touch site="fsr21"/>
+    <touch site="fsr22"/>
+    <touch site="fsr23"/>
+    <touch site="fsr24"/>
+    <touch site="fsr25"/>
+    <touch site="fsr26"/>
+    <touch site="fsr27"/>
+    <touch site="fsr28"/>
+    <touch site="fsr29"/>
+    <touch site="l_fsr0"/>
+    <touch site="l_fsr1"/>
+    <touch site="l_fsr2"/>
+    <touch site="l_fsr3"/>
+    <touch site="l_fsr4"/>
+    <touch site="l_fsr5"/>
+    <touch site="l_fsr6"/>
+    <touch site="l_fsr7"/>
+    <touch site="l_fsr8"/>
+    <touch site="l_fsr9"/>
+    <touch site="l_fsr10"/>
+    <touch site="l_fsr11"/>
+    <touch site="l_fsr12"/>
+    <touch site="l_fsr13"/>
+    <touch site="l_fsr14"/>
+    <touch site="l_fsr15"/>
+    <touch site="l_fsr16"/>
+    <touch site="l_fsr17"/>
+    <touch site="l_fsr18"/>
+    <touch site="l_fsr19"/>
+    <touch site="l_fsr20"/>
+    <touch site="l_fsr21"/>
+    <touch site="l_fsr22"/>
+    <touch site="l_fsr23"/>
+    <touch site="l_fsr24"/>
+    <touch site="l_fsr25"/>
+    <touch site="l_fsr26"/>
+    <touch site="l_fsr27"/>
+    <touch site="l_fsr28"/>
+    <touch site="l_fsr29"/>
+  </sensor>
+
+  <keyframe>
+    <key name="stand"
+      qpos="
+      0 0 0.79
+      1 0 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      0 0 0
+      0.2 0.2 0 1.28 0 0 0
+      0.2 -0.2 0 1.28 0 0 0
+      0 0 0
+      0 0 0
+      0 0 0 0
+      0 0 0
+      0 0 0
+      0 0 0 0
+      "
+      ctrl="
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      0 0 0
+      0.2 0.2 0 1.28 0 0 0
+      0.2 -0.2 0 1.28 0 0 0
+      0 0 0 
+      0 0 0
+      0 0 0 0
+      0 0 0
+      0 0 0
+      0 0 0 0
+      "/>
+  </keyframe>
+</mujoco>
