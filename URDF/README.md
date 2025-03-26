@@ -10,4 +10,4 @@ simplified mesh.
 
 You can easily view the URDF using our [ROS2 URDF Viewer](https://github.com/psyonicinc/ah-ros2-urdf-viewer)
 
-For examples on simulating the Ability Hand see [python/ah_simulators](https://github.com/psyonicinc/ability-hand-api/tree/master/python/ah_simulators).
+For Mujoco descriptions and examples on simulating the Ability Hand see [/python/ah_simulators](https://github.com/psyonicinc/ability-hand-api/tree/master/python/ah_simulators).
