@@ -30,7 +30,7 @@ class AbstractPacket:
 
     def _convert_vel(self):
         for i in range(len(self.vel)):
-            self.vel[i] *= VELOCITY_CONSTANT_INV
+            self.vel[i] *= (VELOCITY_CONSTANT_INV / 4)
 
     def _convert_cur(self):
         for i in range(len(self.cur)):
