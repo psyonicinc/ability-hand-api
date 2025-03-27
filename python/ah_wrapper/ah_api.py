@@ -137,3 +137,26 @@ def create_duty_msg(
     msg.append(compute_chksum(msg))
     msg = ppp_stuff(msg)
     return msg
+
+
+def create_write_reg_msg(val_addr: int, val: int, addr: int = 0x50):
+    msg = [(struct.pack("<B", addr))[0], (struct.pack("<B", 0xDE))[0]]
+    b2 = struct.pack("<i", val_addr)
+    for b in b2:
+        msg.append(b)
+    b2 = struct.pack("<i", val)
+    for b in b2:
+        msg.append(b)
+    msg.append(compute_chksum(msg))
+    msg = ppp_stuff(msg)
+    return msg
+
+
+def create_read_reg_msg(val_addr: int, addr: int = 0x50):
+    msg = [(struct.pack("<B", addr))[0], (struct.pack("<B", 0xDA))[0]]
+    b2 = struct.pack("<i", val_addr)
+    for b in b2:
+        msg.append(b)
+    msg.append(compute_chksum(msg))
+    msg = ppp_stuff(msg)
+    return msg
