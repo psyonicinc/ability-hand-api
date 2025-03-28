@@ -29,26 +29,20 @@
          <inertia ixx="3.76723021e-04" ixy="2.33895423e-06" ixz="-6.04325150e-06" iyy="4.67706269e-04" iyz="5.04572725e-05" izz="1.77650714e-04" />
          <origin xyz="-6.54520000e-04 -5.98838000e-03 5.07726500e-02" rpy="0 0 0" />
       </inertial>
-   </link>
-   <joint name="wrist2thumb" type="fixed">
-      <parent link="base" />
-      <child link="thumb_base" />
-      <origin xyz="24.0476665e-3 3.78124745e-3 32.32964923e-3" rpy="3.14148426 0.08848813 3.14036612" />
-   </joint>
-   <link name="thumb_base">
       <visual name="palm_mesh">
-         <origin rpy="0 0 0" xyz="0 0 0" />
+         <origin rpy="3.14148426 0.08848813 3.14036612" xyz="24.0476665e-3 3.78124745e-3 32.32964923e-3" />
          <geometry>
             <mesh filename="models/FB_palm_ref.STL" />
          </geometry>
       </visual>
-      <collision name="palm_mesh">
-         <origin rpy="0 0 0" xyz="0 0 0" />
+      <collision name="palm_mesh_coll">
+         <origin rpy="3.14148426 0.08848813 3.14036612" xyz="24.0476665e-3 3.78124745e-3 32.32964923e-3" />
          <geometry>
             <mesh filename="models/palm_hull.STL" />
          </geometry>
       </collision>
    </link>
+
    <link name="index_L1">
       <inertial>
          <mass value="0.00636000" />
@@ -465,6 +459,12 @@
             <mesh filename="models/thumb-F1.STL" />
          </geometry>
       </visual>
+      <collision name="thumb_coll_mesh_1">
+         <origin rpy="-1.83260 0 0" xyz="0.02783 0 -0.01475" />
+         <geometry>
+            <mesh filename="models/thumb-F1-hull.STL" />
+         </geometry>
+      </collision>
    </link>
    <link name="thumb_L2">
       <inertial>
@@ -478,11 +478,17 @@
             <mesh filename="models/thumb-F2-left.STL" />
          </geometry>
       </visual>
+      <collision name="thumb_hull_mesh_2">
+         <origin rpy="3.14159 0 0.34383" xyz="0.06519 0.02334 -0.00393" />
+         <geometry>
+            <mesh filename="models/thumb-F2-hull.STL" />
+         </geometry>
+      </collision>
    </link>
    <joint name="thumb_q1" type="revolute">
-      <parent link="thumb_base" />
+      <parent link="base" />
       <child link="thumb_L1" />
-      <origin xyz="0 0 0" rpy="0 0 3.330437" />
+      <origin xyz="24.0476665e-3 3.78124745e-3 32.32964923e-3" rpy="-3.1250458 -0.08693131 -0.1883423" />
       <axis xyz="0 0 1" />
       <limit lower="-2.0943951" upper="0" effort="1.2" velocity="40.338888721" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
