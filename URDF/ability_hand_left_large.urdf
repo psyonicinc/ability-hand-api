@@ -460,7 +460,7 @@
          </geometry>
       </visual>
       <collision name="thumb_coll_mesh_1">
-         <origin rpy="1.832596 0 0" xyz="0.0278284 0 0.0147507" />
+         <origin rpy="-1.83260 0 0" xyz="0.02783 0 -0.01475" />
          <geometry>
             <mesh filename="models/thumb-F1-hull.STL" />
          </geometry>
@@ -479,7 +479,7 @@
          </geometry>
       </visual>
       <collision name="thumb_hull_mesh_2">
-         <origin rpy="-3.141592 0 0.3438291" xyz="0.0651867 0.0233402 0.00393483" />
+         <origin rpy="3.14159 0 0.34383" xyz="0.06519 0.02334 -0.00393" />
          <geometry>
             <mesh filename="models/thumb-F2-hull.STL" />
          </geometry>
