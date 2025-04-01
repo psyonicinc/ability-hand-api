@@ -88,9 +88,11 @@ def create_torque_msg(
 def create_vel_msg(
     reply_mode: int, velocities: int | float | List[float], addr: int = 0x50
 ):
-    print(
-        "WARNING VELOCITY TARGETS UNSTABLE AT THE MOMENT AND MAY CAUSE THUMB OSCILLATIONS, SUGGEST USING POSITION INSTEAD"
-    )
+    if config.velocity_warning:
+        print(
+            "WARNING VELOCITY TARGETS UNSTABLE AT THE MOMENT AND MAY CAUSE THUMB OSCILLATIONS, SUGGEST USING POSITION INSTEAD"
+        )
+        config.velocity_warning = False
     if type(velocities) in (int, float):
         velocities = [velocities] * 6
         velocities[-1] *= -1
