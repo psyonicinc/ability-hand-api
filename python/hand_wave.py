@@ -14,8 +14,9 @@ hands targets, which is useful for in the loop control.
 try:
     pos = [30, 30, 30, 30, 30, -30]
     while True:
+        current_time = time.time()
         for i in range(0, len(pos)):
-            ft = time.time() * 3 + i * (2 * pi) / 12
+            ft = current_time * 3 + i * (2 * pi) / 12
             pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
         pos[5] = -pos[5]
         client.set_position(positions=pos, reply_mode=2)  # Update command
