@@ -34,7 +34,7 @@ class RealTimePlotMotors:
             "Velocity (" + "\N{DEGREE SIGN}" + "per s)",
             "Current (a)",
         ]
-        y_ranges = ((0, 80), (-500, 500), (-1, 1))
+        y_ranges = ((0, 80), (-200, 200), (-1, 1))
         for i, ax in enumerate(self.axes):
             lines = [
                 ax.plot([], [], label=f"Value {j}")[0]
