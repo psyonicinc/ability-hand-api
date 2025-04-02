@@ -157,7 +157,8 @@ class AHSerialClient:
     def _write_thread_loop(self):
         """Loop that constantly sends self._command"""
         while self._writing:
-            self._conn.write(self._command)
+            with self._cmd_lock:
+                self._conn.write(self._command)
             time.sleep(self._wait_time_s)
 
     def _read_thread_loop(self):
