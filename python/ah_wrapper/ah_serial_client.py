@@ -32,7 +32,7 @@ class AHSerialClient:
         reply_mode: int = 0,
         read_size: int = 512,
         read_timeout: float = 0,
-        write_timeout: float = 0.1,
+        write_timeout: float = None,
         rs_485: bool = False,
         read_thread: bool = True,
         write_thread: bool = True,
@@ -73,7 +73,7 @@ class AHSerialClient:
         if config.write_log:
             logging.basicConfig(
                 filename="ability_hand.log",
-                level=logging.DEBUG,
+                level=logging.INFO,
                 format="%(asctime)s - %(levelname)s - %(message)s",
             )
 
@@ -87,6 +87,8 @@ class AHSerialClient:
         self._reading = False
         self._writing = False
         self.rate_hz = rate_hz
+        if write_timeout is None:
+            write_timeout = self._wait_time_s
 
         # Statistics Variables
         self.n_reads = 0
