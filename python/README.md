@@ -27,6 +27,14 @@ serial adapter.
 
 `sudo chmod a+rw /dev/ttyUSB*` 
 
+To avoid having to issue the above command every time you can issue:
+
+`sudo usermod -aG dialout $USER`
+
+And restart your computer.
+
+### Charging The Battery
+
 You can charge the Lipo battery by plugging the provided USB-C charger to the 
 ABILITY HAND POWER SWITCH.  You can leave everything connected but you cannot 
 operate the Ability Hand while it is charging.
