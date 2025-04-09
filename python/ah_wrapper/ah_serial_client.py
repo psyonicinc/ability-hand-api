@@ -371,9 +371,12 @@ class AHSerialClient:
             end_time = time.time()
         else:
             end_time = self.end_time
-        print(
-            f"Rate: {(self._conn.n_writes / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes} \nReads: {self.n_reads} \nPacket Loss: {(1 - (self.n_reads / self._conn.n_writes)) * 100:.3f}%"
-        )
+        try:
+            print(
+                f"Rate: {(self._conn.n_writes / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes} \nReads: {self.n_reads} \nPacket Loss: {(1 - (self.n_reads / self._conn.n_writes)) * 100:.3f}%"
+            )
+        except:
+            pass
 
     def close(self) -> None:
         """Stop threads and close serial connection, will need to re-create
