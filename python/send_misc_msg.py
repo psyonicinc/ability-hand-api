@@ -10,6 +10,10 @@ COMMANDS = {0x07: "Enable BLE",
 def main():
     if len(sys.argv) == 1:
         cmd = 0x09
+        print("ALTERNATE USES \n#############################\nDisable BLE radio")
+        print("python3 send_misc_msg.py 0x07\n\nEnable BLE radio:")
+        print("python3 send_misc+msg.py 0x08")
+        print("#############################\n")
     else:
         cmd = int(sys.argv[1], 0)
 
