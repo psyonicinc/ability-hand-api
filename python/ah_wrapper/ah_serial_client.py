@@ -91,8 +91,8 @@ class AHSerialClient:
             write_timeout = self._wait_time_s
 
         # Statistics Variables
-        self.n_reads = 0
-        self.start_time = None
+        self.n_reads = 1
+        self.start_time = time.time()
         self.end_time = None
 
         # Other classes
@@ -371,9 +371,7 @@ class AHSerialClient:
             end_time = time.time()
         else:
             end_time = self.end_time
-        print(
-            f"Rate: {(self._conn.n_writes / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes} \nReads: {self.n_reads} \nPacket Loss: {(1 - (self.n_reads / self._conn.n_writes)) * 100:.3f}%"
-        )
+        print(f"Rate: {((self._conn.n_writes-1) / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes-1} \nReads: {self.n_reads-1} \nPacket Loss: {(1 - ((self.n_reads-1) / (self._conn.n_writes-1))) * 100:.3f}%")
 
     def close(self) -> None:
         """Stop threads and close serial connection, will need to re-create

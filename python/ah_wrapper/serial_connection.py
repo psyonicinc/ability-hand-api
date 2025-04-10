@@ -23,7 +23,7 @@ class SerialConnectionBase(ABC):
         self.rw_lock = (
             threading.Lock()
         )  # Avoid reading when writing visa versa
-        self.n_writes = 0
+        self.n_writes = 1
         self.bauds = {
             0x01: 1200,
             0x02: 2400,
