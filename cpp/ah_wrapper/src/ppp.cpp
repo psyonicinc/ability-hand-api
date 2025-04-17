@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "ppp.h"
 
 int ppp_stuff(uint8_t *payload, uint16_t &payload_size, uint8_t *stuffed_buffer,

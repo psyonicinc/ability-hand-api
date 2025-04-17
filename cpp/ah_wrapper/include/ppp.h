@@ -1,7 +1,6 @@
 #pragma once
 #include <array>
 #include <stdint.h>
-#include <stdio.h>
 
 #define FRAME_CHAR 0x7E
 #define ESC_CHAR 0x7D

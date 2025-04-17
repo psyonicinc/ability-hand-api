@@ -1,12 +1,6 @@
 #pragma once
-#include <chrono>
-#include <cstdio>
 
-#ifdef PLATFORM_WINDOWS
-#include "winserial.h"
-#elif defined(PLATFORM_LINUX)
-#include "linux_serial.h"
-#endif
+#include <chrono>
 
 #include "hand.h"
 #include "ppp.h"

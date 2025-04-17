@@ -1,5 +1,4 @@
 #pragma once
-#include <array>
 #include <stdint.h>
 
 int autoconnect_serial(const uint32_t &baud_rate);
