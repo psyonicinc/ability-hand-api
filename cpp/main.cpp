@@ -18,10 +18,9 @@ int main(int argc, char *argv[]) {
       printf("%f ", wrapper.hand.pos[j]);
     }
     printf("\n");
-
   }
-  
-  // Send Velocity Command 
+
+  // Send Velocity Command
   cmd = {-20.0, -20.0, -20.0, -20.0, -20.0, -20.0};
   for (size_t i = 0; i < 500; ++i) {
     wrapper.read_write_once(cmd, VELOCITY, 1);

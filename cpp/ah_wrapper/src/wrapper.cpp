@@ -17,7 +17,8 @@ AHWrapper::AHWrapper(const uint8_t &hand_addr, const uint32_t &b_rate)
 
 AHWrapper::~AHWrapper() {
   printf("Closing connection to Hand %d\n", hand.address);
-  std::chrono::duration<double> duration = std::chrono::steady_clock::now() - start_time;
+  std::chrono::duration<double> duration =
+      std::chrono::steady_clock::now() - start_time;
   std::cout << "Rate: " << n_reads / duration.count() << std::endl;
   std::cout << "# of Reads: " << n_reads << "\n# Of Writes: " << n_writes
             << std::endl;
