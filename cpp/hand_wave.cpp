@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     duration = std::chrono::duration<double>(now.time_since_epoch());
     for (size_t j = 0; j < cmd.size(); ++j) {
       double ft =
-          static_cast<double>(duration.count()) * 3.0 + j * (2.0 * M_PI / 12.0);
+          static_cast<double>(duration.count()) * 3.0 + j * (2.0 * 3.14159265359 / 12.0);
       cmd[j] = (0.5 * std::sin(ft) + 0.5) * 45.0 + 15.0;
     }
     cmd[5] = -cmd[5];
