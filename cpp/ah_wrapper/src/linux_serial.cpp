@@ -11,12 +11,11 @@
 #include "linux_serial.h"
 
 int serial_port = -1;
-const int BAUD_RATE = 460800;
 char filename[32] = {0}; // some large enough empty buffer
 // DECLARE filename as such in advance (in case not in /dev/ttyUSB*)
 // char filename[128] = "/dev/ttyACM0";
 
-int autoconnect_serial(void) {
+int autoconnect_serial(const uint32_t &BAUD_RATE) {
   // If user declared filename
   if (filename[0]) {
     serial_port = open(filename, O_RDWR);

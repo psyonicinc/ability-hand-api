@@ -5,11 +5,6 @@
 #include <thread>
 #include <unistd.h>
 
-#ifdef PLATFORM_WINDOWS
-#include "winserial.h"
-#elif defined(PLATFORM_LINUX)
-#include "linux_serial.h"
-#endif
 #include "ppp.h"
 
 const uint32_t MAX_ATTEMPTS = 150000;

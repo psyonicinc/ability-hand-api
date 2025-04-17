@@ -18,4 +18,5 @@ add_library(${PROJECT_NAME} STATIC
     src/serial_helper.cpp
     src/hand.cpp
     src/parser.cpp
+    src/wrapper.cpp
     )
