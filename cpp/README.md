@@ -5,7 +5,7 @@ current and duty messages to the hand and parse it's feedback.  See main.cpp
 for how to use.
 
 Given the non-blocking/sleeping nature of how this code handles reads and writes
-it is best to use a high as possible baudrate.
+it is best to use a high as possible baudrate (921600 recommended).
 
 Common baudrates are
 

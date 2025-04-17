@@ -40,6 +40,11 @@ int AHWrapper::connect() {
   }
 }
 
+/* Takes in a array of command values, an enum command, and a reply mode.
+    Writes the generated message to serial then reads bytes until it sees a
+    complete byte stuffed frame using read_until() then parses received frame
+    returned by read_until().
+*/
 int AHWrapper::read_write_once(const std::array<float, 6> &cmd_values,
                                const Command &cmd, const uint8_t &reply_mode) {
   switch (cmd) {
@@ -66,7 +71,7 @@ int AHWrapper::read_write_once(const std::array<float, 6> &cmd_values,
   if (unstuffed_bytes_read > 0) {
     // Response received, unstuffed and passed checksum
     ++n_reads;
-    parse_packet(buffer, unstuffed_bytes_read, hand, reply_mode);
+    parse_packet(buffer.data(), unstuffed_bytes_read, hand, reply_mode);
     // printf("%f %f %f %f %f %f\n", hand.pos[0], hand.pos[1], hand.pos[2],
     //        hand.pos[3], hand.pos[4], hand.pos[5]);
   }
