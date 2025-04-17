@@ -18,5 +18,7 @@ add_subdirectory(ah_wrapper)
 include_directories(${PROJECT_SOURCE_DIR}/ah_wrapper/include)
 
 add_executable(main main.cpp)
+add_executable(hand_wave hand_wave.cpp)
 
 target_link_libraries(main PRIVATE ah_wrapper)
+target_link_libraries(hand_wave PRIVATE ah_wrapper)
