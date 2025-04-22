@@ -1,43 +1,7 @@
-# Startup Guide
+# Python Ability Hand Wrapper
 
-Congratulations on becoming the owner of a new PSYONIC Ability Hand.  This guide
-is designed to get you up and running as quickly as possible and to familiarize
-yourself with our Python  Serial Wrapper for the Ability Hand.  For optimal 
-speed a Linux or Mac computer is recommended, but Windows is compatible as well.
-
-### Connect Ability Hand and serial adapter
-
-Ensure you connect the ABILITY HAND, POWER SWITCH and BREAKOUT BOARD correctly.
-Windows users will first need to [install drivers](https://www.silabs.com/documents/public/software/CP210x_Windows_Drivers.zip)
-for the USB serial adapter.
-
-<img src="images/ah_wiring_guide.png" alt="isolated" width="600"/>
-
-1. Connect PWR (POWER SWITCH) ➡️ PWR CONNECTOR (BREAKOUT BOARD) 
-2. 6 PIN (ABILITY HAND) ➡️ 6 PIN (BREAKOUT BOARD)  
-3. GND (SERIAL ADAPTER) ➡️ GND (BREAKOUT BOARD)
-4. RXD (SERIAL ADAPTER) ➡️ SCL (BREAKOUT BOARD) 
-5. TXD (SERIAL ADAPTER) ➡️ SDA (BREAKOUT BOARD)
-6. SERIAL ADAPTER ➡️ COMPUTER
-7. Connect Lipo Battery ➡️ BAT (POWER SWITCH)
-8. Power on Ability Hand (hold power button for 1 second)
-
-Linux users will need to issue the following command after plugging in USB 
-serial adapter.
-
-`sudo chmod a+rw /dev/ttyUSB*` 
-
-To avoid having to issue the above command every time you can issue:
-
-`sudo usermod -aG dialout $USER`
-
-And restart your computer.
-
-### Charging The Battery
-
-You can charge the Lipo battery by plugging the provided USB-C charger to the 
-ABILITY HAND POWER SWITCH.  You can leave everything connected but you cannot 
-operate the Ability Hand while it is charging.
+This wrapper is a asynchronous multithreaded implementation that can send 
+position, velocity, current and duty messages to the hand and parse its feedback.
 
 ### Install Requirements
 Preferably using a [virtual env](https://docs.python.org/3/library/venv.html)  from the root directory issue  
@@ -45,8 +9,8 @@ Preferably using a [virtual env](https://docs.python.org/3/library/venv.html)  f
 
 ### Enable UART & Byte Stuffing using App
 
-This codebase uses serial communication and requires [byte stuffing](https://www.tutorialspoint.com/data_communication_computer_network/byte_stuffing.htm) 
-to be enabled.  From the PSYONIC app select 
+The Python and CPP examples use serial communication and requires [byte stuffing](https://www.tutorialspoint.com/data_communication_computer_network/byte_stuffing.htm) 
+to be enabled.  To enable, from the PSYONIC app select:
 
 Scan ➡️ SELECT HAND ➡️ Gear Icon ⚙️
 (Top Right) ➡️ Troubleshoot ➡️ Developer Mode

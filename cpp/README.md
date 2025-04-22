@@ -1,8 +1,25 @@
 # C++ Ability Hand Wrapper
 
-This wrapper is a synchronous implementation that can send position, velocity,
-current and duty messages to the hand and parse it's feedback.  See main.cpp
+This wrapper is a synchronous single threaded implementation that can send 
+position, velocity, current and duty messages to the hand and parse its feedback.  
+
+See [main.cpp](https://github.com/psyonicinc/ability-hand-api/blob/master/cpp/main.cpp) 
 for how to use.
+
+### Enable UART & Byte Stuffing using App
+
+The Python and CPP examples use serial communication and requires [byte stuffing](https://www.tutorialspoint.com/data_communication_computer_network/byte_stuffing.htm) 
+to be enabled.  To enable, from the PSYONIC app select:
+
+Scan ➡️ SELECT HAND ➡️ Gear Icon ⚙️
+(Top Right) ➡️ Troubleshoot ➡️ Developer Mode
+
+and issue the following commands 
+individually.
+
+We16  
+We46  
+We47
 
 ### Increase Baud Rate
 
