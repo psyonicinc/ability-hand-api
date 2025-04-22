@@ -16,6 +16,7 @@ try:
         fpos[5] = -fpos[5]
 
         abh.writePos()
+        time.sleep(30e-3)
         with abh.readlock:
             if len(abh.rPos) != 0:
                 abh.tPos = fpos
