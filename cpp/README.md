@@ -8,8 +8,11 @@ for how to use.
 
 ### Enable UART & Byte Stuffing using App
 
-The Python and CPP examples use serial communication and requires [byte stuffing](https://www.tutorialspoint.com/data_communication_computer_network/byte_stuffing.htm) 
-to be enabled.  To enable, from the PSYONIC app select:
+The C++ wrapper uses serial communication and requires [byte stuffing](https://www.tutorialspoint.com/data_communication_computer_network/byte_stuffing.htm) 
+to be enabled.  It is recommended to use byte stuffing, fore more info see 
+section 3.5.5 in the [API Documentation](https://github.com/psyonicinc/ability-hand-api/blob/master/Documentation/ABILITY-HAND-ICD.pdf).  
+
+To enable UART and byte stuffing from the PSYONIC app select:
 
 Scan ➡️ SELECT HAND ➡️ Gear Icon ⚙️
 (Top Right) ➡️ Troubleshoot ➡️ Developer Mode

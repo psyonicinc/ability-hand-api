@@ -41,6 +41,18 @@ To avoid having to issue the above command every time you can issue:
 
 And restart your computer.
 
+### Enable UART Using App
+
+The hand ships in I2C mode but UART is recommended, to enable UART using the 
+PSYONIC mobile app:
+
+Scan ➡️ SELECT HAND ➡️ Gear Icon ⚙️
+(Top Right) ➡️ Troubleshoot ➡️ Developer Mode
+
+and issue the following command
+
+We16
+
 ### Run Examples
 
 You are now ready to run examples using [Python](https://github.com/psyonicinc/ability-hand-api/tree/master/python)
