@@ -1,0 +1,62 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# CMake-specific files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+*.cmake
+
+# Build artifacts (adjust as needed for your build system)
+build/
+bin/
+lib/
+dist/
+out/
+
+# IDE-specific files
+.idea/
+.vscode/
+*.ipr
+*.iws
+*.user
+*.bak
+*.swp
+
+# System files
+.DS_Store
+Thumbs.db
+
+# CMake Presets User file
+CMakeUserPresets.json
