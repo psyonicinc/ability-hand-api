@@ -25,7 +25,7 @@ We16
 We46  
 We47
 
-### Run examples
+## Run examples
 
 The Ability Hand can provide position, velocity and current feedback from the 
 hand.  To see this in action run the following examples (close plot window to 
