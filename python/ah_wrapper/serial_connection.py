@@ -150,7 +150,7 @@ class SerialConnection(SerialConnectionBase):
                 ports = [
                     p[0]
                     for p in serial.tools.list_ports.comports()
-                    if "ttyUSB" in p[0]
+                    if "ttyUSB" in p[0] or "ttyACM" in p[0]
                 ]
                 for p in ports:
                     if not os.access(p, os.W_OK):
