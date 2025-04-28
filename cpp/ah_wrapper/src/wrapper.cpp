@@ -2,12 +2,6 @@
 
 #include <iostream>
 
-#ifdef PLATFORM_WINDOWS
-#include "winserial.h"
-#elif defined(PLATFORM_LINUX)
-#include "linux_serial.h"
-#endif
-
 #include "api.h"
 #include "parser.h"
 #include "serial_helper.h"
@@ -49,29 +43,35 @@ int AHWrapper::read_write_once(const std::array<float, 6> &cmd_values,
                                const Command &cmd, const uint8_t &reply_mode) {
   switch (cmd) {
   case POSITION:
-    buffer_idx = build_pos_msg(cmd_values, buffer, hand.address, reply_mode);
+    m_buffer_idx =
+        build_pos_msg(cmd_values, m_buffer, hand.address, reply_mode);
     break;
   case VELOCITY:
-    buffer_idx = build_vel_msg(cmd_values, buffer, hand.address, reply_mode);
+    m_buffer_idx =
+        build_vel_msg(cmd_values, m_buffer, hand.address, reply_mode);
     break;
   case CURRENT:
-    buffer_idx = build_tor_msg(cmd_values, buffer, hand.address, reply_mode);
+    m_buffer_idx =
+        build_tor_msg(cmd_values, m_buffer, hand.address, reply_mode);
     break;
   case DUTY:
-    buffer_idx = build_dut_msg(cmd_values, buffer, hand.address, reply_mode);
+    m_buffer_idx =
+        build_dut_msg(cmd_values, m_buffer, hand.address, reply_mode);
     break;
   }
 
-  stuffed_idx = ppp_stuff(buffer.data(), buffer_idx, stuffed_buffer.data(),
-                          STUFFED_BUFFER_SIZE);
-  serial_write(stuffed_buffer.data(), stuffed_idx);
+  m_stuffed_idx = ppp_stuff(m_buffer.data(), m_buffer_idx,
+                            m_stuffed_buffer.data(), STUFFED_BUFFER_SIZE);
+  serial_write(m_stuffed_buffer.data(), m_stuffed_idx);
   ++n_writes; // Can't determine if write fails or succeeds
 
-  int unstuffed_bytes_read = read_until(stuffed_buffer, buffer);
+  int unstuffed_bytes_read =
+      read_until(m_stuffed_buffer.data(), m_buffer.data(), STUFFED_BUFFER_SIZE,
+                 BUFFER_SIZE);
   if (unstuffed_bytes_read > 0) {
     // Response received, unstuffed and passed checksum
     ++n_reads;
-    parse_packet(buffer.data(), unstuffed_bytes_read, hand, reply_mode);
+    parse_packet(m_buffer.data(), unstuffed_bytes_read, hand, reply_mode);
     // printf("%f %f %f %f %f %f\n", hand.pos[0], hand.pos[1], hand.pos[2],
     //        hand.pos[3], hand.pos[4], hand.pos[5]);
   }
