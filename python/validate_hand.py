@@ -394,45 +394,34 @@ def validate_fsr():
 def validate_grips():
     print("VALIDATING GRIPS")
     client = AHSerialClient(write_thread=False)
-    command_sent = False
-    
-    input("Press enter to test keygrip press ctrl-c to stop")
-    try:
-        while True:
-            if not command_sent:
-                client.set_grip(0x08)
-                client.send_command()
-                time.sleep(3)
-                client.set_grip(0x00)
-                client.send_command()
-                print("Move thumb back and forth to test")
-                command_sent = True
-            time.sleep(0.01)
-    except KeyboardInterrupt:
-        client.set_grip(0x00, speed=0)
-        client.send_command()
-        command_sent = False
 
-    input("Press enter to run hand wave press ctrl-c to stop")
-    try:
-        while True:
-            if not command_sent:
-                client.set_grip(0x20)
-                client.send_command()
-                command_sent = True
-            time.sleep(0.01)
-    except KeyboardInterrupt:
-        client.set_grip(0x20, speed=0)
-        client.send_command()
+    input("Press enter to test keygrip")
+    client.set_grip(0x08)
+    client.send_command()
+    time.sleep(3)
+    client.set_grip(0x00)
+    client.send_command()
+    input("Move thumb back and forth to test, press enter to continue")
+    client.set_grip(0x00, speed=0)
+    client.send_command()
+    command_sent = False
+
+    input("Press enter to run hand wave")
+    client.set_grip(0x20)
+    client.send_command()
+    input("Press enter to stop")
+    client.set_grip(0x20, speed=0)
+    client.send_command()
     client.close()
 
 
 def main():
     validate_grips()
     validate_fsr()
-    validate_velocity()
-    validate_position()
-    validate_torque()
+    if input("Do you want to test the motors? [y/N]").lower() not in ('n', ''):
+        validate_velocity()
+        validate_position()
+        validate_torque()
 
 if __name__ == "__main__":
     main()
