@@ -244,7 +244,9 @@ class AHSerialClient:
 
         # Create response buffer if simulated
         if self.simulated:
-            packet = GeneratedPacket(pos=self.hand.get_tar_position(), reply_mode=2)
+            packet = GeneratedPacket(
+                pos=self.hand.get_tar_position(), reply_mode=2
+            )
             for b in packet.packet:
                 self._conn._serial.buffer.append(b)
 
@@ -379,7 +381,9 @@ class AHSerialClient:
             end_time = time.time()
         else:
             end_time = self.end_time
-        print(f"Rate: {((self._conn.n_writes-1) / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes-1} \nReads: {self.n_reads-1} \nPacket Loss: {(1 - ((self.n_reads-1) / (self._conn.n_writes-1))) * 100:.3f}%")
+        print(
+            f"Rate: {((self._conn.n_writes-1) / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes-1} \nReads: {self.n_reads-1} \nPacket Loss: {(1 - ((self.n_reads-1) / (self._conn.n_writes-1))) * 100:.3f}%"
+        )
 
     def close(self) -> None:
         """Stop threads and close serial connection, will need to re-create
