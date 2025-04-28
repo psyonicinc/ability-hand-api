@@ -4,6 +4,7 @@ import threading
 import time
 
 import config
+from ah_simulators.sim_functions import GeneratedPacket
 from ah_wrapper.serial_connection import SerialConnection
 from ah_wrapper.hand import Hand
 from ah_wrapper.ppp_stuffing import PPPUnstuff
@@ -89,6 +90,7 @@ class AHSerialClient:
         self.rate_hz = rate_hz
         if write_timeout is None:
             write_timeout = self._wait_time_s
+        self.simulated = simulated
 
         # Statistics Variables
         self.n_reads = 1
@@ -101,7 +103,7 @@ class AHSerialClient:
         )  # Hand class holds all hand properties
         self._unstuffer = PPPUnstuff(buffer_size=read_size)
 
-        if simulated:
+        if self.simulated:
             from ah_simulators.sim_serial_connection import SimSerialConnection
 
             self._conn = SimSerialConnection(
@@ -239,6 +241,12 @@ class AHSerialClient:
             self._conn.write(command)
         else:
             self._conn.write(self._command)
+
+        # Create response buffer if simulated
+        if self.simulated:
+            packet = GeneratedPacket(pos=self.hand.get_tar_position(), reply_mode=2)
+            for b in packet.packet:
+                self._conn._serial.buffer.append(b)
 
     def set_position(
         self, positions: float | List[float], reply_mode=None, addr=None
