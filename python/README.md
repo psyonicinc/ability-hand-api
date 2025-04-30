@@ -3,6 +3,10 @@
 This wrapper is a asynchronous multithreaded implementation that can send 
 position, velocity, current and duty messages to the hand and parse its feedback.
 
+### Clone Repository
+If you havn't allready clone the repository  
+`git clone https://github.com/psyonicinc/ability-hand-api.git  && cd ability-hand-api/python`
+
 ### Install Requirements
 Preferably using a [virtual env](https://docs.python.org/3/library/venv.html)  from the root directory issue  
 `pip install -r requirements.txt`
