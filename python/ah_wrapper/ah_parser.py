@@ -16,12 +16,13 @@ class AbstractPacket:
 
     def __init__(self):
         self.valid = (
-            False  # If frame was was properly parsed this becomes true
+            False  # If frame was properly parsed this becomes true
         )
         self.pos = [0] * 6
         self.vel = [0] * 6
         self.cur = [0] * 6
         self.fsr = [0] * 30
+        self.hot_cold = 0
         self.size_lookup = (71, 71, 38)
 
     def _convert_pos(self):
@@ -77,6 +78,9 @@ class Type1Packet(AbstractPacket):
                 idx += 2
 
             self.hot_cold = struct.unpack("<b", buffer[-1:])[0]
+            if self.hot_cold:
+                if config.write_log:
+                    logging.warning(f"Collision Detected: {self.hot_cold}")
             self._convert_pos()
             self._convert_cur()
             self._convert_fsr()
@@ -119,6 +123,9 @@ class Type2Packet(AbstractPacket):
                 idx += 2
 
             self.hot_cold = struct.unpack("<b", buffer[-1:])[0]
+            if self.hot_cold:
+                if config.write_log:
+                    logging.warning(f"Collision Detected: {self.hot_cold}")
             self._convert_pos()
             self._convert_vel()
             self._convert_fsr()
@@ -158,6 +165,9 @@ class Type3Packet(AbstractPacket):
             self._convert_vel()
             self._convert_cur()
             self.valid = True
+            if self.hot_cold:
+                if config.write_log:
+                    logging.warning(f"Collision Detected: {self.hot_cold}")
         else:
             if config.write_log:
                 logging.warning(f"Bad size type 3 frame: {buffer}")
