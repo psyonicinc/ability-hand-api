@@ -176,6 +176,8 @@ class AHSerialClient:
                         parsed = parse_packet(byte_array=frame)
                         if parsed is not None and parsed.valid:
                             try:
+                                self.hand.update_hot_cold(parsed.hot_cold)
+
                                 if type(parsed) == Type3Packet:
                                     self.hand._update_cur(
                                         positions=parsed.pos,

@@ -11,6 +11,7 @@ class Hand:
         serial_connection class, and that seems weird.
         """
         self.addr = addr
+        self._hot_cold = None # Hot cold status
         self._cur_pos = None  # Current pos
         self._tar_pos = None  # Target pos
         self._cur_vel = None  # Current vel
@@ -75,6 +76,14 @@ class Hand:
                 self._tar_cur = None
                 self._tar_vel = None
                 self._tar_pos = None
+
+    def update_hot_cold(self, hot_cold_status: int) -> None:
+        with self._val_lock:
+            self._hot_cold = hot_cold_status
+
+    def get_hot_cold(self) -> int:
+        with self._val_lock:
+            return self._hot_cold
 
     def get_current(self) -> None | List[float]:
         """Returns most recent finger current feedback in amps or None"""
