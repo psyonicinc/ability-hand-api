@@ -101,8 +101,7 @@ class RealTimePlotMotors:
         self.fig.legend(
             self.lines[0],
             ["Index", "Middle", "Ring", "Pinky", "Thb. Flex", "Thb. Rot."],
-            loc="center right",
-            bbox_to_anchor=(0.79, 0.65),
+            loc="upper right",
             fontsize=8,
         )
 

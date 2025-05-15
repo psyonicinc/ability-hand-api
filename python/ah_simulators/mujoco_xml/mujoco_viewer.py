@@ -12,6 +12,7 @@ if (len(sys.argv)) != 2:
 model = mujoco.MjModel.from_xml_path(sys.argv[1])
 data = mujoco.MjData(model)
 
+
 # Actuators
 actuators = [
     "index_mcp_actuator",
@@ -25,6 +26,9 @@ actuators = [
     "thumb_flexor_actuator",
     "thumb_rotator_actuator",
 ]
+
+#z1 ids
+
 act_ids = [
     mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
     for i in actuators
@@ -32,6 +36,8 @@ act_ids = [
 if -1 in act_ids:
     print("Could not find ability hand joints in scene")
     exit(1)
+    
+
 
 # Create a viewer
 with mujoco.viewer.launch_passive(model, data) as viewer:

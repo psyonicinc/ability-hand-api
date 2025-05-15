@@ -22,6 +22,9 @@ class Controller:
             "thumb_flexor_actuator",
             "thumb_rotator_actuator",
         ]
+
+
+
         if left_hand:
             self.actuators = ["l_" + i for i in self.actuators]
 
@@ -92,6 +95,26 @@ class AHMujocoSim:
         else:
             self.l_controller = None
         self.data = mujoco.MjData(self.model)
+        
+        # Z1 Actuators
+        z1_actuators = ["motor1",
+                        "motor2",
+                        "motor3",
+                        "motor4",
+                        "motor5",
+                        "motor6"
+                        ]
+
+        z1_act_ids = [mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+                      for i in z1_actuators]
+
+
+        if -1 not in z1_act_ids:
+            home = (0.000672, 1.400176, -1.186352, -0.213831, -0.000783, 0.000078)
+            for i in range(len(home)):
+                self.data.ctrl[z1_act_ids[i]] = home[i]
+        
+        
         self.mujuco_thread.start()
 
     def mujoco_loop(self):
