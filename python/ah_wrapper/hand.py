@@ -20,6 +20,9 @@ class Hand:
         self._tar_cur = None
         self._tar_duty = None  # Target duty/voltage we don't read duty/voltage
         self._fsr = None  # Current FSR readings
+        self._fsr_offset = [0] * 30
+
+        self._first_fsr = True
 
         self._val_lock = Lock()
         self._tar_lock = Lock()
@@ -34,13 +37,17 @@ class Hand:
         """Safely updates most recent readings from hand based on feedback"""
         with self._val_lock:
             if positions:
-                self._cur_pos = positions
+                self._cur_pos = positions.copy()
             if velocity:
-                self._cur_vel = velocity
+                self._cur_vel = velocity.copy()
             if current:
-                self._cur_cur = current
+                self._cur_cur = current.copy()
             if fsr:
-                self._fsr = fsr
+                if self._first_fsr and 0 not in fsr:
+                    self._fsr_offset = [-i for i in fsr]
+                    print(f"FSR OFFEST {self._fsr_offset}")
+                    self._first_fsr = False
+                self._fsr = [fsr[i] + self._fsr_offset[i] for i in range(len(fsr))]
 
     def update_tar(
         self,
@@ -57,22 +64,22 @@ class Hand:
         time, to avoid confusion, there can only be one target at a time."""
         with self._tar_lock:
             if positions:
-                self._tar_pos = positions
+                self._tar_pos = positions.copy()
                 self._tar_vel = None
                 self._tar_cur = None
                 self._tar_duty = None
             elif velocities:
-                self._tar_vel = velocities
+                self._tar_vel = velocities.copy()
                 self._tar_pos = None
                 self._tar_cur = None
                 self._tar_duty = None
             elif currents:
-                self._tar_cur = currents
+                self._tar_cur = currents.copy()
                 self._tar_vel = None
                 self._tar_pos = None
                 self._tar_duty = None
             elif duties:
-                self._tar_duty = duties
+                self._tar_duty = duties.copy()
                 self._tar_cur = None
                 self._tar_vel = None
                 self._tar_pos = None

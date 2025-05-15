@@ -3,6 +3,7 @@ from collections import deque
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import matplotlib.image as mpimg
 
 from ah_wrapper.hand import Hand
 
@@ -129,6 +130,9 @@ class RealTimePlotTouch:
         self.fig, self.axes = plt.subplots(5, 1, figsize=(10, 10), sharex=True)
         self.lines = []
         self.fig.suptitle("Ability Hand Touch Sensors", fontsize=16)
+        img = mpimg.imread('./images/touch_sensor_legend_sml.png')
+
+        self.fig.figimage(img, xo=100, yo=825, zorder=10)
 
         y_labels = ["Index", "Middle", "Ring", "Pinky", "Thumb"]
         for i, ax in enumerate(self.axes):
