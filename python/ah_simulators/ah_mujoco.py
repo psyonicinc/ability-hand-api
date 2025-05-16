@@ -1,4 +1,6 @@
 import threading
+import socket
+import struct
 
 import mujoco
 import mujoco.viewer
@@ -9,6 +11,9 @@ from ah_wrapper.hand import Hand
 
 class Controller:
     def __init__(self, hand: Hand, model, left_hand=False):
+
+
+
         self.hand = hand
         self.actuators = [
             "index_mcp_actuator",
@@ -118,10 +123,20 @@ class AHMujocoSim:
         self.mujuco_thread.start()
 
     def mujoco_loop(self):
-        with mujoco.viewer.launch_passive(self.model, self.data) as viewer:
-            while viewer.is_running():
-                self.controller.actuate(data=self.data)
-                if self.l_controller:
-                    self.l_controller.actuate(data=self.data)
-                mujoco.mj_step(self.model, self.data)
-                viewer.sync()
+        # SOCKET FOR RECEIVING COMMANDS
+        HOST = '127.0.0.1'
+        PORT = 7244
+
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.bind((HOST, PORT))
+
+            with mujoco.viewer.launch_passive(self.model, self.data) as viewer:
+                while viewer.is_running():
+                    data, addr = s.recvfrom(32)
+                    if (data):
+                        print(struct.unpack('<ffffff', data))
+                    self.controller.actuate(data=self.data)
+                    if self.l_controller:
+                        self.l_controller.actuate(data=self.data)
+                    mujoco.mj_step(self.model, self.data)
+                    viewer.sync()

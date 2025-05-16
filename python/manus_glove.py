@@ -112,7 +112,7 @@ def ros_loop(client):
 
 
 def main(args=None):
-    client = AHSerialClient()
+    client = AHSerialClient(simulated=True)
     ros_t = threading.Thread(target=ros_loop, args=(client,))
     ros_t.start()
 
