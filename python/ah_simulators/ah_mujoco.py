@@ -110,16 +110,15 @@ class AHMujocoSim:
                         "motor6"
                         ]
 
-        z1_act_ids = [mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+        self.z1_act_ids = [mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
                       for i in z1_actuators]
 
 
-        if -1 not in z1_act_ids:
+        if -1 not in self.z1_act_ids:
             home = (0.000672, 1.400176, -1.186352, -0.213831, -0.000783, 0.000078)
             for i in range(len(home)):
-                self.data.ctrl[z1_act_ids[i]] = home[i]
-        
-        
+                self.data.ctrl[self.z1_act_ids[i]] = home[i]
+
         self.mujuco_thread.start()
 
     def mujoco_loop(self):
@@ -134,7 +133,9 @@ class AHMujocoSim:
                 while viewer.is_running():
                     data, addr = s.recvfrom(32)
                     if (data):
-                        print(struct.unpack('<ffffff', data))
+                        joints = struct.unpack('<ffffff', data)
+                    for i in range(len(joints)):
+                        self.data.ctrl[self.z1_act_ids[i]] = joints[i]
                     self.controller.actuate(data=self.data)
                     if self.l_controller:
                         self.l_controller.actuate(data=self.data)

@@ -15,7 +15,7 @@ class CombinedRealTimePlot:
         self.hand = hand
 
         # Create a single figure with GridSpec for flexible layout
-        self.fig = plt.figure(figsize=(7, 10))
+        self.fig = plt.figure(figsize=(9, 10))
         self.fig.suptitle("Combined Touch and Motor Data", fontsize=18)
 
         # Setup GridSpec layout: 7 rows x 2 columns (touch: left, motor: right)
@@ -197,16 +197,15 @@ class RealTimePlotTouch:
                 for j in range(i * 6, (i + 1) * 6)
             ]
             self.lines.append(lines)
-            ax.set_ylim(0, 8)
-            ax.set_ylabel(
-                y_labels[i],
-                rotation=0,
-                labelpad=30,
-                fontweight="bold",
-                ha="center",
-                va="center",
-            )
-            ax.set_yticks([])
+            if i == 2:
+                ax.set_ylabel(
+                    "Newtons (N)",
+                )
+            ax.set_ylim(0, 5)
+            ax2 = ax.twinx()
+            ax2.set_ylabel(y_labels[i], fontweight="bold", rotation=0, labelpad=30, ha="center", va="center")
+            ax2.set_yticks([])
+
 
         self.axes[-1].set_xlabel("Time (s)")
 

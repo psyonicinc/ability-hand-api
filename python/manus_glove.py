@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import threading
 import math
+import socket
+import struct
+import numpy as np
 
 from scipy.spatial.transform import Rotation as R
 import rclpy
@@ -29,19 +32,24 @@ class GloveSubscriber(Node):
 
     def __init__(self, client):
         super().__init__('glove_subscriber')
-        self.tf_broadcaster = TransformBroadcaster(self)
         self.subscription = self.create_subscription(
             ManusGlove,
             '/manus_glove_0',
             self.listener_callback,
             10  # QoS history depth
         )
+        self.tf_broadcaster = TransformBroadcaster(self)
         self.client = client
         sim = AHMujocoSim(hand=self.client.hand, scene='ah_simulators/mujoco_xml/unitree_z1/scene.xml')
         self.mcps = [0,0,0,0,0,0]
         self.pips = [0,0,0,0,0,0]
         self.mcp_ranges = ((-1,80), (-2, 78), (-2,75), (-3,82), (-20,65), (-1,45))
         self.pip_ranges = ((0,90), (0,90), (0,90), (0,80), )
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.homog = np.array([[0, 0, 0, 0.287],
+                      [0, 0, 0, 0],
+                      [0, 0, 0, 0.302],
+                      [0, 0, 0, 1]])
 
         self.alternate = True
 
@@ -76,12 +84,20 @@ class GloveSubscriber(Node):
                            msg.raw_sensor_orientation.z,
                            msg.raw_sensor_orientation.w])
 
-        y_rot = R.from_euler('x', 90, degrees=True)
+        y_rot = R.from_euler('y', 90, degrees=True)
+        x_rot = R.from_euler('x', 90, degrees=True)
+        
+        ori_mat = (x_rot * y_rot * ori).as_matrix()
 
-        rotated = (y_rot * ori).as_quat()
+        for i in range(3):
+            for j in range(3):
+                self.homog[i][j] = ori_mat[i][j]
 
-        # Publish orientation of glove
+        packed_data = struct.pack('<16f', *list(self.homog.flatten()))
+        #self.sock.sendto(packed_data, ('127.0.0.1', 7242))
+
         t = TransformStamped()
+        rotated = ori.as_quat()
 
         # Fill in header
         t.header.stamp = self.get_clock().now().to_msg()
@@ -108,11 +124,12 @@ def ros_loop(client):
     glove_subscriber = GloveSubscriber(client)
     rclpy.spin(glove_subscriber)
     glove_subscriber.destroy_node()
+    glove_subscriber.sock.close()
     rclpy.shutdown()
 
 
 def main(args=None):
-    client = AHSerialClient(simulated=True)
+    client = AHSerialClient()
     ros_t = threading.Thread(target=ros_loop, args=(client,))
     ros_t.start()
 
