@@ -6,12 +6,13 @@ import time
 import config
 from ah_wrapper.serial_connection import SerialConnection
 from ah_wrapper.hand import Hand
-from ah_wrapper.ppp_stuffing import PPPUnstuff
+from ah_wrapper.ppp_stuffing import PPPUnstuff, PPPState
 from ah_wrapper.ah_parser import (
     parse_packet,
     Type1Packet,
     Type2Packet,
     Type3Packet,
+
 )
 from ah_wrapper.ah_api import (
     create_pos_msg,
@@ -206,6 +207,11 @@ class AHSerialClient:
                                 if config.write_log:
                                     logging.warning(f"Bad frame {frame}")
                                     logging.warning(f"Bad msg {msg}")
+                        else:
+                            # HACKY FIX FOR NOW
+                            self._unstuffer.reset_state()
+                            self._unstuffer.state = PPPState.DATA
+
             time.sleep(
                 self._wait_time_s / 2
             )  # Sleeping on the job sometimes good
