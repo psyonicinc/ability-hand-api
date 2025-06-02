@@ -157,8 +157,14 @@ class SerialConnection(SerialConnectionBase):
                         print(
                             f"Do not have permission to write to {p} please use:\nsudo chmod 666 {p}"
                         )
+            elif platform.system() == "Darwin":
+                ports = [
+                    p[0]
+                    for p in serial.tools.list_ports.comports()
+                    if "usbserial" in p[0]
+                ]
             else:
-                # TODO Test windows and mac support and add elif's
+                # TODO Test windows
                 ports = [p[0] for p in serial.tools.list_ports.comports()]
         else:
             ports = [port]
