@@ -6,10 +6,10 @@
 mode will parse the packet and update the hand's properties */
 int parse_packet(uint8_t *data, const uint16_t &packet_size, Hand &hand,
                  const uint8_t &r_mode) {
-  uint8_t header; // Not currently used
-  int16_t val;  // Data placeholder for single byte
-  uint16_t offset = 0;  // Current offset / idx in data
-  uint8_t hot_cold;  // Not currently used
+  uint8_t header;      // Not currently used
+  int16_t val;         // Data placeholder for single byte
+  uint16_t offset = 0; // Current offset / idx in data
+  uint8_t hot_cold;    // Not currently used
   uint8_t fsr_idx = 0;
 
   switch (r_mode) {

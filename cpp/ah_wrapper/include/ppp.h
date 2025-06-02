@@ -17,14 +17,11 @@ private:
   bool unmask_next_char = false;
   void reset_state();
   void add_to_buffer(const uint8_t &byte);
-  uint8_t *buffer;
-  uint16_t buffer_size;
-  uint16_t idx = 0;
+  uint8_t *m_buffer;
+  uint16_t m_buffer_size;
+  uint16_t m_idx = 0;
 
 public:
-  template <std::size_t N> Unstuffer(std::array<uint8_t, N> &unstuffed_buffer) {
-    buffer = unstuffed_buffer.data();
-    buffer_size = unstuffed_buffer.size();
-  }
+  Unstuffer(uint8_t *unstuffed_buffer, const uint16_t &unstuffed_buffer_size);
   uint16_t unstuff_byte(uint8_t byte);
 };

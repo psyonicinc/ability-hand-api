@@ -4,6 +4,11 @@
 
 #include "hand.h"
 #include "ppp.h"
+#ifdef PLATFORM_WINDOWS
+#include "winserial.h"
+#elif defined(PLATFORM_LINUX)
+#include "linux_serial.h"
+#endif
 
 const uint16_t BUFFER_SIZE = 512;
 const uint16_t STUFFED_BUFFER_SIZE = BUFFER_SIZE * 2;
@@ -22,10 +27,10 @@ public:
   size_t n_writes = 0;
 
 private:
-  std::array<uint8_t, BUFFER_SIZE> buffer;
-  std::array<uint8_t, STUFFED_BUFFER_SIZE> stuffed_buffer;
-  uint16_t buffer_idx;
-  uint16_t stuffed_idx;
+  std::array<uint8_t, BUFFER_SIZE> m_buffer;
+  std::array<uint8_t, STUFFED_BUFFER_SIZE> m_stuffed_buffer;
+  uint16_t m_buffer_idx;
+  uint16_t m_stuffed_idx;
   const uint32_t baud_rate;
   std::chrono::time_point<std::chrono::steady_clock> start_time;
 };

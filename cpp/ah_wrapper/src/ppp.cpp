@@ -23,17 +23,21 @@ int ppp_stuff(uint8_t *payload, uint16_t &payload_size, uint8_t *stuffed_buffer,
   return bidx;
 }
 
+Unstuffer::Unstuffer(uint8_t *unstuffed_buffer,
+                     const uint16_t &unstuffed_buffer_size)
+    : m_buffer(unstuffed_buffer), m_buffer_size(unstuffed_buffer_size) {}
+
 void Unstuffer::reset_state() {
   state = PPPState::START_FRAME;
-  idx = 0;
+  m_idx = 0;
 }
 
 void Unstuffer::add_to_buffer(const uint8_t &byte) {
-  if (idx >= buffer_size) {
+  if (m_idx >= m_buffer_size) {
     printf("Warning exceeded unstuffer max buffer size");
     reset_state();
   }
-  buffer[idx++] = byte;
+  m_buffer[m_idx++] = byte;
 }
 
 /*
@@ -54,10 +58,10 @@ uint16_t Unstuffer::unstuff_byte(uint8_t byte) {
       return 0;
     }
   } else {
-    if (idx > 0) {
+    if (m_idx > 0) {
       // We are at the end of the frame
       state = PPPState::END_FRAME; // For readability
-      uint8_t idx_copy = idx;
+      uint8_t idx_copy = m_idx;
       reset_state();
       return idx_copy;
     } else {
