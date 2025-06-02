@@ -25,6 +25,9 @@ class SerialConnectionBase(ABC):
         )  # Avoid reading when writing visa versa
         self.n_writes = 1
         self.bauds = {
+            0x10: 460800,
+            0x11: 921600,
+            0x12: 1000000,
             0x01: 1200,
             0x02: 2400,
             0x03: 4800,
@@ -40,9 +43,6 @@ class SerialConnectionBase(ABC):
             0x0D: 115200,
             0x0E: 230400,
             0x0F: 250000,
-            0x10: 460800,
-            0x11: 921600,
-            0x12: 1000000,
         }
 
     @abstractmethod
