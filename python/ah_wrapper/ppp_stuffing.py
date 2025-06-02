@@ -9,7 +9,7 @@ MASK_CHAR = 0x20
 
 
 def ppp_stuff(
-        array: bytearray | bytes | List[int], create_copy=False
+    array: bytearray | bytes | List[int], create_copy=False
 ) -> bytearray:
     """Stuffing involves adding a FRAME_CHAR 0x7E '~' to the begining and end of
     a frame and XOR'ing any bytes with MASK_CHAR 0x20 that equal the FRAME/ESC

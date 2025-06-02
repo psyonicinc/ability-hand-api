@@ -12,7 +12,6 @@ from ah_wrapper.ah_parser import (
     Type1Packet,
     Type2Packet,
     Type3Packet,
-
 )
 from ah_wrapper.ah_api import (
     create_pos_msg,
@@ -375,7 +374,9 @@ class AHSerialClient:
             end_time = time.time()
         else:
             end_time = self.end_time
-        print(f"Rate: {((self._conn.n_writes-1) / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes-1} \nReads: {self.n_reads-1} \nPacket Loss: {(1 - ((self.n_reads-1) / (self._conn.n_writes-1))) * 100:.3f}%")
+        print(
+            f"Rate: {((self._conn.n_writes-1) / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes-1} \nReads: {self.n_reads-1} \nPacket Loss: {(1 - ((self.n_reads-1) / (self._conn.n_writes-1))) * 100:.3f}%"
+        )
 
     def close(self) -> None:
         """Stop threads and close serial connection, will need to re-create

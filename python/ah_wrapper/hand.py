@@ -11,7 +11,7 @@ class Hand:
         serial_connection class, and that seems weird.
         """
         self.addr = addr
-        self._hot_cold = None # Hot cold status
+        self._hot_cold = None  # Hot cold status
         self._cur_pos = None  # Current pos
         self._tar_pos = None  # Target pos
         self._cur_vel = None  # Current vel

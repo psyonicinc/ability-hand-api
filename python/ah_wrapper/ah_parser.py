@@ -15,9 +15,7 @@ class AbstractPacket:
     """
 
     def __init__(self):
-        self.valid = (
-            False  # If frame was properly parsed this becomes true
-        )
+        self.valid = False  # If frame was properly parsed this becomes true
         self.pos = [0] * 6
         self.vel = [0] * 6
         self.cur = [0] * 6
@@ -31,7 +29,7 @@ class AbstractPacket:
 
     def _convert_vel(self):
         for i in range(len(self.vel)):
-            self.vel[i] *= (VELOCITY_CONSTANT_INV / 4)
+            self.vel[i] *= VELOCITY_CONSTANT_INV / 4
 
     def _convert_cur(self):
         for i in range(len(self.cur)):
