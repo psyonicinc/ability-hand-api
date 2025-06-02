@@ -15,14 +15,15 @@ class Hand()
 #### \_\_init\_\_
 
 ```python
-def __init__(addr: int = 0x50)
+def __init__(addr: int = 0x50, fsr_offset: bool = True)
 ```
 
-Hand class used to represent the read and write states of the hand,
-the idea is the serial_connection has a Hand class and not the other way
-around since every serial connection has a hand, but not every hand has
-a serial connection.  Otherwise, would have to pass hand class into
-serial_connection class, and that seems weird.
+Hand class used to represent the state of the real or virtual hand.
+
+**Arguments**:
+
+- `addr` - address of hand
+- `fsr_offset` - If true will subtract the initial fsr readings from future readings
 
 <a id="hand.Hand.update_tar"></a>
 

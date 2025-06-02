@@ -3,12 +3,66 @@ from collections import deque
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import matplotlib.image as mpimg
+from matplotlib import gridspec
 
 from ah_wrapper.hand import Hand
 
 
+class CombinedRealTimePlot:
+    def __init__(self, hand):
+        self.hand = hand
+
+        # Create a single figure with GridSpec for flexible layout
+        self.fig = plt.figure(figsize=(10.5, 10))
+        self.fig.canvas.manager.set_window_title("PSYONIC")
+
+        # Setup GridSpec layout: 7 rows x 2 columns (touch: left, motor: right)
+        gs = gridspec.GridSpec(
+            5, 2, figure=self.fig, width_ratios=[1, 1.2], wspace=0.4
+        )
+
+        # Axes for touch plots (7 rows x 1 col on left)
+        touch_axes = [self.fig.add_subplot(gs[i, 0]) for i in range(5)]
+
+        # Axes for motor plots (3 rows x 1 col on right starting from row 2)
+        motor_axes = [self.fig.add_subplot(gs[i * 2, 1]) for i in range(3)]
+
+        # Load and embed the image for the legend (optional)
+        try:
+            img = mpimg.imread("./images/touch_sensor_legend_sml.png")
+            self.fig.figimage(img, xo=30, yo=825, zorder=10)
+        except FileNotFoundError:
+            print("Touch sensor legend image not found.")
+
+        # Initialize both plotters
+        self.plot_touch = RealTimePlotTouch(
+            hand, fig=self.fig, axes=touch_axes
+        )
+        self.plot_motors = RealTimePlotMotors(
+            hand, fig=self.fig, axes=motor_axes
+        )
+
+    def update(self, frame):
+        touch_artists = self.plot_touch.update_plot(frame)
+        motor_artists = self.plot_motors.update_plot(frame)
+        return touch_artists + motor_artists
+
+    def start(self):
+        ani = FuncAnimation(
+            self.fig,
+            self.update,
+            interval=10,
+            blit=True,
+            cache_frame_data=False,
+        )
+        plt.show()
+
+
 class RealTimePlotMotors:
-    def __init__(self, hand, window_size=5, sample_rate=500):
+    def __init__(
+        self, hand, fig=None, axes=None, window_size=5, sample_rate=500
+    ):
         self.hand = hand
         self.window_size = window_size
         self.sample_rate = sample_rate
@@ -24,9 +78,15 @@ class RealTimePlotMotors:
         ]  # 3 plots with 5 values each
 
         # Set up three subplots for 5 values each
-        self.fig, self.axes = plt.subplots(3, 1, figsize=(13, 10), sharex=True)
+        if fig is None:
+            self.fig, self.axes = plt.subplots(
+                3, 1, figsize=(13, 10), sharex=True, num="PSYONIC"
+            )
+        else:
+            self.fig = fig
+            self.axes = axes
         self.lines = []
-        self.fig.suptitle("Ability Hand Motors", fontsize=16)
+        self.fig.suptitle("Ability Hand", fontsize=16)
 
         titles = ["Position", "Velocity", "Current"]
         y_values = [
@@ -34,7 +94,7 @@ class RealTimePlotMotors:
             "Velocity (" + "\N{DEGREE SIGN}" + "per s)",
             "Current (a)",
         ]
-        y_ranges = ((0, 80), (-200, 200), (-1, 1))
+        y_ranges = ((0, 110), (-500, 500), (-1, 1))
         for i, ax in enumerate(self.axes):
             lines = [
                 ax.plot([], [], label=f"Value {j}")[0]
@@ -50,7 +110,7 @@ class RealTimePlotMotors:
         self.fig.legend(
             self.lines[0],
             ["Index", "Middle", "Ring", "Pinky", "Thb. Flex", "Thb. Rot."],
-            loc="center right",
+            loc="upper right",
             fontsize=8,
         )
 
@@ -112,7 +172,9 @@ class RealTimePlotMotors:
 
 
 class RealTimePlotTouch:
-    def __init__(self, hand: Hand, window_size=5, sample_rate=500):
+    def __init__(
+        self, hand: Hand, fig=None, axes=None, window_size=5, sample_rate=500
+    ):
         self.hand = hand
         self.window_size = window_size
         self.sample_rate = sample_rate
@@ -126,27 +188,43 @@ class RealTimePlotTouch:
         self.y_data = [deque(maxlen=self.max_samples) for _ in range(30)]
 
         # Set up five subplots for 6 values each
-        self.fig, self.axes = plt.subplots(5, 1, figsize=(10, 10), sharex=True)
+        if fig is None:
+            self.fig, self.axes = plt.subplots(
+                5, 1, figsize=(12, 10), sharex=True, num="PSYONIC"
+            )
+        else:
+            self.fig = fig
+            self.axes = axes
         self.lines = []
-        self.fig.suptitle("Ability Hand Touch Sensors", fontsize=16)
+        self.fig.suptitle("Ability Hand", fontsize=16)
+        img = mpimg.imread("./images/touch_sensor_legend_sml.png")
+
+        self.fig.figimage(img, xo=30, yo=825, zorder=10)
 
         y_labels = ["Index", "Middle", "Ring", "Pinky", "Thumb"]
         for i, ax in enumerate(self.axes):
+            if i == 0:
+                ax.set_title("Touch Sensors", fontweight="bold")
             lines = [
                 ax.plot([], [], label=f"Value {j}")[0]
                 for j in range(i * 6, (i + 1) * 6)
             ]
             self.lines.append(lines)
-            ax.set_ylim(0, 8)
-            ax.set_ylabel(
+            if i == 2:
+                ax.set_ylabel(
+                    "Newtons (N)",
+                )
+            ax.set_ylim(0, 6)
+            ax2 = ax.twinx()
+            ax2.set_ylabel(
                 y_labels[i],
+                fontweight="bold",
                 rotation=0,
                 labelpad=30,
-                fontweight="bold",
                 ha="center",
                 va="center",
             )
-            ax.set_yticks([])
+            ax2.set_yticks([])
 
         self.axes[-1].set_xlabel("Time (s)")
 
