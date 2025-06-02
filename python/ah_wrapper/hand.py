@@ -1,14 +1,17 @@
 from threading import Lock
 from typing import List
+import logging
+
+import config
 
 
 class Hand:
-    def __init__(self, addr: int = 0x50):
-        """Hand class used to represent the read and write states of the hand,
-        the idea is the serial_connection has a Hand class and not the other way
-        around since every serial connection has a hand, but not every hand has
-        a serial connection.  Otherwise, would have to pass hand class into
-        serial_connection class, and that seems weird.
+    def __init__(self, addr: int = 0x50, fsr_offset=True):
+        """Hand class used to represent the state of the real or virtual hand.
+
+        Args:
+            addr: address of hand
+            fsr_offset: If true will subtract the initial fsr readings from future readings
         """
         self.addr = addr
         self._hot_cold = None  # Hot cold status
@@ -20,6 +23,8 @@ class Hand:
         self._tar_cur = None
         self._tar_duty = None  # Target duty/voltage we don't read duty/voltage
         self._fsr = None  # Current FSR readings
+        self._fsr_offset = [0] * 30
+        self._first_fsr = fsr_offset
 
         self._val_lock = Lock()
         self._tar_lock = Lock()
@@ -40,7 +45,12 @@ class Hand:
             if current:
                 self._cur_cur = current
             if fsr:
-                self._fsr = fsr
+                if self._first_fsr and 0 not in fsr:
+                    self._fsr_offset = [-i for i in fsr]
+                    if config.write_log:
+                        logging.info(f"Applied FSR offset of: {self._fsr_offset}" )
+                    self._first_fsr = False
+                self._fsr = [fsr[i] + self._fsr_offset[i] for i in range(len(fsr))]
 
     def update_tar(
         self,
