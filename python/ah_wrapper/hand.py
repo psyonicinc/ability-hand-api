@@ -6,7 +6,7 @@ import config
 
 
 class Hand:
-    def __init__(self, addr: int = 0x50, fsr_offset: bool =True):
+    def __init__(self, addr: int = 0x50, fsr_offset: bool = True):
         """Hand class used to represent the state of the real or virtual hand.
 
         Args:
@@ -48,9 +48,13 @@ class Hand:
                 if self._first_fsr and 0 not in fsr:
                     self._fsr_offset = [-i for i in fsr]
                     if config.write_log:
-                        logging.info(f"Applied FSR offset of: {self._fsr_offset}" )
+                        logging.info(
+                            f"Applied FSR offset of: {self._fsr_offset}"
+                        )
                     self._first_fsr = False
-                self._fsr = [fsr[i] + self._fsr_offset[i] for i in range(len(fsr))]
+                self._fsr = [
+                    fsr[i] + self._fsr_offset[i] for i in range(len(fsr))
+                ]
 
     def update_tar(
         self,
