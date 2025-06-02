@@ -6,7 +6,7 @@ import time
 import config
 from ah_wrapper.serial_connection import SerialConnection
 from ah_wrapper.hand import Hand
-from ah_wrapper.ppp_stuffing import PPPUnstuff, PPPState
+from ah_wrapper.ppp_stuffing import PPPUnstuff
 from ah_wrapper.ah_parser import (
     parse_packet,
     Type1Packet,
@@ -173,9 +173,9 @@ class AHSerialClient:
                 for b in msg:
                     frame = self._unstuffer.unstuff_byte(b)
                     if frame:
-                        self.n_reads += 1
                         parsed = parse_packet(byte_array=frame)
                         if parsed is not None and parsed.valid:
+                            self.n_reads += 1
                             try:
                                 self.hand.update_hot_cold(parsed.hot_cold)
 
@@ -207,10 +207,6 @@ class AHSerialClient:
                                 if config.write_log:
                                     logging.warning(f"Bad frame {frame}")
                                     logging.warning(f"Bad msg {msg}")
-                        else:
-                            # HACKY FIX FOR NOW
-                            self._unstuffer.reset_state()
-                            self._unstuffer.state = PPPState.DATA
 
             time.sleep(
                 self._wait_time_s / 2

@@ -1,4 +1,3 @@
-from enum import Enum
 import logging
 from typing import List
 
@@ -10,7 +9,7 @@ MASK_CHAR = 0x20
 
 
 def ppp_stuff(
-    array: bytearray | bytes | List[int], create_copy=False
+        array: bytearray | bytes | List[int], create_copy=False
 ) -> bytearray:
     """Stuffing involves adding a FRAME_CHAR 0x7E '~' to the begining and end of
     a frame and XOR'ing any bytes with MASK_CHAR 0x20 that equal the FRAME/ESC
@@ -36,70 +35,58 @@ def ppp_stuff(
     return array
 
 
-class PPPState(Enum):
-    START_FRAME = 0
-    DATA = 1
-    END_FRAME = 2
-
-
 class PPPUnstuff:
     def __init__(self, buffer_size=512):
-        self.state = PPPState.START_FRAME
         self.buffer_size = buffer_size
         self.buffer = bytearray(buffer_size)
         self.idx = 0
         self.unmask_next_char = False
 
-    def reset_state(self):
-        self.state = PPPState.START_FRAME
-        self.idx = 0
-
     def add_to_buffer(self, byte: int):
         if self.idx >= self.buffer_size:
             if config.write_log:
                 logging.warning("Exceeded maximum buffer size")
-            self.reset_state()
+            self.idx = 0
         else:
             self.buffer[self.idx] = byte
             self.idx += 1
 
-    def unstuff_byte(self, byte: int) -> None | bytearray:
+    def unstuff_byte(self, byte: int) -> bytearray | None:
         """Stateful byte parser for unstuffing PPP stuffed frames.  Unstuffing
         simply require you to remove the FRAME_CHAR 0x20 '~' byte from the end
         and beginning of the frame, it also requires removing any ESC_CHAR
         characters 0x7D (NOT ASCII) and XOR bytes that follow ESC_CHARS with
         MASK_CHAR 0x20.  This is required if the frame contains a FRAME_CHAR or
-        ESC_CHAR not intended to be used for stuffing. Really only needs to be a
-        one state state machine, read data, or don't, but state machine helps
-        with readability and understanding the if statements"""
-        if byte != FRAME_CHAR:
-            # If we see a non frame char and not in a reading data state, skip
-            if self.state != PPPState.DATA:
-                return None
-        else:
-            if self.idx > 0:
-                # We are at the end of a frame because we have data
-                self.state = PPPState.END_FRAME  # Just here for readability
-                idx_copy = self.idx  # Annoying...
-                self.reset_state()  # Resets idx and sets state to start
-                return bytearray(
-                    self.buffer[0:idx_copy]
-                )  # Creates a copy because it would definitely suck if we read a byte before processing the returned byte array
+        ESC_CHAR not intended to be used for stuffing.
+
+        General algo. is:
+        - Read byte by byte and add to buffer
+        - If ~ / FRAME_CHAR read, assume you are end of frame (even though you
+        could be at the beginning)
+            - If idx > 0 return true indicating a frame is found at
+            self.buffer[:self.idx]
+        - If ESC_CHAR is read, set unmask_next_char flag to true and continue to
+        next byte and unmask it
+        -
+        """
+        # If frame char, assume at the end of the frame, if no data, pass
+        if byte == FRAME_CHAR:
+            if self.idx:
+                idx_copy = self.idx
+                self.idx = 0
+                return bytearray(self.buffer[0:idx_copy])  # No need for copy
             else:
-                # We are at the beginning of a frame
-                self.reset_state()
-                self.state = PPPState.DATA
                 return None
-        if (
-            byte == ESC_CHAR
-        ):  # Next byte needs to be unmasked, next byte will never be FRAME_CHAR
+
+        # Check for Escape Char and apply if true
+        if byte == ESC_CHAR:
+            # Next byte needs to be unmasked, next byte will never be FRAME_CHAR
             self.unmask_next_char = True
             return None
         if self.unmask_next_char:
             byte ^= MASK_CHAR
             self.unmask_next_char = False
 
-        # Data read state
-        if self.state == PPPState.DATA:
-            self.add_to_buffer(byte)
-            return None
+        # Read Data
+        self.add_to_buffer(byte)
+        return None
