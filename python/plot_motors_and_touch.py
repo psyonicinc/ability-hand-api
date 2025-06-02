@@ -19,7 +19,7 @@ def hand_wave_thread(hand_client):
                 pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
             pos[5] = -pos[5]
             if alternate:
-                hand_client.set_position(positions=pos, reply_mode=2)
+                hand_client.set_position(positions=pos, reply_mode=0)
                 alternate = False
             else:
                 hand_client.set_position(positions=pos, reply_mode=1)
