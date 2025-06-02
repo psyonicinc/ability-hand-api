@@ -3,7 +3,7 @@ from math import pi, sin
 
 from ah_wrapper.ah_serial_client import AHSerialClient
 
-client = AHSerialClient(write_thread=False, baud_rate=460800)
+client = AHSerialClient(write_thread=False)
 """
 Since write_thread == False we will need to issue send_command after every 
 set_position command since the while loop is acting as our write thread.  One
