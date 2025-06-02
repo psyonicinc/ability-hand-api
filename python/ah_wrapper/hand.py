@@ -6,7 +6,7 @@ import config
 
 
 class Hand:
-    def __init__(self, addr: int = 0x50, fsr_offset=True):
+    def __init__(self, addr: int = 0x50, fsr_offset: bool =True):
         """Hand class used to represent the state of the real or virtual hand.
 
         Args:
