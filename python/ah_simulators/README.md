@@ -17,7 +17,7 @@ Hand are also simulated.
 
 To launch the hand alone use
 
-```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/scene.xmpython3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/scene.xmll```
+```python3 ./mujoco_xml/mujoco_viewer.py ./mujoco_xml/scene.xml```
 
 Examples of popular robots have been integrated from Mujoco's [menagerie](https://github.com/google-deepmind/mujoco_menagerie) 
 :
