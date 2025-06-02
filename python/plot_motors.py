@@ -25,7 +25,7 @@ def hand_wave_thread(hand_client):
 
 
 if __name__ == "__main__":
-    client = AHSerialClient(write_thread=False, baud_rate=460800)
+    client = AHSerialClient(write_thread=False)
     write_thread = threading.Thread(target=hand_wave_thread, args=(client,))
     write_thread.start()
     plotter = RealTimePlotMotors(client.hand)
