@@ -163,6 +163,12 @@ class SerialConnection(SerialConnectionBase):
                     for p in serial.tools.list_ports.comports()
                     if "usbserial" in p[0]
                 ]
+            elif platform.system() == "Windows":
+                ports = [
+                    p[0]
+                    for p in serial.tools.list_ports.comports()
+                    if "COM" in p[0]
+                ]
             else:
                 # TODO Test windows
                 ports = [p[0] for p in serial.tools.list_ports.comports()]
