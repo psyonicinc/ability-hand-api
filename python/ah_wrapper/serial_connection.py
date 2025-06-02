@@ -170,7 +170,6 @@ class SerialConnection(SerialConnectionBase):
                     if "COM" in p[0]
                 ]
             else:
-                # TODO Test windows
                 ports = [p[0] for p in serial.tools.list_ports.comports()]
         else:
             ports = [port]
