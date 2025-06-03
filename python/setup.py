@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ability_hand",
-    version="0.1.0",
+    version="0.1.2",
     packages=find_packages(
         include=["ah_wrapper", "ah_examples", "ah_plotting"]
     ),
@@ -23,5 +23,5 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.9",
 )
