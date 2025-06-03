@@ -7,10 +7,6 @@ setup(
         include=["ah_wrapper", "ah_examples", "ah_plotting"]
     ),
     install_requires=["pyserial>=3.5", "matplotlib>=3.6.3,<=3.10.0"],
-    include_package_data=True,
-    package_data={
-        "ah_plotting": ["touch_sensor_legend_sml.png"],
-    },
     entry_points={
         "console_scripts": [
             "hand_wave=ah_examples.hand_wave:main",
