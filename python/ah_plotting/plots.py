@@ -1,5 +1,6 @@
 import time
 from collections import deque
+import os
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -30,7 +31,10 @@ class CombinedRealTimePlot:
 
         # Load and embed the image for the legend (optional)
         try:
-            img = mpimg.imread("./images/touch_sensor_legend_sml.png")
+            image_path = os.path.join(
+                os.path.dirname(__file__), "touch_sensor_legend_sml.png"
+            )
+            img = mpimg.imread(image_path)
             self.fig.figimage(img, xo=30, yo=825, zorder=10)
         except FileNotFoundError:
             print("Touch sensor legend image not found.")
@@ -197,9 +201,15 @@ class RealTimePlotTouch:
             self.axes = axes
         self.lines = []
         self.fig.suptitle("Ability Hand", fontsize=16)
-        img = mpimg.imread("./images/touch_sensor_legend_sml.png")
 
-        self.fig.figimage(img, xo=30, yo=825, zorder=10)
+        try:
+            image_path = os.path.join(
+                os.path.dirname(__file__), "touch_sensor_legend_sml.png"
+            )
+            img = mpimg.imread(image_path)
+            self.fig.figimage(img, xo=30, yo=825, zorder=10)
+        except FileNotFoundError:
+            print("Touch sensor legend image not found.")
 
         y_labels = ["Index", "Middle", "Ring", "Pinky", "Thumb"]
         for i, ax in enumerate(self.axes):
