@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class Observable:
     def __init__(self):
         self.observers = []
@@ -19,7 +20,7 @@ class Observable:
     def notify_pos(self, position):
         for observer in self.observers:
             observer.update_pos(position)
-            
+
     def notify_vel(self, velocity):
         for observer in self.observers:
             observer.update_vel(velocity)
@@ -40,7 +41,7 @@ class Observer(ABC):
     @abstractmethod
     def update_pos(self, position):
         pass
-    
+
     @abstractmethod
     def update_vel(self, velocity):
         pass

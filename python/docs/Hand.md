@@ -7,7 +7,7 @@
 ## Hand Objects
 
 ```python
-class Hand()
+class Hand(Observable)
 ```
 
 <a id="hand.Hand.__init__"></a>

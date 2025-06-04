@@ -1,10 +1,11 @@
 from ah_wrapper.hand import Hand
 from ah_wrapper.observer import Observer
 
-POS = [1,2,3,4,5,6]
-VEL = [0,0,0,0,0,1]
-CUR = [1.0,1.0,0,0,0,0]
-FSR = [0.5]*30
+POS = [1, 2, 3, 4, 5, 6]
+VEL = [0, 0, 0, 0, 0, 1]
+CUR = [1.0, 1.0, 0, 0, 0, 0]
+FSR = [0.5] * 30
+
 
 class Foo(Observer):
     def update_pos(self, position):
@@ -21,6 +22,7 @@ class Foo(Observer):
 
     def update_fsr(self, fsr):
         assert fsr == FSR
+
 
 def test_observer():
     hand = Hand()
