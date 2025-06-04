@@ -1,4 +1,4 @@
-from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_wrapper import AHSerialClient
 import time
 import numpy as np
 import matplotlib.pyplot as plt

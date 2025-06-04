@@ -1,7 +1,7 @@
 import time
 from math import pi, sin
 
-from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_wrapper import AHSerialClient
 
 
 def main():

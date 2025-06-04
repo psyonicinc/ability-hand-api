@@ -1,10 +1,9 @@
 import time
 import struct
 
-from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_wrapper import AHSerialClient
 from ah_wrapper.ah_api import create_read_reg_msg, create_write_reg_msg
 from ah_wrapper.ppp_stuffing import PPPUnstuff
-
 
 def main():
     """This is an example of writing code for directly writing to the registers

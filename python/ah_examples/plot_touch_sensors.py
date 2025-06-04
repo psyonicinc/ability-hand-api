@@ -1,4 +1,4 @@
-from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_wrapper import AHSerialClient
 from ah_wrapper.ah_api import create_pos_msg
 from ah_plotting.plots import RealTimePlotTouch
 
