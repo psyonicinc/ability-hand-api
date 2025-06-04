@@ -27,7 +27,10 @@ class Foo(Observer):
 def test_observer():
     hand = Hand()
     foo = Foo()
+    # Test that not having any observers works
+    hand._update_cur(positions=POS)
     hand.add_observer(foo)
+    # Test observers
     hand._update_cur(positions=POS)
     hand._update_cur(velocity=VEL)
     hand._update_cur(current=CUR)
