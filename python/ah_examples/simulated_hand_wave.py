@@ -2,8 +2,8 @@ import time
 from math import sin, pi
 import os
 
-from ah_simulators.ah_mujoco import AHMujocoSim
 from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_simulators.ah_mujoco import AHMujocoSim
 
 
 def main():

@@ -3,7 +3,7 @@ import threading
 from math import pi, sin
 
 from ah_wrapper.ah_serial_client import AHSerialClient
-from plotting.plots import CombinedRealTimePlot
+from ah_plotting.plots import CombinedRealTimePlot
 
 RUNNING = True
 
@@ -30,8 +30,8 @@ def hand_wave_thread(hand_client):
     except KeyboardInterrupt:
         pass
 
+def main():
 
-if __name__ == "__main__":
     client = AHSerialClient(write_thread=False)
     write_thread = threading.Thread(target=hand_wave_thread, args=(client,))
     write_thread.start()
@@ -41,5 +41,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         pass
     finally:
-        RUNNING = False
         client.close()
+
+if __name__ == "__main__":
+    main()
