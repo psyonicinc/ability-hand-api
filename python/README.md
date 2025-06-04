@@ -1,15 +1,14 @@
 # Python Ability Hand Wrapper
 
-This wrapper is a asynchronous multithreaded implementation that can send 
-position, velocity, current and duty messages to the hand and parse its feedback.
+This PSYONIC Ability Hand wrapper is a asynchronous multithreaded library 
+that can send position, velocity, current and duty messages to the hand and 
+parse its feedback.
 
-### Clone Repository
-If you havn't allready clone the repository  
-`git clone https://github.com/psyonicinc/ability-hand-api.git  && cd ability-hand-api/python`
+### Install Pip Package
+Preferably using a [virtual env](https://docs.python.org/3/library/venv.html) 
+install the [pip package](https://pypi.org/project/ability-hand/) using:
 
-### Install Requirements
-Preferably using a [virtual env](https://docs.python.org/3/library/venv.html)  from the root directory issue  
-`pip install -r requirements.txt`
+`python3 -m pip install ability-hand`
 
 ### Enable UART & Byte Stuffing using App
 
@@ -31,24 +30,34 @@ We47
 
 ## Run examples
 
-The Ability Hand can provide position, velocity and current feedback from the 
-hand.  To see this in action run the following examples (close plot window to 
-quit program):
-
 ### Motor Example With Postion Velcocity and Torque Feedback
 
-`python3 plot_motors.py`
+Run the motor plot example by entering the following into a terminal:
+
+##### Linux / macOS
+
+`plot_motors`
+
+##### Windows (If the above does not work)
+
+`python3 -m ah_examples.plot_motors`
 
 ### Touch Sensors Example
 
 The Ability Hand also has 30 touch sensors (6 per finger) which you can see 
 responding in real time by running the example
 
-`python3 plot_touch_sensors.py`
+##### Linux / macOS
+
+`plot_touch_sensors`
+
+##### Windows (If the above does not work)
+
+`python3 -m ah_examples.plot_touch_sensors`
 
 Below is a map of each sensor and it's associated plot color.
 
-<img src="images/touch_sensor_legend.png" alt="isolated" width="200"/>
+<img src="https://github.com/psyonicinc/ability-hand-api/blob/master/python/images/touch_sensor_legend.png?raw=true" alt="isolated" width="200"/>
 
 ### Motor Example Without Plots
 
@@ -56,24 +65,29 @@ Running examples with plotting in real time using python uses alot of
 processing power, and you may see some stutters. Run the hand wave without plots
 using.
 
-`python3 hand_wave.py`
+##### Linux / macOS
+
+`hand_wave`
+
+##### Windows (If the above does not work)
+
+`python3 -m ah_examples.hand_wave`
 
 You can press `Ctrl + c` to stop
 
 ## Run in Terminal / Integrate with Code
 
-You can look at the [AHSerialClient](docs/AHSerialClient.md) documentation to see
-available commands and arguments associated with the class but below is a break-
-down and examples you can run.
+You can look at the [AHSerialClient](https://github.com/psyonicinc/ability-hand-api/blob/master/python/docs/AHSerialClient.md) 
+documentation to see available commands and arguments associated with the class 
+but below is a break-down and examples you can run.
 
 ---
 
 #### Create Client
 
-First open a python terminal in the package root directory and import the 
-AHSerialClient class
+First open a python terminal and import the wrapper and AHSerialClient class
 
-```from ah_wrapper.ah_serial_client import AHSerialClient```
+```from ah_wrapper import AHSerialClient ```
 
 and create a client instance:
 
@@ -110,7 +124,7 @@ You can ensure that the feedback from the hand class is correct by issuing:
 ```client.hand.get_position()```
 
 Each client has its own Hand class. You can see all the public Hand class 
-commands for reading values [here](docs/Hand.md)
+commands for reading values [here](https://github.com/psyonicinc/ability-hand-api/blob/master/python/docs/Hand.md)
 
 ---
 
@@ -148,7 +162,7 @@ amount.
 #### Reply Modes
 
 If you issue a `client.hand.get_velocity()` command you will notice it returns
-nothing, this is because we have only been sending reply_mode=0 as default and
+nothing, this is because we have only been sending reply_mode=0 as default, and
 we have never received any velocity feedback.
 
 The reply modes are as following starting with a 0 index.
@@ -185,13 +199,13 @@ This will stop any threads sending and receiving commands to the ability hand.
 #### Further examples
 
 In most typical integrations
-you will create your own write thread and [send messages](./ah_wrapper/ah_api.py) 
-manually using AHSerialClient.send_command() see [hand_wave.py](./hand_wave.py) 
-or [plot_motors.py](./plot_motors.py) for examples on how to do that.  
+you will create your own write thread and [send messages](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_wrapper/ah_api.py) 
+manually using AHSerialClient.send_command() see [hand_wave.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.py) 
+or [plot_motors.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.p) for examples on how to do that.  
 
 ***Note that in this 
 above example a write thread was constantly sending the current target at 500hz
-and a read thread was parsing feedback responses.  See [AHSerialClient](docs/AHSerialClient.md) for more details***
+and a read thread was parsing feedback responses.  See [AHSerialClient](https://github.com/psyonicinc/ability-hand-api/tree/master/python/docs) for more details***
 
 You can update the target that send_command sends using any of the set_ 
 commands, or you can build the message manually and pass that as an argument to the send command.
