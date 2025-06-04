@@ -61,19 +61,16 @@ class Hand(Observable):
         with self._val_lock:
             if positions:
                 self._cur_pos = positions
-
                 if self.observers:
                     self.notify_pos(positions)
 
             if velocity:
                 self._cur_vel = velocity
-
                 if self.observers:
                     self.notify_vel(velocity)
 
             if current:
                 self._cur_cur = current
-
                 if self.observers:
                     self.notify_cur(current)
 
@@ -88,7 +85,6 @@ class Hand(Observable):
                 self._fsr = [
                     fsr[i] + self._fsr_offset[i] for i in range(len(fsr))
                 ]
-
                 if self.observers:
                     self.notify_fsr(fsr)
 
