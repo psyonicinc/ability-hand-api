@@ -31,7 +31,7 @@ setup(
     url="https://github.com/psyonicinc/ability-hand-api",
     project_urls={
         "PSYONIC Website": "https://psyonic.io",
-        "CHANGELOG": "https://github.com/psyonicinc/ability-hand-api/python/CHANGELOG.md",
+        "CHANGELOG": "https://github.com/psyonicinc/ability-hand-api/blob/master/python/CHANGELOG.md",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
