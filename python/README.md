@@ -206,7 +206,7 @@ This will stop any threads sending and receiving commands to the ability hand.
 In most typical integrations
 you will create your own write thread and [send messages](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_wrapper/ah_api.py) 
 manually using AHSerialClient.send_command() see [hand_wave.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.py) 
-or [plot_motors.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.p) for examples on how to do that.  
+or [plot_motors.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.py) for examples on how to do that.  
 
 ***Note that in this 
 above example a write thread was constantly sending the current target at 500hz

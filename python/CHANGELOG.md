@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [0.1.4] - 2025-06-05
 ### Added
-- Added Observer / Observable design pattern and made Hand class an Observable
+- Added Observer / Observable design pattern and made Hand class an Observable.
+  see [observer.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_wrapper/observer.py)
 - This will help with ROS2 and other integrations
 
 
