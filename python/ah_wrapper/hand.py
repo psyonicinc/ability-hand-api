@@ -63,19 +63,19 @@ class Hand(Observable):
                 self._cur_pos = positions
 
                 if self.observers:
-                    self.notify_observers(None, position=positions)
+                    self.notify_pos(positions)
 
             if velocity:
                 self._cur_vel = velocity
                 
                 if self.observers:
-                    self.notify_observers(None, velocity=velocity)
+                    self.notify_vel(velocity)
 
             if current:
                 self._cur_cur = current
                 
                 if self.observers:
-                    self.notify_observers(None, current=current)
+                    self.notify_cur(current)
 
             if fsr:
                 if self._first_fsr and 0 not in fsr:
@@ -90,7 +90,7 @@ class Hand(Observable):
                 ]
                 
                 if self.observers:
-                    self.notify_observers(None, fsr=fsr)
+                    self.notify_fsr(fsr)
 
     def update_tar(
         self,
