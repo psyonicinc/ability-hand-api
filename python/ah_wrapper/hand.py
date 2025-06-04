@@ -57,31 +57,26 @@ class Hand(Observable):
         current: List[float] = None,
         fsr: List[float] = None,
     ):
-        """Safely updates most recent readings from hand based on feedback
-        TODO Part of me feels like implementing a lock for each value would be more efficient...
-        """
+        """Safely updates most recent readings from hand based on feedback"""
         with self._val_lock:
             if positions:
                 self._cur_pos = positions
 
                 if self.observers:
-                    self.notify_observers("position", None)
+                    self.notify_observers(None, position=positions)
 
-        with self._val_lock:
             if velocity:
                 self._cur_vel = velocity
                 
                 if self.observers:
-                    self.notify_observers("velocity", None)
+                    self.notify_observers(None, velocity=velocity)
 
-        with self._val_lock:
             if current:
                 self._cur_cur = current
                 
                 if self.observers:
-                    self.notify_observers("current", None)
+                    self.notify_observers(None, current=current)
 
-        with self._val_lock:
             if fsr:
                 if self._first_fsr and 0 not in fsr:
                     self._fsr_offset = [-i for i in fsr]
@@ -95,7 +90,7 @@ class Hand(Observable):
                 ]
                 
                 if self.observers:
-                    self.notify_observers("fsr", None)
+                    self.notify_observers(None, fsr=fsr)
 
     def update_tar(
         self,
