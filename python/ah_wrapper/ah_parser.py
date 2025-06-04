@@ -102,7 +102,7 @@ class Type1Packet(AbstractPacket):
             self.valid = True
         else:
             if config.write_log:
-                logging.warning(f"Bad sized Type 1 Frame: {buffer}")
+                logging.debug(f"Bad sized Type 1 Frame: {buffer}")
 
 
 class Type2Packet(AbstractPacket):
@@ -147,7 +147,7 @@ class Type2Packet(AbstractPacket):
             self.valid = True
         else:
             if config.write_log:
-                logging.warning(f"Bad sized Type 2 Frame: {buffer}")
+                logging.debug(f"Bad sized Type 2 Frame: {buffer}")
 
 
 class Type3Packet(AbstractPacket):
@@ -185,7 +185,7 @@ class Type3Packet(AbstractPacket):
                     logging.warning(f"Collision Detected: {self.hot_cold}")
         else:
             if config.write_log:
-                logging.warning(f"Bad size type 3 frame: {buffer}")
+                logging.debug(f"Bad size type 3 frame: {buffer}")
 
 
 def parse_packet(
