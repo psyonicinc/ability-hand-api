@@ -30,8 +30,8 @@ def hand_wave_thread(hand_client):
     except KeyboardInterrupt:
         pass
 
-def main():
 
+def main():
     client = AHSerialClient(write_thread=False)
     write_thread = threading.Thread(target=hand_wave_thread, args=(client,))
     write_thread.start()
@@ -42,6 +42,7 @@ def main():
         pass
     finally:
         client.close()
+
 
 if __name__ == "__main__":
     main()

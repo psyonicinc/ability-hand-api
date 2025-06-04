@@ -2,7 +2,7 @@
 
 This PSYONIC Ability Hand wrapper is a asynchronous multithreaded library 
 that can send position, velocity, current and duty messages to the hand and 
-parse its feedback.
+parse its position, velocity, current and touch sensor feedback.
 
 ### Install Pip Package
 Preferably using a [virtual env](https://docs.python.org/3/library/venv.html) 
@@ -10,10 +10,15 @@ install the [pip package](https://pypi.org/project/ability-hand/) using:
 
 `python3 -m pip install ability-hand`
 
+If you are wanting to use the simulator it is best to clone the repository and 
+work with the raw files.
+
+`git clone git@github.com:psyonicinc/ability-hand-api.git`
+
 ### Enable UART & Byte Stuffing using App
 
 The Python wrapper uses serial communication and requires [byte stuffing](https://www.tutorialspoint.com/data_communication_computer_network/byte_stuffing.htm) 
-to be enabled.  It is recommended to use byte stuffing, fore more info see 
+to be enabled.  It is recommended to use byte stuffing, for more info see 
 section 3.5.5 in the [API Documentation](https://github.com/psyonicinc/ability-hand-api/blob/master/Documentation/ABILITY-HAND-ICD.pdf).  
 
 To enable UART and byte stuffing from the PSYONIC app select:
@@ -201,7 +206,7 @@ This will stop any threads sending and receiving commands to the ability hand.
 In most typical integrations
 you will create your own write thread and [send messages](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_wrapper/ah_api.py) 
 manually using AHSerialClient.send_command() see [hand_wave.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.py) 
-or [plot_motors.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.p) for examples on how to do that.  
+or [plot_motors.py](https://github.com/psyonicinc/ability-hand-api/blob/master/python/ah_examples/hand_wave.py) for examples on how to do that.  
 
 ***Note that in this 
 above example a write thread was constantly sending the current target at 500hz

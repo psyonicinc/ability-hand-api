@@ -4,6 +4,9 @@ import logging
 import os
 import sys
 
+from ah_wrapper.observer import Observable
+
+
 CONFIG_PATH = os.path.join(os.getcwd(), "config.py")
 
 # If config.py doesn't exist, create a basic one
@@ -22,7 +25,7 @@ sys.path.insert(0, os.getcwd())
 import config
 
 
-class Hand:
+class Hand(Observable):
     def __init__(self, addr: int = 0x50, fsr_offset: bool = True):
         """Hand class used to represent the state of the real or virtual hand.
 
@@ -30,6 +33,7 @@ class Hand:
             addr: address of hand
             fsr_offset: If true will subtract the initial fsr readings from future readings
         """
+        super().__init__()  # Init Observable class
         self.addr = addr
         self._hot_cold = None  # Hot cold status
         self._cur_pos = None  # Current pos
@@ -57,10 +61,19 @@ class Hand:
         with self._val_lock:
             if positions:
                 self._cur_pos = positions
+                if self.observers:
+                    self.notify_pos(positions)
+
             if velocity:
                 self._cur_vel = velocity
+                if self.observers:
+                    self.notify_vel(velocity)
+
             if current:
                 self._cur_cur = current
+                if self.observers:
+                    self.notify_cur(current)
+
             if fsr:
                 if self._first_fsr and 0 not in fsr:
                     self._fsr_offset = [-i for i in fsr]
@@ -72,6 +85,8 @@ class Hand:
                 self._fsr = [
                     fsr[i] + self._fsr_offset[i] for i in range(len(fsr))
                 ]
+                if self.observers:
+                    self.notify_fsr(fsr)
 
     def update_tar(
         self,
