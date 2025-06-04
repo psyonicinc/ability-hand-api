@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="ability_hand",
-    version="0.1.3",
+    version="0.1.4",
     packages=find_packages(
         include=["ah_wrapper", "ah_examples", "ah_plotting"]
     ),
@@ -31,6 +31,7 @@ setup(
     url="https://github.com/psyonicinc/ability-hand-api",
     project_urls={
         "PSYONIC Website": "https://psyonic.io",
+        "CHANGELOG": "https://github.com/psyonicinc/ability-hand-api/python/CHANGELOG.md",
     },
     classifiers=[
         "Programming Language :: Python :: 3",

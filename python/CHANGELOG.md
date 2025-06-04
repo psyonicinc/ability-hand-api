@@ -1,0 +1,23 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [0.1.4] - 2025-06-05
+### Added
+- Added Observer / Observable design pattern and made Hand class an Observable
+- This will help with ROS2 and other integrations
+
+
+## [0.1.3] - 2025-06-04
+### Highlights
+- Proper PyPi release with description and links to website
+- Wrapper provides methods for sending Position, Velocity and Torque commands. 
+- Wrapper parses incoming touch data (FSR), position, velocity and current
+  feedback
+
+## [0.1.0] - 2025-06-02
+
+### Fixed
+- PyPi initial release
+- Changed ppp_stuffing.PPPUnstuff.unstuff() to be simpler and compatible with
+  various RS485 adapters 
