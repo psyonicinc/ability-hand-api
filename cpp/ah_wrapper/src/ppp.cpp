@@ -27,12 +27,10 @@ Unstuffer::Unstuffer(uint8_t *unstuffed_buffer,
                      const uint16_t &unstuffed_buffer_size)
     : m_buffer(unstuffed_buffer), m_buffer_size(unstuffed_buffer_size) {}
 
-void Unstuffer::reset_state() { m_idx = 0; }
-
 void Unstuffer::add_to_buffer(const uint8_t &byte) {
   if (m_idx >= m_buffer_size) {
     printf("Warning exceeded unstuffer max buffer size");
-    reset_state();
+    m_idx = 0;
   }
   m_buffer[m_idx++] = byte;
 }
@@ -48,11 +46,13 @@ ESC_CHAR not intended to be used for stuffing.
 
 uint16_t Unstuffer::unstuff_byte(uint8_t byte) {
   if (byte == FRAME_CHAR) {
-    if (m_idx > 0) {
+    //  Have to deal with annoying null terminated/begin RS485 adapters which can sometimes create a frame of one or two which will pass checksum
+    if (m_idx > 3) {
       uint8_t idx_copy = m_idx;
-      reset_state();
+      m_idx = 0;
       return idx_copy;
     } else {
+      m_idx = 0;
       return 0;
     }
   }
