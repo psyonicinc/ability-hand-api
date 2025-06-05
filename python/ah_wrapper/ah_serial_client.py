@@ -49,7 +49,7 @@ class AHSerialClient:
         reply_mode: int = 0,
         read_size: int = 512,
         read_timeout: float = 0,
-        write_timeout: float = None,
+        write_timeout: float = 0.1,
         rs_485: bool = False,
         read_thread: bool = True,
         write_thread: bool = True,
@@ -219,10 +219,9 @@ class AHSerialClient:
                                             f"Invalid frame {frame}"
                                         )
                                         logging.warning(f"Invalid msg {msg}")
-                            except:
+                            except Exception as e:
                                 if config.write_log:
-                                    logging.warning(f"Bad frame {frame}")
-                                    logging.warning(f"Bad msg {msg}")
+                                    logging.warning(e)
 
             time.sleep(
                 self._wait_time_s / 2
