@@ -9,11 +9,8 @@
 int ppp_stuff(uint8_t *payload, uint16_t &payload_size, uint8_t *stuffed_buffer,
               const uint16_t &stuffed_buffer_size);
 
-enum PPPState { START_FRAME, DATA, END_FRAME };
-
 class Unstuffer {
 private:
-  PPPState state = PPPState::START_FRAME;
   bool unmask_next_char = false;
   void reset_state();
   void add_to_buffer(const uint8_t &byte);
