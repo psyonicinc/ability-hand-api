@@ -88,11 +88,14 @@ class PPPUnstuff:
         """
         # If frame char, assume at the end of the frame, if no data, pass
         if byte == FRAME_CHAR:
-            if self.idx:
+            # Deal with annoying RS485 adapters which insert 0 and beginning and end
+            if self.idx > 2:
                 idx_copy = self.idx
                 self.idx = 0
                 return bytearray(self.buffer[0:idx_copy])  # No need for copy
             else:
+                # Likely at start of frame with previous char being a zero from RS485
+                self.idx = 0
                 return None
 
         # Check for Escape Char and apply if true
