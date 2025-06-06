@@ -1,10 +1,16 @@
-# Python Ability Hand Wrapper
+# Python Ability Hand Python Wrapper
 
 This PSYONIC Ability Hand wrapper is a asynchronous multithreaded library 
 that can send position, velocity, current and duty messages to the hand and 
 parse its position, velocity, current and touch sensor feedback.
 
+### Install Python 
+The Python package requires a [Python](https://www.python.org/) 3.10 or higher.  Check your version using:  
+
+`python3 --version`
+
 ### Install Pip Package
+
 Preferably using a [virtual env](https://docs.python.org/3/library/venv.html) 
 install the [pip package](https://pypi.org/project/ability-hand/) using:
 
