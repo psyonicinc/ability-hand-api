@@ -33,6 +33,10 @@ class Observable:
         for observer in self.observers:
             observer.update_fsr(fsr)
 
+    def notify_hot_cold(self, hot_cold):
+        for observer in self.observers:
+            observer.update_hot_cold(hot_cold)
+
 
 class Observer(ABC):
     def update(self, observable, *args, **kwargs):
@@ -52,4 +56,8 @@ class Observer(ABC):
 
     @abstractmethod
     def update_fsr(self, fsr):
+        pass
+
+    @abstractmethod
+    def update_hot_cold(self, hot_cold):
         pass

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6] - 2025-06-06
+### Highlights
+- Added hot cold status to Observable/Observer class
+- Added example of how to use Observable/Observer design pattern
+
 ## [0.1.5] - 2025-06-05
 ### Highlights
 - Reworked some of the examples for cleaner shutdowns

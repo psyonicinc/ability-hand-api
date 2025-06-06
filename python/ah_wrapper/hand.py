@@ -128,6 +128,8 @@ class Hand(Observable):
     def update_hot_cold(self, hot_cold_status: int) -> None:
         with self._val_lock:
             self._hot_cold = hot_cold_status
+            if self.observers:
+                self.notify_hot_cold(hot_cold_status)
 
     def get_hot_cold(self) -> int:
         with self._val_lock:
