@@ -2,26 +2,23 @@ import time
 import threading
 from math import pi, sin
 
-from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_wrapper import AHSerialClient
 from ah_plotting.plots import RealTimePlotMotors
 
 RUNNING = True
 
 
 def hand_wave_thread(hand_client):
-    try:
-        pos = [30, 30, 30, 30, 30, -30]
-        while RUNNING:
-            current_time = time.time()
-            for i in range(0, len(pos)):
-                ft = current_time * 3 + i * (2 * pi) / 12
-                pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
-            pos[5] = -pos[5]
-            hand_client.set_position(positions=pos, reply_mode=2)
-            hand_client.send_command()
-            time.sleep(1 / hand_client.rate_hz)
-    except KeyboardInterrupt:
-        pass
+    pos = [30, 30, 30, 30, 30, -30]
+    while RUNNING:
+        current_time = time.time()
+        for i in range(0, len(pos)):
+            ft = current_time * 3 + i * (2 * pi) / 12
+            pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
+        pos[5] = -pos[5]
+        hand_client.set_position(positions=pos, reply_mode=2)
+        hand_client.send_command()
+        time.sleep(1 / hand_client.rate_hz)
 
 
 def main():
@@ -34,6 +31,8 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
+        global RUNNING
+        RUNNING = False
         client.close()
 
 

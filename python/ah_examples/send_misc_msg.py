@@ -1,6 +1,6 @@
 import sys
 
-from ah_wrapper.ah_serial_client import AHSerialClient
+from ah_wrapper import AHSerialClient
 from ah_wrapper.ah_api import create_misc_msg
 
 COMMANDS = {0x07: "Enable BLE", 0x08: "Disable BLE", 0x09: "Reset Hand"}
