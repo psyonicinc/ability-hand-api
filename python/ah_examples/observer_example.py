@@ -32,7 +32,8 @@ class MyObserver(Observer):
         print(f"I saw new velocity feedback data {velocity}")
 
     def update_hot_cold(self, hot_cold):
-        print(f"I saw new hot cold status {hot_cold}")
+        if hot_cold:
+            print(f"I saw new hot cold status {hot_cold}")
 
     def update_cur(self, current):
         print(f"I saw new current {current}")
