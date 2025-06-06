@@ -86,7 +86,9 @@ class Hand(Observable):
                     fsr[i] + self._fsr_offset[i] for i in range(len(fsr))
                 ]
                 if self.observers:
-                    self.notify_fsr(fsr)
+                    self.notify_fsr(
+                        [fsr[i] + self._fsr_offset[i] for i in range(len(fsr))]
+                    )
 
     def update_tar(
         self,
