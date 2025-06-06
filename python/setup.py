@@ -27,7 +27,7 @@ setup(
     },
     author="Justin Francis",
     author_email="jfrancis@psyonic.io",
-    description="Python wrapper for Ability Hand API",
+    description="Python wrapper for the PSYONIC Ability Hand API",
     url="https://github.com/psyonicinc/ability-hand-api",
     project_urls={
         "PSYONIC Website": "https://psyonic.io",
