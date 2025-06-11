@@ -23,7 +23,6 @@ class Foo(Observer):
         assert current == CUR
 
     def update_fsr(self, fsr):
-        print("wtf")
         assert fsr == FSR
 
     def update_hot_cold(self, hot_cold):
