@@ -38,7 +38,7 @@ from ah_wrapper.ah_api import (
     create_misc_msg,
     create_grip_msg,
 )
-from ah_simulators.sim_functions import GeneratedPacket
+from ah_wrapper.sim_functions import GeneratedPacket
 
 
 class AHSerialClient:
@@ -121,7 +121,7 @@ class AHSerialClient:
         self._unstuffer = PPPUnstuff(buffer_size=read_size)
 
         if self.simulated:
-            from ah_simulators.sim_serial_connection import SimSerialConnection
+            from ah_wrapper.sim_serial_connection import SimSerialConnection
 
             self._conn = SimSerialConnection(
                 port=port, baud_rate=baud_rate, read_size=read_size

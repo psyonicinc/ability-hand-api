@@ -3,7 +3,7 @@ from math import isclose
 
 from ah_wrapper.ah_parser import parse_packet
 from ah_wrapper.ppp_stuffing import PPPUnstuff
-from ah_simulators.sim_functions import GeneratedPacket
+from ah_wrapper.sim_functions import GeneratedPacket
 
 
 def test_sm():
