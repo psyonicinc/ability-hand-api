@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2025-06-11
+### Added
+- Moved a bunch of simulated modules into ah_wrapper so people can use the 
+simulated hand if installed with pip.
+- Mujoco simulator use will still require cloning the repo
+
 ## [0.1.7] - 2025-06-11
 ### Added
 - Added simulated position feedback to simulated hand

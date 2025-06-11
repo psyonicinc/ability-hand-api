@@ -1,4 +1,4 @@
-import ah_simulators.sim_serial as sim_serial
+import ah_wrapper.sim_serial as sim_serial
 from ah_wrapper.serial_connection import SerialConnectionBase
 
 
