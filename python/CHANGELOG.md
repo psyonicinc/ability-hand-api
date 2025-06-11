@@ -2,8 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7] - 2025-06-11
+### Added
+- Added simulated position feedback to simulated hand
+
 ## [0.1.6] - 2025-06-06
-### Highlights
+### Added
 - Added hot cold status to Observable/Observer class
 - Added example of how to use Observable/Observer design pattern
 
