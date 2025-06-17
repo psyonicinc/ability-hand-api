@@ -122,6 +122,39 @@ def write_and_get_response(client: AHSerialClient, msg: bytearray):
                         client.n_reads += 1
                         return frame
 
+def upsampling_mask():
+    client = AHSerialClient(write_thread=False, read_thread=False)
+    client.start_time = time.time()
+
+    val_addr = 63
+
+    rv = read_uart_register(val_addr=val_addr, client=client)
+    if rv:
+        for b in rv:
+            print(hex(b))
+    else:
+        print(f"Failed to read address {val_addr}")
+
+    val = 0x3F
+    rc = write_uart_register(val_addr=val_addr, val=val, client=client)
+    if rc:
+        print(rc)
+        pass
+    else:
+        print("failed to write")
+
+    # Get Updated Value
+    rv = read_uart_register(val_addr=val_addr, client=client)
+    if rv:
+        print(rv)
+    else:
+        print(f"Failed to read address {val_addr}")
+
+    print("---------------------------------------------------")
+
+    client.close()
+
 
 if __name__ == "__main__":
-    main()
+    upsampling_mask()
+    #main()
