@@ -178,6 +178,15 @@ class AHSerialClient:
         while self._writing:
             with self._cmd_lock:
                 self._conn.write(self._command)
+
+            # Create response buffer if simulated
+            if self.simulated:
+                if self.hand.get_tar_position():
+                    packet = GeneratedPacket(
+                        pos=self.hand.get_tar_position(), reply_mode=2
+                    )
+                    for b in packet.packet:
+                        self._conn._serial.buffer.append(b)
             time.sleep(self._wait_time_s)
 
     def _read_thread_loop(self):
@@ -261,13 +270,6 @@ class AHSerialClient:
         else:
             self._conn.write(self._command)
 
-        # Create response buffer if simulated
-        if self.simulated:
-            packet = GeneratedPacket(
-                pos=self.hand.get_tar_position(), reply_mode=2
-            )
-            for b in packet.packet:
-                self._conn._serial.buffer.append(b)
 
     def set_position(
         self, positions: float | List[float], reply_mode=None, addr=None
