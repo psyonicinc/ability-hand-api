@@ -16,3 +16,6 @@ class SimSerialConnection(SerialConnectionBase):
         self._serial = sim_serial.Serial(
             port=port, baud_rate=baud_rate, read_size=self.read_size
         )
+
+    def close(self):
+        pass
