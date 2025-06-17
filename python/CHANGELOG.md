@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.2.0] - 2025-06-11
+### Hights
+- Move simulated response buffer to write thread loop
+- Added close method to simulated serial connection
+
+## [0.2.0] - 2025-06-11
 ### Added
 - Moved a bunch of simulated modules into ah_wrapper so people can use the 
 simulated hand if installed with pip.
