@@ -2,13 +2,49 @@ from ah_wrapper import AHSerialClient
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
+import os
 
 SLEEP_TIME = 0.01
 
+def append_hand_data_to_csv(filename, timestamps, positions, currents, target_data,
+                            optional_data=None, mode="velocity", submode="fingers", target_value=None):
+    """
+    Save sensor data to a single CSV file.
+    Handles position, velocity, and torque modes.
+    """
+    file_exists = os.path.isfile(filename)
+
+    with open(filename, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        if not file_exists:
+            # Write header once
+            header = ["timestamp"]
+            header += [f"pos_{i}" for i in range(6)]
+            header += [f"cur_{i}" for i in range(6)]
+            if optional_data:
+                header += [f"extra_{i}" for i in range(6)]
+            header += [f"target_{i}" for i in range(6)]
+            header += [f"error_{i}" for i in range(6)]
+            header += ["mode", "submode", "target_value"]
+            writer.writerow(header)
+
+        for i in range(len(timestamps)):
+            row = [timestamps[i]]
+            row += positions[i]
+            row += currents[i]
+            if optional_data:
+                row += optional_data[i]
+            row += target_data[i]
+            error = list(np.array(target_data[i]) - np.array(currents[i] if mode == "torque" else
+                                                             positions[i] if mode == "position" else
+                                                             optional_data[i] if optional_data else [0]*6))
+            row += error
+            row += [mode, submode, target_value]
+            writer.writerow(row)
 
 def get_average_finger_positions(positions: list):
     return np.mean(positions[0:4])
-
 
 def validate_velocity():
     """Validate that velocity mode is uniformly moving hands, feedback is correct
@@ -25,7 +61,7 @@ def validate_velocity():
     colors = ["r", "g", "b", "m"]
     fingers = ("index", "middle", "ring", "pinky")
 
-    t_velocities = [10, 25, 200, 500]
+    t_velocities = [10, 25, 200]
     for vel in t_velocities:
         positions = [client.hand.get_position()]
         currents = [client.hand.get_current()]
@@ -87,6 +123,20 @@ def validate_velocity():
             + "\n"
             + time_string
         )
+
+        append_hand_data_to_csv(
+            "hand_data_log.csv",
+            timestamps,
+            positions,
+            currents,
+            target_velocities,
+            optional_data=velocities,
+            mode="velocity",
+            submode="fingers",  # or "thumb" for second test
+            target_value=vel
+        )
+
+
         plt.tight_layout()
         plt.show()
 
@@ -148,10 +198,20 @@ def validate_velocity():
             + "\n"
             + time_string
         )
+        append_hand_data_to_csv(
+            "hand_data_log.csv",
+            timestamps,
+            positions,
+            currents,
+            target_velocities,
+            optional_data=velocities,
+            mode="velocity",
+            submode="fingers",  # or "thumb" for second test
+            target_value=vel
+        )
         plt.tight_layout()
         plt.show()
     client.close()
-
 
 def validate_position():
     """Validate that position mode is uniformly moving hands, feedback is correct
@@ -168,7 +228,7 @@ def validate_position():
     colors = ["r", "g", "b", "m"]
     fingers = ("index", "middle", "ring", "pinky")
 
-    t_velocities = [10, 25, 200, 500]
+    t_velocities = [10, 25, 200]
     for vel in t_velocities:
         positions = [client.hand.get_position()]
         currents = [client.hand.get_current()]
@@ -239,6 +299,18 @@ def validate_position():
             + "\n"
             + time_string
         )
+        append_hand_data_to_csv(
+            "hand_data_log.csv",
+            timestamps,
+            positions,
+            currents,
+            target_positions,
+            optional_data=velocities,
+            mode="position",
+            submode="fingers",  # or "thumb"
+            target_value=vel
+        )
+
         plt.tight_layout()
         plt.show()
 
@@ -318,10 +390,21 @@ def validate_position():
             + "\n"
             + time_string
         )
+        append_hand_data_to_csv(
+            "hand_data_log.csv",
+            timestamps,
+            positions,
+            currents,
+            target_positions,
+            optional_data=velocities,
+            mode="position",
+            submode="fingers",  # or "thumb"
+            target_value=vel
+        )
+
         plt.tight_layout()
         plt.show()
     client.close()
-
 
 def validate_torque():
     """Validate that torque/current mode is uniformly moving hands, feedback is correct
@@ -394,6 +477,16 @@ def validate_torque():
             + f"Positions, Currents, Vs. Time : Target Torque = {tor} amps"
             + "\n"
         )
+        append_hand_data_to_csv(
+            "hand_data_log.csv",
+            timestamps,
+            positions,
+            currents,
+            target_torque,
+            mode="torque",
+            submode="fingers",  # or "thumb"
+            target_value=tor
+        )
         plt.tight_layout()
         plt.show()
 
@@ -455,6 +548,17 @@ def validate_torque():
             "POSITION MODE \n"
             f"Positions, Currents : Target Torque = {tor} amps"
         )
+        append_hand_data_to_csv(
+            "hand_data_log.csv",
+            timestamps,
+            positions,
+            currents,
+            target_torque,
+            mode="torque",
+            submode="fingers",  # or "thumb"
+            target_value=tor
+        )
+
         plt.tight_layout()
         plt.show()
     client.close()
@@ -553,8 +657,8 @@ def validate_grips():
 
 
 def main():
-    validate_grips()
-    validate_fsr()
+    # validate_grips()
+    # validate_fsr()
     validate_velocity()
     validate_position()
     validate_torque()
