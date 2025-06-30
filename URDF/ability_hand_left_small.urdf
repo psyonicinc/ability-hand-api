@@ -85,7 +85,7 @@
       <child link="index_L1" />
       <origin xyz="0.028 -0.009 0.096" rpy="1.470 -1.317 -1.352" />
       <axis xyz="0 0 1" />
-      <limit lower="0" upper="1.74" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.74" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
@@ -93,13 +93,13 @@
    <joint name="index_q2" type="revolute">
       <parent link="index_L1" />
       <child link="index_L2" />
-      <origin xyz="38.472723e-3 3.257695e-3 0.000000e-3" rpy="0 0 0.084474" />
+      <origin xyz="38.472723e-3 3.257695e-3 0.000000e-3" rpy="0 0 0.766" />
       <axis xyz="0 0 1" />
-      <limit lower="0.766" upper="2.61" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.844" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
-      <mimic joint="index_q1" multiplier="1.05851325" offset="0.72349796" />
+      <mimic joint="index_q1" multiplier="1.05851325" />
    </joint>
    <link name="index_anchor" />
    <joint name="idx_anchor" type="fixed">
@@ -185,7 +185,7 @@
       <parent link="base" />
       <child link="middle_L1" />
       <origin xyz="0.008 -0.012 0.099" rpy="1.629 -1.322 -1.583" />
-      <limit lower="0" upper="1.74" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.74" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
@@ -194,13 +194,13 @@
    <joint name="middle_q2" type="revolute">
       <parent link="middle_L1" />
       <child link="middle_L2" />
-      <origin xyz="38.472723e-3 3.257695e-3 0.000000" rpy="0 0 0.084474" />
+      <origin xyz="38.472723e-3 3.257695e-3 0.000000" rpy="0 0 0.766" />
       <axis xyz="0 0 1" />
-      <limit lower="0.766" upper="2.61" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.844" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
-      <mimic joint="middle_q1" multiplier="1.05851325" offset="0.72349796" />
+      <mimic joint="middle_q1" multiplier="1.05851325" />
    </joint>
    <link name="middle_anchor" />
    <joint name="mid_anchor" type="fixed">
@@ -286,7 +286,7 @@
       <parent link="base" />
       <child link="ring_L1" />
       <origin xyz="-0.012 -0.010 0.097" rpy="1.780 -1.315 -1.811" />
-      <limit lower="0" upper="1.74" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.74" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
@@ -295,13 +295,13 @@
    <joint name="ring_q2" type="revolute">
       <parent link="ring_L1" />
       <child link="ring_L2" />
-      <origin xyz="38.472723e-3 3.257695e-3 0.000000" rpy="0 0 0.084474" />
+      <origin xyz="38.472723e-3 3.257695e-3 0.000000" rpy="0 0 0.766" />
       <axis xyz="0 0 1" />
-      <limit lower="0.766" upper="2.61" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.844" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
-      <mimic joint="ring_q1" multiplier="1.05851325" offset="0.72349796" />
+      <mimic joint="ring_q1" multiplier="1.05851325" />
    </joint>
    <link name="ring_anchor" />
    <joint name="rng_anchor" type="fixed">
@@ -387,7 +387,7 @@
       <parent link="base" />
       <child link="pinky_L1" />
       <origin xyz="-0.031 -0.007 0.091" rpy="1.731 -1.315 -1.828" />
-      <limit lower="0" upper="1.74" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.74" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
@@ -396,13 +396,13 @@
    <joint name="pinky_q2" type="revolute">
       <parent link="pinky_L1" />
       <child link="pinky_L2" />
-      <origin xyz="38.472723e-3 3.257695e-3 0.000000" rpy="0 0 0.084474" />
-      <limit lower="0.766" upper="2.61" effort="6.0" velocity="8.0677777442" />
+      <origin xyz="38.472723e-3 3.257695e-3 0.000000" rpy="0 0 0.766" />
+      <limit lower="0.00" upper="1.844" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
       <axis xyz="0 0 1" />
-      <mimic joint="pinky_q1" multiplier="1.05851325" offset="0.72349796" />
+      <mimic joint="pinky_q1" multiplier="1.05851325" />
    </joint>
    <link name="pinky_anchor" />
    <joint name="pnky_anchor" type="fixed">
@@ -499,7 +499,7 @@
       <child link="thumb_L2" />
       <origin xyz="27.8283501e-3 0 -14.7507000e-3" rpy="4.450589592585541 0 0" />
       <axis xyz="0 0 1" />
-      <limit lower="0" upper="1.74" effort="6.0" velocity="8.0677777442" />
+      <limit lower="0.00" upper="1.74" effort="6.0" velocity="8.0677777442" />
       <!-- angles in rad, efforts in N-m, velocity in rad/s -->
       <dynamics damping="0.001" friction="0.001" />
       <!-- Friction coefficient is not from quantitative measurement -->
