@@ -101,12 +101,14 @@ directly using
 
 File ➡️ Import
 
-And selecting the URDF.
+And selecting the URDF
 
-Select the following:
+Select the following options:
 
 - Options ➡️ Create in Stage
 - Moveable Base
-- Set all _q2 mimic joints Natural Frequency to 0.0
+- Set all _q2 mimic joints Natural Frequency to 0.0 
 - Collision From Visuals
 - Allow Self Collisions
+
+Click Import
