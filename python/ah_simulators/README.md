@@ -93,3 +93,22 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
         mujoco.mj_step(model, data)
         viewer.sync()
 ```
+
+## Issac Simulator (4.5)
+
+You can import the URDF from the [ROS2 package](https://github.com/psyonicinc/ability-hand-ros2/tree/main/src/ah_urdf/urdf)
+directly using  
+
+File ➡️ Import
+
+And selecting the URDF
+
+Select the following options:
+
+- Options ➡️ Create in Stage
+- Moveable Base
+- Set all _q2 mimic joints Natural Frequency to 0.0 
+- Collision From Visuals
+- Allow Self Collisions
+
+Click Import
