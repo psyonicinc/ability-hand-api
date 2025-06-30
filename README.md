@@ -3,8 +3,8 @@
 This repository contains the [PSYONIC Ability Hand API documentation](https://github.com/psyonicinc/ability-hand-api/blob/master/Documentation/ABILITY-HAND-ICD.pdf) and examples/wrappers using the API. 
 
  - [Python](https://github.com/psyonicinc/ability-hand-api/tree/master/python) (Linux, Windows, MacOS)
-   - Simulation ([Mujoco](https://github.com/psyonicinc/ability-hand-api/tree/master/python/ah_simulators#mujoco))
-   - [ROS2](https://github.com/psyonicinc/ability-hand-ros2/tree/main)
+ - Simulation ([Mujoco](https://github.com/psyonicinc/ability-hand-api/tree/master/python/ah_simulators#mujoco), Issac)
+ - [ROS2](https://github.com/psyonicinc/ability-hand-ros2/tree/main)
  - [C++](https://github.com/psyonicinc/ability-hand-api/tree/master/cpp) (Linux, Windows) 
  - [MATLAB](https://github.com/psyonicinc/ability-hand-api/tree/master/MATLAB) (Legacy I2C API Only)
 
