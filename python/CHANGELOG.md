@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2025-07-1
+### Added
+- Added generated position packets for simulated hand
+
 ## [0.2.1] - 2025-06-11
 ### Highlights
 - Move simulated response buffer to write thread loop
