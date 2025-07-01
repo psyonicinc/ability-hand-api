@@ -122,6 +122,7 @@ class AHSerialClient:
 
         if self.simulated:
             from ah_wrapper.sim_serial_connection import SimSerialConnection
+            from ah_wrapper.sim_functions import GeneratedPacket
 
             self._conn = SimSerialConnection(
                 port=port, baud_rate=baud_rate, read_size=read_size
@@ -269,6 +270,14 @@ class AHSerialClient:
             self._conn.write(command)
         else:
             self._conn.write(self._command)
+
+        # Create response buffer if simulated
+        if self.simulated:
+            packet = GeneratedPacket(
+                pos=self.hand.get_tar_position(), reply_mode=2
+            )
+            for b in packet.packet:
+                self._conn._serial.buffer.append(b)
 
 
     def set_position(
