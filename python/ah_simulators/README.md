@@ -32,10 +32,28 @@ Examples of popular robots have been integrated from Mujoco's [menagerie](https:
 
 ### Integrating with Python Wrapper
 
+Navigate to the ah_simulators directory in the python folder and install the necessary requirements for the Mujoco simulation, preferably in a virtual environment. 
+
+```python
+
+python3 -m pip install -r requirements.txt
+
+```
+ Return to the root python directory and open a python terminal. If using Windows or Linux you can use a traditional python terminal such as, 
+
+```python
+python3
+```
+If using a MacOS use, 
+
+
+```python
+mjpython
+```
+
 You can control the mujoco hand using the same serial client as the real 
 hand and make the serial connection virtual by passing the `simulated=True`
-argument. For example from the root python directory create a AHMujocoSim class
-and pass in the Hand class and select a scene.
+argument. Create a AHMujocoSim class and pass in the Hand class and select a scene.
 
 ```python
 
