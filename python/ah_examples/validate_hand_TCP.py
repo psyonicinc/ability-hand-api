@@ -99,6 +99,13 @@ def validate_velocity():
     and current draw among 4 fingers is roughly uniform.
     """
     tcp_server.send_response("Starting velocity validation test")
+    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    
+    if command == "skip":
+        tcp_server.send_response("Skipping velocity validation")
+        return "skipped"
+    elif command == "quit":
+        return "quit"
         
     client = AHSerialClient()
     START_POS = 10
@@ -275,6 +282,13 @@ def validate_position():
     and current draw among 4 fingers is roughly uniform.
     """
     tcp_server.send_response("Starting position validation test")
+    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    
+    if command == "skip":
+        tcp_server.send_response("Skipping position validation")
+        return "skipped"
+    elif command == "quit":
+        return "quit"
         
     client = AHSerialClient()
     START_POS = 10
@@ -478,6 +492,13 @@ def validate_torque():
     and current draw among 4 fingers is roughly uniform.
     """
     tcp_server.send_response("Starting torque validation test")
+    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    
+    if command == "skip":
+        tcp_server.send_response("Skipping torque validation")
+        return "skipped"
+    elif command == "quit":
+        return "quit"
         
     print("VALIDATING TORQUE")
     client = AHSerialClient()
@@ -639,6 +660,13 @@ def validate_torque():
 
 def validate_fsr():
     tcp_server.send_response("Starting FSR validation test")
+    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    
+    if command == "skip":
+        tcp_server.send_response("Skipping FSR validation")
+        return "skipped"
+    elif command == "quit":
+        return "quit"
         
     print("VALIDATING FSRs")
     tcp_server.send_response("IS THIS A CLINICAL HAND? [y/n]")
@@ -673,64 +701,25 @@ def validate_fsr():
         if clinical and (i in (1, 2)):
             continue
 
-        tcp_server.send_response(f"Do not touch {fingers[i]}, press ready to continue then press on FSRs, or 'skip' to skip this finger, or 'quit' to stop")
-        command = tcp_server.wait_for_command(["ready", "skip", "quit"])
-        
-        if command == "quit":
-            client.close()
-            return "quit"
-        elif command == "skip":
-            tcp_server.send_response(f"Skipping {fingers[i]}")
-            continue
-        
-        client.set_position(positions[i], reply_mode=0)
-        base_fsr = client.hand.get_fsr()[i * 6 : i * 6 + 6]
-        goal_fsr = [j + delta_fsr for j in base_fsr]
-        
-        # Check for commands while waiting for FSR detection
-        start_time = time.time()
-        timeout = 30  # 30 second timeout for each finger
-        
-        while False in fsr_passed[i]:
-            # Check for timeout
-            if time.time() - start_time > timeout:
-                tcp_server.send_response(f"Timeout for {fingers[i]}. Send 'skip' to skip this finger or 'continue' to keep trying")
-                command = tcp_server.wait_for_command(["skip", "continue", "quit"])
-                if command == "quit":
-                    client.close()
-                    return "quit"
-                elif command == "skip":
-                    tcp_server.send_response(f"Skipping {fingers[i]} due to timeout")
-                    break
-                else:
-                    start_time = time.time()  # Reset timeout
-            
-            # Check for incoming commands
-            command = tcp_server.receive_command()
-            if command:
-                if command == "quit":
-                    client.close()
-                    return "quit"
-                elif command == "skip":
-                    tcp_server.send_response(f"Skipping {fingers[i]}")
-                    break
-                elif command == "next":
-                    tcp_server.send_response(f"Skipping remaining FSR tests")
-                    client.close()
-                    return "complete"
-            
-            fsr = client.hand.get_fsr()[i * 6 : i * 6 + 6]
-            for f in range(len(fsr)):
-                if fsr[f] >= goal_fsr[f]:
-                    if not fsr_passed[i][f]:
-                        fsr_passed[i][f] = True
-                        tcp_server.send_response(f"FSR {f} detected!")
-            time.sleep(0.001)
-        
-        if False not in fsr_passed[i]:
+        try:
+            tcp_server.send_response(f"Do not touch {fingers[i]}, press ready to continue then press on FSRs")
+            tcp_server.wait_for_command(["ready"])
+            client.set_position(positions[i], reply_mode=0)
+            base_fsr = client.hand.get_fsr()[i * 6 : i * 6 + 6]
+            goal_fsr = [j + delta_fsr for j in base_fsr]
+            while False in fsr_passed[i]:
+                fsr = client.hand.get_fsr()[i * 6 : i * 6 + 6]
+                for f in range(len(fsr)):
+                    if fsr[f] >= goal_fsr[f]:
+                        if not fsr_passed[i][f]:
+                            fsr_passed[i][f] = True
+                            tcp_server.send_response(f"FSR {f} detected!")
+                    time.sleep(0.001)
             tcp_server.send_response(f"{fingers[i]} passed")
-        else:
-            tcp_server.send_response(f"{fingers[i]} partially passed - FSRs detected: {sum(fsr_passed[i])}/6")
+
+        except KeyboardInterrupt:
+            tcp_server.send_response(f"Skipping {fingers[i]}")
+            tcp_server.send_response("FSRs Passed: " + str(fsr_passed[i]))
 
     client.close()
     tcp_server.send_response("FSR validation complete")
@@ -739,6 +728,13 @@ def validate_fsr():
 
 def validate_grips():
     tcp_server.send_response("Starting grip validation test")
+    command = tcp_server.wait_for_command(["start", "skip"])
+    
+    if command == "skip":
+        tcp_server.send_response("Skipping grip validation")
+        return "skipped"
+    elif command == "quit":
+        return "quit"
         
     print("VALIDATING GRIPS")
     client = AHSerialClient(write_thread=False)
@@ -810,74 +806,58 @@ def main():
         tcp_server.send_response("Validation tests ready. Send 'start' to begin, 'skip' to skip a test, or 'quit' to exit.")
         
         # Grip validation
-        tcp_server.send_response("Ready for grip validation. Send 'next' to start or 'skip' to skip.")
-        command = tcp_server.wait_for_command(["next", "skip", "quit"])
-        if command == "quit":
+        result = validate_grips()
+        if result == "quit":
             tcp_server.send_response("Validation stopped by user")
             return
-        elif command == "skip":
-            tcp_server.send_response("Skipping grip validation")
-        else:
-            result = validate_grips()
-            if result == "quit":
+        elif result == "complete":
+            command = tcp_server.wait_for_command(["next", "quit"])
+            if command == "quit":
                 tcp_server.send_response("Validation stopped by user")
                 return
+        # If skipped, continue to next test automatically
         
         # FSR validation
-        tcp_server.send_response("Ready for FSR validation. Send 'next' to start or 'skip' to skip.")
-        command = tcp_server.wait_for_command(["next", "skip", "quit"])
-        if command == "quit":
+        result = validate_fsr()
+        if result == "quit":
             tcp_server.send_response("Validation stopped by user")
             return
-        elif command == "skip":
-            tcp_server.send_response("Skipping FSR validation")
-        else:
-            result = validate_fsr()
-            if result == "quit":
+        elif result == "complete":
+            command = tcp_server.wait_for_command(["next", "quit"])
+            if command == "quit":
                 tcp_server.send_response("Validation stopped by user")
                 return
+        # If skipped, continue to next test automatically
         
         # Velocity validation
-        tcp_server.send_response("Ready for velocity validation. Send 'next' to start or 'skip' to skip.")
-        command = tcp_server.wait_for_command(["next", "skip", "quit"])
-        if command == "quit":
+        result = validate_velocity()
+        if result == "quit":
             tcp_server.send_response("Validation stopped by user")
             return
-        elif command == "skip":
-            tcp_server.send_response("Skipping velocity validation")
-        else:
-            result = validate_velocity()
-            if result == "quit":
+        elif result == "complete":
+            command = tcp_server.wait_for_command(["next", "quit"])
+            if command == "quit":
                 tcp_server.send_response("Validation stopped by user")
                 return
+        # If skipped, continue to next test automatically
         
         # Position validation
-        tcp_server.send_response("Ready for position validation. Send 'next' to start or 'skip' to skip.")
-        command = tcp_server.wait_for_command(["next", "skip", "quit"])
-        if command == "quit":
+        result = validate_position()
+        if result == "quit":
             tcp_server.send_response("Validation stopped by user")
             return
-        elif command == "skip":
-            tcp_server.send_response("Skipping position validation")
-        else:
-            result = validate_position()
-            if result == "quit":
+        elif result == "complete":
+            command = tcp_server.wait_for_command(["next", "quit"])
+            if command == "quit":
                 tcp_server.send_response("Validation stopped by user")
                 return
+        # If skipped, continue to next test automatically
         
         # Torque validation
-        tcp_server.send_response("Ready for torque validation. Send 'next' to start or 'skip' to skip.")
-        command = tcp_server.wait_for_command(["next", "skip", "quit"])
-        if command == "quit":
+        result = validate_torque()
+        if result == "quit":
             tcp_server.send_response("Validation stopped by user")
             return
-        elif command == "skip":
-            tcp_server.send_response("Skipping torque validation")
-        else:
-            result = validate_torque()
-            if result == "quit":
-                tcp_server.send_response("Validation stopped by user")
-                return
         
         tcp_server.send_response("All validation tests complete!")
         
