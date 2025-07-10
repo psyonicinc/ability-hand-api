@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 import socket
 import json
 import threading
+import base64
+import io
+import tempfile
+import os
 from typing import Optional, Dict, Any
 
 SLEEP_TIME = 0.01
@@ -48,6 +52,31 @@ class TCPValidationServer:
                 self.connection.send((json_data + "\n").encode())
             except Exception as e:
                 print(f"Error sending data: {e}")
+                
+    def send_plot_image(self, fig):
+        """Save plot as temporary file and send filename"""
+        if self.connection:
+            try:
+                # Create temporary file
+                temp_file = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+                temp_path = temp_file.name
+                temp_file.close()
+                
+                # Save figure to temporary file
+                fig.savefig(temp_path, format='png', dpi=100, bbox_inches='tight')
+                
+                # Send filename as JSON with Plot flag
+                plot_data = {
+                    "Plot": True,
+                    "image_file": temp_path,
+                    "test_type": "plot_image"
+                }
+                
+                json_data = json.dumps(plot_data)
+                self.connection.send((json_data + "\n").encode())
+                
+            except Exception as e:
+                print(f"Error sending plot image: {e}")
                 
     def receive_command(self) -> Optional[str]:
         """Receive a command from the TCP client"""
@@ -150,19 +179,7 @@ def validate_velocity():
         client.set_velocity(velocities=0, reply_mode=2)
         time_string = f"Total Time: {time.time()-start_time:.2f} Target Time: {(END_POS-START_POS)*2/vel:.2f}"
 
-        # Send data over TCP
-        test_data = {
-            "test_type": "velocity_validation",
-            "target_velocity": vel,
-            "positions": positions,
-            "currents": currents,
-            "velocities": velocities,
-            "target_velocities": target_velocities,
-            "timestamps": timestamps,
-            "time_string": time_string
-        }
-        tcp_server.send_data(test_data)
-
+        # Create and send plot
         fig, axs = plt.subplots(4, 1, figsize=(8, 10), sharex=True)
         titles = (
             "Position",
@@ -196,7 +213,10 @@ def validate_velocity():
             + time_string
         )
         plt.tight_layout()
-        plt.show()
+        
+        # Send plot image over TCP
+        tcp_server.send_plot_image(fig)
+        plt.close(fig)  # Close to free memory
 
         # Thumb flexor test
         tcp_server.send_response("Testing thumb flexor")
@@ -228,19 +248,7 @@ def validate_velocity():
         client.set_velocity(velocities=0, reply_mode=2)
         time_string = f"Total Time: {time.time()-start_time:.2f} Target Time: {(END_POS-START_POS)*2/vel:.2f}"
 
-        # Send thumb data over TCP
-        thumb_data = {
-            "test_type": "velocity_validation_thumb",
-            "target_velocity": vel,
-            "positions": positions,
-            "currents": currents,
-            "velocities": velocities,
-            "target_velocities": target_velocities,
-            "timestamps": timestamps,
-            "time_string": time_string
-        }
-        tcp_server.send_data(thumb_data)
-
+        # Create and send thumb plot
         fig, axs = plt.subplots(4, 1, figsize=(8, 10), sharex=True)
         titles = (
             "Position",
@@ -271,7 +279,10 @@ def validate_velocity():
             + time_string
         )
         plt.tight_layout()
-        plt.show()
+        
+        # Send thumb plot image over TCP
+        tcp_server.send_plot_image(fig)
+        plt.close(fig)  # Close to free memory
     client.close()
     tcp_server.send_response("Velocity validation complete")
     return "complete"
@@ -339,19 +350,7 @@ def validate_position():
             time.sleep(SLEEP_TIME)
         time_string = f"Total Time: {time.time() - start_time:.2f} Target Time: {(END_POS - START_POS) * 2 / vel:.2f}"
 
-        # Send data over TCP
-        test_data = {
-            "test_type": "position_validation",
-            "target_velocity": vel,
-            "positions": positions,
-            "currents": currents,
-            "velocities": velocities,
-            "target_positions": target_positions,
-            "timestamps": timestamps,
-            "time_string": time_string
-        }
-        tcp_server.send_data(test_data)
-
+        # Create and send plot
         fig, axs = plt.subplots(4, 1, figsize=(8, 10), sharex=True)
         titles = (
             "Position",
@@ -388,7 +387,10 @@ def validate_position():
             + time_string
         )
         plt.tight_layout()
-        plt.show()
+        
+        # Send plot image over TCP
+        tcp_server.send_plot_image(fig)
+        plt.close(fig)  # Close to free memory
 
         # Thumb flexor test
         tcp_server.send_response("Testing thumb flexor position")
@@ -432,19 +434,7 @@ def validate_position():
             time.sleep(SLEEP_TIME)
         time_string = f"Total Time: {time.time() - start_time:.2f} Target Time: {(END_POS - START_POS) * 2 / vel:.2f}"
 
-        # Send thumb data over TCP
-        thumb_data = {
-            "test_type": "position_validation_thumb",
-            "target_velocity": vel,
-            "positions": positions,
-            "currents": currents,
-            "velocities": velocities,
-            "target_positions": target_positions,
-            "timestamps": timestamps,
-            "time_string": time_string
-        }
-        tcp_server.send_data(thumb_data)
-
+        # Create and send thumb plot
         fig, axs = plt.subplots(4, 1, figsize=(8, 10), sharex=True)
         titles = (
             "Position",
@@ -480,8 +470,11 @@ def validate_position():
             + "\n"
             + time_string
         )
-        # plt.tight_layout()
-        # plt.show()
+        plt.tight_layout()
+        
+        # Send thumb plot image over TCP
+        tcp_server.send_plot_image(fig)
+        plt.close(fig)  # Close to free memory
     client.close()
     tcp_server.send_response("Position validation complete")
     return "complete"
@@ -540,17 +533,7 @@ def validate_torque():
             timestamps.append(time.time())
             time.sleep(SLEEP_TIME)
 
-        # Send data over TCP
-        test_data = {
-            "test_type": "torque_validation",
-            "target_torque": tor,
-            "positions": positions,
-            "currents": currents,
-            "target_torque": target_torque,
-            "timestamps": timestamps
-        }
-        tcp_server.send_data(test_data)
-
+        # Create and send plot
         fig, axs = plt.subplots(3, 1, figsize=(8, 10), sharex=True)
         titles = ("Position", "Current", "Target - Actual Current")
         data = (
@@ -580,7 +563,10 @@ def validate_torque():
             + "\n"
         )
         plt.tight_layout()
-        plt.show()
+        
+        # Send plot image over TCP
+        tcp_server.send_plot_image(fig)
+        plt.close(fig)  # Close to free memory
 
         # Thumb flexor test
         tcp_server.send_response("Testing thumb flexor torque")
@@ -613,17 +599,7 @@ def validate_torque():
             timestamps.append(time.time())
             time.sleep(SLEEP_TIME)
 
-        # Send thumb data over TCP
-        thumb_data = {
-            "test_type": "torque_validation_thumb",
-            "target_torque": tor,
-            "positions": positions,
-            "currents": currents,
-            "target_torque": target_torque,
-            "timestamps": timestamps
-        }
-        tcp_server.send_data(thumb_data)
-
+        # Create and send thumb plot
         fig, axs = plt.subplots(3, 1, figsize=(8, 10), sharex=True)
         titles = ("Position", "Current", "Target - Actual Currents")
         data = (
@@ -652,7 +628,10 @@ def validate_torque():
             f"Positions, Currents : Target Torque = {tor} amps"
         )
         plt.tight_layout()
-        plt.show()
+        
+        # Send thumb plot image over TCP
+        tcp_server.send_plot_image(fig)
+        plt.close(fig)  # Close to free memory
     client.close()
     tcp_server.send_response("Torque validation complete")
     return "complete"

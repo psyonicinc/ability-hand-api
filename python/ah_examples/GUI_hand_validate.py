@@ -12,11 +12,13 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QHBoxLayout, QPushButton, QTextEdit, QLineEdit, 
                              QLabel, QGroupBox, QGridLayout, QMessageBox)
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QPixmap
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import numpy as np
+import base64
+import io
 
 class TCPClientThread(QThread):
     """Thread for handling TCP communication"""
@@ -74,7 +76,13 @@ class TCPClientThread(QThread):
                     # Check if it's JSON data
                     try:
                         data = json.loads(response)
-                        self.data_received.emit(data)
+                        # Check if this is plot data - don't show in messages
+                        if data.get('Plot', False):
+                            self.data_received.emit(data)
+                        else:
+                            # Regular JSON data - show in messages
+                            self.message_received.emit(f"Received data: {data.get('test_type', 'unknown')}")
+                            self.data_received.emit(data)
                     except json.JSONDecodeError:
                         # Regular message
                         self.message_received.emit(response)
@@ -202,10 +210,12 @@ class HandValidationGUI(QMainWindow):
         plot_group = QGroupBox("Test Data Plot")
         plot_layout = QVBoxLayout()
         
-        # Create matplotlib figure
-        self.figure = Figure(figsize=(8, 6))
-        self.canvas = FigureCanvas(self.figure)
-        plot_layout.addWidget(self.canvas)
+        # Create image label for displaying plots
+        self.plot_label = QLabel()
+        self.plot_label.setMinimumSize(600, 400)
+        self.plot_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.plot_label.setText("No plot data available")
+        plot_layout.addWidget(self.plot_label)
         
         plot_group.setLayout(plot_layout)
         right_layout.addWidget(plot_group)
@@ -297,10 +307,15 @@ class HandValidationGUI(QMainWindow):
             
     def handle_data(self, data: dict):
         """Handle incoming JSON data and plot it"""
-        self.add_message(f"Received data: {data.get('test_type', 'unknown')}")
-        
-        # Plot the data
-        self.plot_data(data)
+        try:
+            if 'image_file' in data:
+                self.add_message("Received plot image file")
+                self.display_plot_image(data['image_file'])
+            else:
+                self.add_message("Received raw plot data")
+                self.plot_data(data)
+        except Exception as e:
+            self.add_message(f"Error displaying plot: {e}")
         
     def handle_connection_status(self, connected: bool):
         """Handle connection status changes"""
@@ -324,14 +339,43 @@ class HandValidationGUI(QMainWindow):
         self.current_test_label.setText(f"Current Test: {self.current_test}")
         self.test_passed_label.setText(f"Test Result: {self.test_passed}")
         
-    def plot_data(self, data: dict):
-        """Plot the received data"""
+    def display_plot_image(self, image_file: str):
+        """Display a plot image from file"""
         try:
-            self.figure.clear()
+            # Create QPixmap from file
+            pixmap = QPixmap(image_file)
+            if pixmap.isNull():
+                raise Exception(f"Failed to load image from file: {image_file}")
+            
+            # Get the label size
+            label_size = self.plot_label.size()
+            if label_size.width() <= 0 or label_size.height() <= 0:
+                # Use default size if label hasn't been sized yet
+                label_size = self.plot_label.minimumSize()
+            
+            # Scale to fit the label while maintaining aspect ratio
+            scaled_pixmap = pixmap.scaled(
+                label_size, 
+                Qt.AspectRatioMode.KeepAspectRatio, 
+                Qt.TransformationMode.SmoothTransformation
+            )
+            
+            # Display the image
+            self.plot_label.setPixmap(scaled_pixmap)
+            self.add_message(f"Plot image displayed successfully from {image_file}")
+            
+        except Exception as e:
+            self.add_message(f"Error displaying plot image: {e}")
+            self.plot_label.setText(f"Error displaying plot: {str(e)}")
+            
+    def plot_data(self, data: dict):
+        """Plot the received data (fallback for raw data)"""
+        try:
+            # Create a simple matplotlib figure for raw data
+            fig = Figure(figsize=(8, 6))
+            ax = fig.add_subplot(111)
             
             if 'positions' in data and 'timestamps' in data:
-                ax = self.figure.add_subplot(111)
-                
                 positions = np.array(data['positions'])
                 timestamps = np.array(data['timestamps'])
                 
@@ -350,8 +394,6 @@ class HandValidationGUI(QMainWindow):
                 ax.grid(True)
                 
             elif 'currents' in data and 'timestamps' in data:
-                ax = self.figure.add_subplot(111)
-                
                 currents = np.array(data['currents'])
                 timestamps = np.array(data['timestamps'])
                 
@@ -369,10 +411,38 @@ class HandValidationGUI(QMainWindow):
                 ax.legend()
                 ax.grid(True)
                 
-            self.canvas.draw()
+            else:
+                # No recognizable data format
+                ax.text(0.5, 0.5, f"No plot data available for {data.get('test_type', 'unknown')} test", 
+                       ha='center', va='center', transform=ax.transAxes)
+                ax.set_title("No Data to Plot")
+            
+            # Convert figure to image and display
+            buf = io.BytesIO()
+            fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+            buf.seek(0)
+            
+            # Create QPixmap from bytes
+            pixmap = QPixmap()
+            pixmap.loadFromData(buf.getvalue())
+            
+            # Scale to fit the label while maintaining aspect ratio
+            scaled_pixmap = pixmap.scaled(
+                self.plot_label.size(), 
+                Qt.AspectRatioMode.KeepAspectRatio, 
+                Qt.TransformationMode.SmoothTransformation
+            )
+            
+            # Display the image
+            self.plot_label.setPixmap(scaled_pixmap)
+            
+            # Clean up
+            buf.close()
+            plt.close(fig)
             
         except Exception as e:
             self.add_message(f"Error plotting data: {e}")
+            self.plot_label.setText("Error plotting data")
             
     def closeEvent(self, event):
         """Handle window close event"""
