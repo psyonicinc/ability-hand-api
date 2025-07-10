@@ -99,7 +99,7 @@ def validate_velocity():
     and current draw among 4 fingers is roughly uniform.
     """
     tcp_server.send_response("Starting velocity validation test")
-    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    command = tcp_server.wait_for_command(["ready", "skip", "quit"])
     
     if command == "skip":
         tcp_server.send_response("Skipping velocity validation")
@@ -282,7 +282,7 @@ def validate_position():
     and current draw among 4 fingers is roughly uniform.
     """
     tcp_server.send_response("Starting position validation test")
-    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    command = tcp_server.wait_for_command(["ready", "skip", "quit"])
     
     if command == "skip":
         tcp_server.send_response("Skipping position validation")
@@ -480,8 +480,8 @@ def validate_position():
             + "\n"
             + time_string
         )
-        plt.tight_layout()
-        plt.show()
+        # plt.tight_layout()
+        # plt.show()
     client.close()
     tcp_server.send_response("Position validation complete")
     return "complete"
@@ -492,7 +492,7 @@ def validate_torque():
     and current draw among 4 fingers is roughly uniform.
     """
     tcp_server.send_response("Starting torque validation test")
-    command = tcp_server.wait_for_command(["start", "skip", "quit"])
+    command = tcp_server.wait_for_command(["ready", "skip", "quit"])
     
     if command == "skip":
         tcp_server.send_response("Skipping torque validation")
@@ -708,6 +708,7 @@ def validate_fsr():
             base_fsr = client.hand.get_fsr()[i * 6 : i * 6 + 6]
             goal_fsr = [j + delta_fsr for j in base_fsr]
             while False in fsr_passed[i]:
+                
                 fsr = client.hand.get_fsr()[i * 6 : i * 6 + 6]
                 for f in range(len(fsr)):
                     if fsr[f] >= goal_fsr[f]:
