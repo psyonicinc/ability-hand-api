@@ -31,6 +31,13 @@ for the USB serial adapter.
 8. Power on Ability Hand (hold power button for 1 second then release when you see the white LED)
 9. You will see the LED flash red then go solid red
 
+#### Connect to Power Supply (Optional)
+
+If you choose you can strip the wires going to the Ability Hand Power Switch
+and connect them directly to a power supply providing 8-12 volts.
+
+<img src="python/images/ah_wiring_guide_ps.png" alt="isolated" width="600"/>
+
 Linux users will need to issue the following command after plugging in USB 
 serial adapter.
 
