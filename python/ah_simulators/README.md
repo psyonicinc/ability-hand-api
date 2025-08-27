@@ -112,7 +112,7 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
         viewer.sync()
 ```
 
-## Issac Simulator (4.5)
+## Isaac Simulator (4.5)
 
 You can import the URDF from the [ROS2 package](https://github.com/psyonicinc/ability-hand-ros2/tree/main/src/ah_urdf/urdf)
 directly using  
