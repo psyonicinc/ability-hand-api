@@ -59,7 +59,13 @@ Scan ➡️ SELECT HAND ➡️ Gear Icon ⚙️
 
 and issue the following command
 
-We16
+```We16```
+
+#### Enabling RS-485
+
+If using an RS-485 serial adapter, you will additionally need to issue the following command
+
+```We35```
 
 ### Run Examples
 
