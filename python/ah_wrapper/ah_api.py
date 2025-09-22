@@ -133,7 +133,7 @@ def create_vel_msg(
 
 
 def create_duty_msg(
-    reply_mode, duties: int | float | List[int], addr = 0x50
+    reply_mode, duties, addr = 0x50
 ):
     if type(duties) in (int, float):
         duties = [duties] * 6
