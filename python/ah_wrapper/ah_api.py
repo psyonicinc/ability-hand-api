@@ -43,7 +43,7 @@ def create_misc_msg(cmd, addr = 0x50):
     return msg
 
 
-def create_grip_msg(cmd: int, speed = 0xFF, addr = 0x50):
+def create_grip_msg(cmd, speed = 0xFF, addr = 0x50):
     msg = list(struct.pack("<BBBB", addr, 0x1D, cmd, speed))
     msg.append(compute_chksum(msg))
     msg = ppp_stuff(msg)
@@ -51,7 +51,7 @@ def create_grip_msg(cmd: int, speed = 0xFF, addr = 0x50):
 
 
 def create_pos_msg(
-    reply_mode: int, positions: int | float | List[float], addr = 0x50
+    reply_mode, positions, addr = 0x50
 ):
     if type(positions) in (float, int):
         # Allows users to pass a single value rather than a list
@@ -78,7 +78,7 @@ def create_pos_msg(
 
 
 def create_torque_msg(
-    reply_mode: int, currents: int | float | List[float], addr = 0x50
+    reply_mode, currents, addr = 0x50
 ):
     if type(currents) in (int, float):
         currents = [currents] * 6
@@ -103,7 +103,7 @@ def create_torque_msg(
 
 
 def create_vel_msg(
-    reply_mode: int, velocities: int | float | List[float], addr = 0x50
+    reply_mode, velocities, addr = 0x50
 ):
     if config.velocity_warning:
         print(
@@ -133,7 +133,7 @@ def create_vel_msg(
 
 
 def create_duty_msg(
-    reply_mode: int, duties: int | float | List[int], addr = 0x50
+    reply_mode, duties: int | float | List[int], addr = 0x50
 ):
     if type(duties) in (int, float):
         duties = [duties] * 6
@@ -158,7 +158,7 @@ def create_duty_msg(
     return msg
 
 
-def create_write_reg_msg(val_addr: int, val: int, addr = 0x50):
+def create_write_reg_msg(val_addr, val, addr = 0x50):
     msg = [(struct.pack("<B", addr))[0], (struct.pack("<B", 0xDE))[0]]
     b2 = struct.pack("<i", val_addr)
     for b in b2:
@@ -171,7 +171,7 @@ def create_write_reg_msg(val_addr: int, val: int, addr = 0x50):
     return msg
 
 
-def create_read_reg_msg(val_addr: int, addr = 0x50):
+def create_read_reg_msg(val_addr, addr = 0x50):
     msg = [(struct.pack("<B", addr))[0], (struct.pack("<B", 0xDA))[0]]
     b2 = struct.pack("<i", val_addr)
     for b in b2:

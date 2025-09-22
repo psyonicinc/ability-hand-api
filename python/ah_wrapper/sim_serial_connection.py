@@ -3,7 +3,7 @@ from ah_wrapper.serial_connection import SerialConnectionBase
 
 
 class SimSerialConnection(SerialConnectionBase):
-    def __init__(self, port: str, baud_rate: int, read_size = 512):
+    def __init__(self, port, baud_rate, read_size = 512):
         super().__init__()
 
         # Variables
@@ -12,7 +12,7 @@ class SimSerialConnection(SerialConnectionBase):
         # Setup
         self._connect(port=port, baud_rate=baud_rate)
 
-    def _connect(self, port: str, baud_rate: int):
+    def _connect(self, port, baud_rate):
         self._serial = sim_serial.Serial(
             port=port, baud_rate=baud_rate, read_size=self.read_size
         )

@@ -25,8 +25,8 @@ MASK_CHAR = 0x20
 
 
 def ppp_stuff(
-    array: bytearray | bytes | List[int], create_copy=False
-) -> bytearray:
+    array, create_copy=False
+) :
     """Stuffing involves adding a FRAME_CHAR 0x7E '~' to the begining and end of
     a frame and XOR'ing any bytes with MASK_CHAR 0x20 that equal the FRAME/ESC
     char.  This allows you to determine the beginning and end of a frame and not
@@ -58,7 +58,7 @@ class PPPUnstuff:
         self.idx = 0
         self.unmask_next_char = False
 
-    def add_to_buffer(self, byte: int):
+    def add_to_buffer(self, byte):
         if self.idx >= self.buffer_size:
             if config.write_log:
                 logging.warning("Exceeded maximum buffer size")
@@ -67,7 +67,7 @@ class PPPUnstuff:
             self.buffer[self.idx] = byte
             self.idx += 1
 
-    def unstuff_byte(self, byte: int) -> bytearray | None:
+    def unstuff_byte(self, byte):
         """Stateful byte parser for unstuffing PPP stuffed frames.  Unstuffing
         simply require you to remove the FRAME_CHAR 0x20 '~' byte from the end
         and beginning of the frame, it also requires removing any ESC_CHAR

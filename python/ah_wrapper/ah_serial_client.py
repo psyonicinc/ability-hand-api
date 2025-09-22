@@ -242,21 +242,21 @@ class AHSerialClient:
         if config.write_log:
             logging.info("Stopping Read Thread")
 
-    def set_command(self, command: bytearray | bytes | List[int]) -> None:
+    def set_command(self, command) :
         """
         Sets the private variable _command which is written to the hand using
         the write thread or send_command function. Will not update hand targets
         should be used more internally than externally
 
         Args
-            command: bytearray, bytes or list of ints with a command for AH
+            command, bytes or list of ints with a command for AH
         """
         with self._cmd_lock:
             self._command = command
 
     def send_command(
-        self, command: None | bytearray | bytes | List[int] = None
-    ) -> None:
+        self, command = None
+    ) :
         """
         Manually send command using the serial connection, if no command given
         use the last used command. Useful if not using write thread but requires
@@ -264,7 +264,7 @@ class AHSerialClient:
         write thread is running
 
         Args:
-            command: bytearray, bytes or list of ints with a command for AH
+            command, bytes or list of ints with a command for AH
         """
         if command:
             self._conn.write(command)
@@ -281,7 +281,7 @@ class AHSerialClient:
 
 
     def set_position(
-        self, positions: float | List[float], reply_mode=None, addr=None
+        self, positions, reply_mode=None, addr=None
     ):
         """
         Set command to position target and update hand class position targets
@@ -309,8 +309,8 @@ class AHSerialClient:
         self.hand.update_tar(positions=positions)
 
     def set_velocity(
-        self, velocities: float | List[float], reply_mode=None, addr=None
-    ) -> None:
+        self, velocities, reply_mode=None, addr=None
+    ) :
         """
         Set command to velocity target and update hand class position targets
 
@@ -337,8 +337,8 @@ class AHSerialClient:
         self.hand.update_tar(velocities=velocities)
 
     def set_duty(
-        self, duties: int | List[int], reply_mode=None, addr=None
-    ) -> None:
+        self, duties, reply_mode=None, addr=None
+    ) :
         """
         Set command to duty target and update hand class duty targets
 
@@ -363,8 +363,8 @@ class AHSerialClient:
         self.hand.update_tar(duties=duties)
 
     def set_torque(
-        self, currents: float | List[float], reply_mode=None, addr=None
-    ) -> None:
+        self, currents, reply_mode=None, addr=None
+    ) :
         """
         Set command to torque target and update hand class torque targets
 
@@ -390,7 +390,7 @@ class AHSerialClient:
             currents[-1] *= -1
         self.hand.update_tar(currents=currents)
 
-    def set_grip(self, grip: int, speed=0xFF, addr=None):
+    def set_grip(self, grip, speed=0xFF, addr=None):
         """
         Set grip command, see API for different grip commands
 
@@ -405,7 +405,7 @@ class AHSerialClient:
             addr = self.hand.addr
         self.set_command(create_grip_msg(cmd=grip, speed=speed, addr=addr))
 
-    def print_stats(self) -> None:
+    def print_stats(self) :
         """Prints stats regarding writes, reads and run time"""
         if not self.end_time:
             end_time = time.time()
@@ -415,7 +415,7 @@ class AHSerialClient:
             f"Rate: {((self._conn.n_writes-1) / (end_time - self.start_time)):.1f} \nWrites: {self._conn.n_writes-1} \nReads: {self.n_reads-1} \nPacket Loss: {(1 - ((self.n_reads-1) / (self._conn.n_writes-1))) * 100:.3f}%"
         )
 
-    def close(self) -> None:
+    def close(self) :
         """Stop threads and close serial connection, will need to re-create
         AHSerialClient instance to create a new connection"""
         self._reading = False

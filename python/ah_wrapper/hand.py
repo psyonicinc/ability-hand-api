@@ -125,52 +125,52 @@ class Hand(Observable):
                 self._tar_vel = None
                 self._tar_pos = None
 
-    def update_hot_cold(self, hot_cold_status: int) -> None:
+    def update_hot_cold(self, hot_cold_status) :
         with self._val_lock:
             self._hot_cold = hot_cold_status
             if self.observers:
                 self.notify_hot_cold(hot_cold_status)
 
-    def get_hot_cold(self) -> int:
+    def get_hot_cold(self) :
         with self._val_lock:
             return self._hot_cold
 
-    def get_current(self) -> None | List[float]:
+    def get_current(self) :
         """Returns most recent finger current feedback in amps or None"""
         with self._val_lock:
             return self._cur_cur
 
-    def get_position(self) -> None | List[float]:
+    def get_position(self) :
         """Returns most recent finger position feedback in degrees or None"""
         with self._val_lock:
             return self._cur_pos
 
-    def get_velocity(self) -> None | List[float]:
+    def get_velocity(self) :
         """Returns most recent finger velocity feedback in degrees per second or None"""
         with self._val_lock:
             return self._cur_vel
 
-    def get_fsr(self) -> None | List[float]:
+    def get_fsr(self) :
         """Returns most recent FSR touch sensor values or None"""
         with self._val_lock:
             return self._fsr
 
-    def get_tar_position(self) -> None | List[float]:
+    def get_tar_position(self) :
         """Returns hand target positions / last position command or None"""
         with self._tar_lock:
             return self._tar_pos
 
-    def get_tar_velocity(self) -> None | List[float]:
+    def get_tar_velocity(self) :
         """Returns hand target velocities / last velocity command or None"""
         with self._tar_lock:
             return self._tar_vel
 
-    def get_tar_current(self) -> None | List[float]:
+    def get_tar_current(self) :
         """Returns hand target currents / last current command or None"""
         with self._tar_lock:
             return self._tar_cur
 
-    def get_tar_duty(self) -> None | List[float]:
+    def get_tar_duty(self) :
         """Returns hand target duty cycle / last duty command or None"""
         with self._tar_lock:
             return self._tar_duty

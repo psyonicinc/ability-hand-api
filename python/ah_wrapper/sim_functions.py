@@ -63,7 +63,7 @@ class GeneratedPacket:
         self.packet = ppp_stuff(self.generate_packet())
         self.packet_list = [int(i) for i in self.packet]
 
-    def generate_packet(self) -> bytearray:
+    def generate_packet(self) :
         msg = bytearray()
         msg.append(
             MODES_AND_VAR[self.mode][1][self.reply_mode]

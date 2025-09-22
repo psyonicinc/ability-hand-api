@@ -10,41 +10,41 @@ C = 620.606079
 K = 1.49
 
 
-def deg_to_bytes(degrees: float) -> bytes:
+def deg_to_bytes(degrees) :
     """Converts a position in degrees to a two byte message"""
     return struct.pack(
         "<h", int(max(min(degrees * DEGREES_CONSTANT, LIMIT), -LIMIT))
     )
 
 
-def vel_to_bytes(deg_p_s: float) -> bytes:
+def vel_to_bytes(deg_p_s) :
     """Converts a velocity in degrees per second to a two byte message"""
     return struct.pack(
         "<h", int(max(min(deg_p_s * VELOCITY_CONSTANT, LIMIT), -LIMIT))
     )
 
 
-def cur_to_bytes(current: float) -> bytes:
+def cur_to_bytes(current) :
     """Converts a current in amps to a two byte message"""
     return struct.pack("<h", int(current * C))
 
 
-def compute_chksum(array: bytearray | List[bytes | int] | bytes) -> int:
+def compute_chksum(array) :
     """Compute checksum on list or bytearray"""
     return -sum(array) & 0xFF
 
 
-def bytes_to_pos(byte_array: bytearray) -> float:
+def bytes_to_pos(byte_array) :
     """Converts position pair of bytes into a float"""
     return struct.unpack("<h", byte_array)[0] * DEGREES_CONSTANT_INV
 
 
-def bytes_to_vel(byte_array: bytearray) -> float:
+def bytes_to_vel(byte_array) :
     """Converts a vel pair of bytes into a float"""
     return struct.unpack("<h", byte_array)[0] * VELOCITY_CONSTANT_INV
 
 
-def bytes_to_cur(byte_array: bytearray) -> float:
+def bytes_to_cur(byte_array) :
     """Converts a current pair of bytes into a float"""
     return struct.unpack("<h", byte_array)[0] / C
 

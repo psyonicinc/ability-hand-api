@@ -61,7 +61,7 @@ class AbstractPacket:
 
 
 class Type1Packet(AbstractPacket):
-    def __init__(self, buffer: bytearray):
+    def __init__(self, buffer):
         super().__init__()
 
         if len(buffer) == self.size_lookup[0]:
@@ -151,7 +151,7 @@ class Type2Packet(AbstractPacket):
 
 
 class Type3Packet(AbstractPacket):
-    def __init__(self, buffer: bytearray):
+    def __init__(self, buffer):
         super().__init__()
         if len(buffer) == self.size_lookup[2]:
             (
@@ -189,8 +189,8 @@ class Type3Packet(AbstractPacket):
 
 
 def parse_packet(
-    byte_array: bytearray,
-) -> None | Type1Packet | Type2Packet | Type3Packet:
+    byte_array,
+):
     """Takes in un-stuffed frames, checks reply mode and checksum then converts
     to class derived from AbstractPacket"""
     if len(byte_array) == 1:

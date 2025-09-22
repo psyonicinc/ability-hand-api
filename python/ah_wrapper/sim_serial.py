@@ -1,7 +1,7 @@
 class Serial:
     """Simulated version of the python serial.Serial library with"""
 
-    def __init__(self, port: str, baud_rate: int, read_size: int):
+    def __init__(self, port, baud_rate, read_size):
         self.buffer = []  # Unlimited buffer size allowed
 
     def read(self, read_size):
@@ -9,5 +9,5 @@ class Serial:
         self.buffer = self.buffer[read_size:]
         return return_buff
 
-    def write(self, msg: bytearray):
+    def write(self, msg):
         pass

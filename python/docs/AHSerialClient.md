@@ -107,7 +107,7 @@ write thread is running
 #### set\_position
 
 ```python
-def set_position(positions: float | List[float], reply_mode=None, addr=None)
+def set_position(positions | List[float], reply_mode=None, addr=None)
 ```
 
 Set command to position target and update hand class position targets
@@ -126,7 +126,7 @@ If passing an array argument use the following index map:
 #### set\_velocity
 
 ```python
-def set_velocity(velocities: float | List[float],
+def set_velocity(velocities | List[float],
                  reply_mode=None,
                  addr=None) -> None
 ```
@@ -166,7 +166,7 @@ If passing an array argument use the following index map:
 #### set\_torque
 
 ```python
-def set_torque(currents: float | List[float],
+def set_torque(currents | List[float],
                reply_mode=None,
                addr=None) -> None
 ```

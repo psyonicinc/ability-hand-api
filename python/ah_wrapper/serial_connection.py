@@ -62,10 +62,10 @@ class SerialConnectionBase(ABC):
         }
 
     @abstractmethod
-    def _connect(self, port: str, baud_rate: int):
+    def _connect(self, port, baud_rate):
         pass
 
-    def read(self, read_size = 512) -> bytes | None:
+    def read(self, read_size = 512):
         try:
             with self.rw_lock:
                 msg = self._serial.read(read_size)
@@ -74,7 +74,7 @@ class SerialConnectionBase(ABC):
             if config.write_log:
                 logging.warning(e)
 
-    def write(self, msg: bytes | bytearray | List[int]) -> None:
+    def write(self, msg) :
         try:
             with self.rw_lock:
                 self._serial.write(msg)
@@ -83,7 +83,7 @@ class SerialConnectionBase(ABC):
             if config.write_log:
                 logging.warning(e)
 
-    def close(self) -> None:
+    def close(self) :
         try:
             with self.rw_lock:
                 self._serial.close()
@@ -123,11 +123,11 @@ class SerialConnection(SerialConnectionBase):
 
     def _connect(
         self,
-        read_timeout: float,
-        write_timeout: float,
+        read_timeout,
+        write_timeout,
         port = None,
         baud_rate = None,
-    ) -> (None | serial.Serial, bytearray):
+    ):
         """Handles connections to various ports and baud_rates automatically return
         a tuple of (Serial Object, successful byte array response)"""
 
