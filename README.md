@@ -67,6 +67,12 @@ If using an RS-485 serial adapter, you will additionally need to issue the follo
 
 ```We35```
 
+And connect as follows:
+
+1. GND (SERIAL ADAPTER) ➡️ GND (BREAKOUT BOARD)
+2. A (SERIAL ADAPTER) ➡️ SCL (BREAKOUT BOARD) 
+3. B (SERIAL ADAPTER) ➡️ SDA (BREAKOUT BOARD)
+
 ### Run Examples
 
 You are now ready to run examples using [Python](https://github.com/psyonicinc/ability-hand-api/tree/master/python)

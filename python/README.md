@@ -9,6 +9,10 @@ The Python package requires a [Python](https://www.python.org/) 3.10 or higher. 
 
 `python3 --version`
 
+If you are using Python 3.8 / 3.9 you can checkout the following [branch](https://github.com/psyonicinc/ability-hand-api/tree/python/3.8)
+
+`git checkout python/3.8`
+
 ### Install Pip Package
 
 Preferably using a [virtual env](https://docs.python.org/3/library/venv.html) 
