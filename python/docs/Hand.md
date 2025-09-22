@@ -15,7 +15,7 @@ class Hand(Observable)
 #### \_\_init\_\_
 
 ```python
-def __init__(addr: int = 0x50, fsr_offset: bool = True)
+def __init__(addr = 0x50, fsr_offset = True)
 ```
 
 Hand class used to represent the state of the real or virtual hand.
@@ -30,10 +30,10 @@ Hand class used to represent the state of the real or virtual hand.
 #### update\_tar
 
 ```python
-def update_tar(positions: List[float] = None,
-               velocities: List[float] = None,
-               currents: List[float] = None,
-               duties: List[float] = None)
+def update_tar(positions = None,
+               velocities = None,
+               currents = None,
+               duties = None)
 ```
 
 Safely updates the most recent target position, velocity, current or

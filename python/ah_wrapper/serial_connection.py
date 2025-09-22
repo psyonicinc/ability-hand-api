@@ -5,7 +5,6 @@ import serial.tools.list_ports
 import logging
 import time
 import platform
-from typing import List
 import threading
 import os
 import sys
@@ -66,7 +65,7 @@ class SerialConnectionBase(ABC):
     def _connect(self, port: str, baud_rate: int):
         pass
 
-    def read(self, read_size: int = 512) -> bytes | None:
+    def read(self, read_size = 512) -> bytes | None:
         try:
             with self.rw_lock:
                 msg = self._serial.read(read_size)
@@ -126,8 +125,8 @@ class SerialConnection(SerialConnectionBase):
         self,
         read_timeout: float,
         write_timeout: float,
-        port: str = None,
-        baud_rate: int = None,
+        port = None,
+        baud_rate = None,
     ) -> (None | serial.Serial, bytearray):
         """Handles connections to various ports and baud_rates automatically return
         a tuple of (Serial Object, successful byte array response)"""

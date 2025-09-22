@@ -1,5 +1,5 @@
 from threading import Lock
-from typing import List
+
 import logging
 import os
 import sys
@@ -26,7 +26,7 @@ import config
 
 
 class Hand(Observable):
-    def __init__(self, addr: int = 0x50, fsr_offset: bool = True):
+    def __init__(self, addr = 0x50, fsr_offset = True):
         """Hand class used to represent the state of the real or virtual hand.
 
         Args:
@@ -52,10 +52,10 @@ class Hand(Observable):
 
     def _update_cur(
         self,
-        positions: List[float] = None,
-        velocity: List[float] = None,
-        current: List[float] = None,
-        fsr: List[float] = None,
+        positions = None,
+        velocity = None,
+        current = None,
+        fsr = None,
     ):
         """Safely updates most recent readings from hand based on feedback"""
         with self._val_lock:
@@ -92,10 +92,10 @@ class Hand(Observable):
 
     def update_tar(
         self,
-        positions: List[float] = None,
-        velocities: List[float] = None,
-        currents: List[float] = None,
-        duties: List[float] = None,
+        positions = None,
+        velocities = None,
+        currents = None,
+        duties = None,
     ):
         """Safely updates the most recent target position, velocity, current or
         duty.  Useful for in the loop feedback algo. such as PID controllers

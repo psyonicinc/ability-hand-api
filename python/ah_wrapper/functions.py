@@ -1,5 +1,5 @@
 import struct
-from typing import List
+
 
 DEGREES_CONSTANT = 32767 / 150
 DEGREES_CONSTANT_INV = 150 / 32767

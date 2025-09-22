@@ -1,5 +1,5 @@
 import logging
-from typing import List
+
 import threading
 import time
 import os
@@ -44,19 +44,19 @@ from ah_wrapper.sim_functions import GeneratedPacket
 class AHSerialClient:
     def __init__(
         self,
-        port: str = None,
-        baud_rate: int = None,
-        hand_address: int = 0x50,
-        reply_mode: int = 0,
-        read_size: int = 512,
-        read_timeout: float = 0,
-        write_timeout: float = 0.1,
-        rs_485: bool = False,
-        read_thread: bool = True,
-        write_thread: bool = True,
-        auto_start_threads: bool = True,
-        simulated: bool = False,
-        rate_hz=500,
+        port = None,
+        baud_rate = None,
+        hand_address = 0x50,
+        reply_mode = 0,
+        read_size = 512,
+        read_timeout = 0,
+        write_timeout = 0.1,
+        rs_485 = False,
+        read_thread = True,
+        write_thread = True,
+        auto_start_threads = True,
+        simulated = False,
+        rate_hz= 500,
     ):
         """
         Serial client and wrapper for ability hand containing functions for
