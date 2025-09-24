@@ -12,10 +12,13 @@
 
 int serial_port = -1;
 char filename[32] = {0}; // some large enough empty buffer
-// DECLARE filename as such in advance (in case not in /dev/ttyUSB*)
-// char filename[128] = "/dev/ttyACM0";
 
-int autoconnect_serial(const uint32_t &BAUD_RATE) {
+int autoconnect_serial(const uint32_t &BAUD_RATE, const char *port) {
+  // If user declared port
+  if (port) {
+    strncpy(filename, port, sizeof(filename) - 1);
+  }
+
   // If user declared filename
   if (filename[0]) {
     serial_port = open(filename, O_RDWR);

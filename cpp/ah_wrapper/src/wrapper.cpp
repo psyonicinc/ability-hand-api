@@ -24,9 +24,9 @@ AHWrapper::~AHWrapper() {
   close_serial();
 }
 
-int AHWrapper::connect() {
+int AHWrapper::connect(const char* port) {
   start_time = std::chrono::steady_clock::now();
-  if (autoconnect_serial(baud_rate)) {
+  if (autoconnect_serial(baud_rate, port)) {
     return 1; // Could not connect
   } else {
     printf("Connected to Hand %d\n", hand.address);
