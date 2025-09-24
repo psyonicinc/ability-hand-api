@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
   AHWrapper wrapper = AHWrapper(0x50, 921600);
-  wrapper.connect();
+  wrapper.connect("");
 
   // Send Position Command [0,100]
   std::array<float, 6> cmd = {30.0, 30.0, 30.0, 30.0, 30.0, -30};

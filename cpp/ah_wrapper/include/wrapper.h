@@ -19,7 +19,7 @@ class AHWrapper {
 public:
   AHWrapper(const uint8_t &hand_addr, const uint32_t &b_rate);
   ~AHWrapper();
-  int connect();
+  int connect(const char* port);
   int read_write_once(const std::array<float, 6> &cmd_values,
                       const Command &cmd, const uint8_t &reply_mode);
   Hand hand;

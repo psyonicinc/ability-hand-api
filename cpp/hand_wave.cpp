@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]) {
   AHWrapper wrapper = AHWrapper(0x50, 921600);
-  wrapper.connect();
+  wrapper.connect("");
 
   auto now = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration<double>(now.time_since_epoch());
