@@ -38,7 +38,7 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
     while viewer.is_running():
         for j in range(0, 7, 2):
             data.ctrl[act_ids[j + 1]] = (
-                data.ctrl[act_ids[j]] * 1.05851325 + 0.72349796
+                data.ctrl[act_ids[j]] * 1.05851325 
             )
 
         mujoco.mj_step(model, data)

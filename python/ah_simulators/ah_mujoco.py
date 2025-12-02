@@ -74,7 +74,7 @@ class Controller:
     def mimic_joints(self, data):
         for j in range(0, 7, 2):
             data.ctrl[self.act_ids[j + 1]] = (
-                data.ctrl[self.act_ids[j]] * 1.05851325 + 0.72349796
+                data.ctrl[self.act_ids[j]] * 1.05851325 
             )
 
 

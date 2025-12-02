@@ -1,0 +1,100 @@
+2025-08-26 11:18:31,718 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:31,734 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:31,750 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:32,361 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:32,580 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:32,657 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:32,673 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:32,740 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b"\x00~\xa24(\xfe\xff'&\xea\xffS\x1a\x00\x00\xc9\x0c\xf3\xff\x17\x0c\x04\x00\xb5\xe1\xff\xff\xf6\xff\xfb\xff\xf7\xff\x10\x00\x02\x00\x00\x00$\xc5~\x00"
+2025-08-26 11:18:32,740 - INFO - Read Thread not created
+2025-08-26 11:18:32,740 - INFO - Write Thread not created
+2025-08-26 11:18:41,020 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:41,036 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:41,051 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:41,678 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:41,880 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:41,958 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:41,973 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:42,035 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2\xff\x1e\xdc\xff$\x0f\x83\xff\xd4\t|\xffJ\x12\x0e\x00\x9a"\x08\x00\x94\xe1\xff\xffE\xfa\x90\xfb\xf2\xff\x93\x05\xf2\x04\x02\x00 M~\x00'
+2025-08-26 11:18:42,035 - INFO - Read Thread not created
+2025-08-26 11:18:42,036 - INFO - Write Thread not created
+2025-08-26 11:18:51,317 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:51,333 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:51,349 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:51,959 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:52,165 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:52,242 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:52,259 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:18:52,321 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2\xd6"\xe5\xff\xa2\x12\xd2\xff\xf9\t&\xff\x8d\x0e\t\x00\xac\x1e\x08\x00\xd1\xe1\xff\xff]\xfa\xe6\xf8\xdd\xff\xfd\x04\x94\x06\x00\x00 \xe4~\x00'
+2025-08-26 11:18:52,321 - INFO - Read Thread not created
+2025-08-26 11:18:52,321 - INFO - Write Thread not created
+2025-08-26 11:19:46,432 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:46,448 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:46,464 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:47,067 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:47,272 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:47,352 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:47,367 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:47,434 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2W\t\xaf\xff!L<\x00\xb5Ku\x00\xa9K\x9d\x00\x9e20\x00\x19\xb3L\xff\xfe\xff\x15\x00\x00\x00\xfa\xffI\x00\n\x00\x00,~\x00'
+2025-08-26 11:19:47,434 - INFO - Read Thread not created
+2025-08-26 11:19:47,434 - INFO - Write Thread not created
+2025-08-26 11:19:55,170 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:55,185 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:55,201 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:55,805 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:56,010 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:56,087 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:56,103 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:19:56,170 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2d\t\x00\x00\x8e\t\x04\x00\xee\x13\x00\x00c\t\xe5\xff}^\r\x02\x00\xd2\xb2\x97\xff\x05\x00\x0b\x00\xae\xff\x0c\x000\x01\x00\x00\x00d~\x00'
+2025-08-26 11:19:56,171 - INFO - Read Thread not created
+2025-08-26 11:19:56,171 - INFO - Write Thread not created
+2025-08-26 11:20:35,120 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:35,136 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:35,153 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:35,789 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:35,990 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:36,070 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:36,086 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:36,154 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2\xc4\t\x0f\x00\x94\t-\x00\xee\x13\x00\x00c\t\xe6\xff}^\r\x03\x00+\xb3\xfc\xff\x01\x00\x01\x00\xf5\xff\x00\x00\xf1\xfd\x04\x00\x00\x17~\x00'
+2025-08-26 11:20:36,155 - INFO - Read Thread not created
+2025-08-26 11:20:36,155 - INFO - Write Thread not created
+2025-08-26 11:20:46,443 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:46,459 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:46,475 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:47,127 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:47,328 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:47,408 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:47,423 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:20:47,490 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2\xf9\t\x17\x001\n\x08\x00\xee\x13\x00\x00c\t\xe6\xff}]\r\x02\x00Y\xb3\xfd\xff\xd2\xff\x05\x00\xec\xff\xfa\xff\r\x00"\x00\x003~\x00'
+2025-08-26 11:20:47,490 - INFO - Read Thread not created
+2025-08-26 11:20:47,491 - INFO - Write Thread not created
+2025-08-26 11:21:08,306 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:08,321 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:08,337 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:08,981 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:09,183 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:09,261 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:09,277 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:09,346 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2\xb4\x1b\xfa\xff\xe7(\x06\x00a(\xf4\xffg\x1a\xe4\xff\xa1\x0b\xfa\xff\xf4\xf5\xff\xff\x01\x00\x1e\x00\xf8\xff\xf6\xffA\xff\xdb\xff\x00\xf0~\x00'
+2025-08-26 11:21:09,347 - INFO - Read Thread not created
+2025-08-26 11:21:09,347 - INFO - Write Thread not created
+2025-08-26 11:21:21,476 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:21,492 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:21,507 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:22,133 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:22,334 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:22,414 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:22,430 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:22,501 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2IK\xe1\x00.LC\x00\x92Kz\x00\xa4K}^\x00\xb45\x14\x01\x13\xb3\x07\x00\x00\x00\x1d\x00\xfd\xff\x1c\x00\xf1\xff\xfb\xff\x00}^~\x00'
+2025-08-26 11:21:22,501 - INFO - Read Thread not created
+2025-08-26 11:21:22,502 - INFO - Write Thread not created
+2025-08-26 11:21:57,386 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:57,402 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:57,418 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:58,054 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:58,257 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:58,336 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:58,352 - INFO - Cannot configure port, something went wrong. Original message: OSError(22, 'The parameter is incorrect.', None, 87)
+2025-08-26 11:21:58,413 - INFO - Connected to: COM13 with baudrate: 460800 confirmed with msg b'\x00~\xa2<K\x00\x00.LA\x00\x86K\x00\x00\x93K\x01\x00\xa95\x00\x00+\xb3\xfd\xff\xfa\xff\xf8\xff\xf3\xff\x01\x00\r\x00\xf8\xff\x1d\xb0~\x00'
+2025-08-26 11:21:58,413 - INFO - Read Thread not created
+2025-08-26 11:21:58,413 - INFO - Write Thread not created
