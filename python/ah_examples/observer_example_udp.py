@@ -46,18 +46,17 @@ def main():
     
     try:
         pos = [30, 30, 30, 30, 30, -30]
-        target = time.perf_counter()
+        send_ts = 0
         while True:
-            current_time = time.time()
-            for i in range(0, len(pos)):
-                ft = current_time * 3 + i * (2 * pi) / 12
-                pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
-            pos[5] = -pos[5]
-            client.set_position(positions=pos, reply_mode=2)  # Update command
-            client.send_command()  # Send command
-            target += 0.01
-            while time.perf_counter() < target:
-                pass
+            if(time.perf_counter() - send_ts > 0.01):
+                send_ts = time.perf_counter()
+                current_time = time.time()
+                for i in range(0, len(pos)):
+                    ft = current_time * 3 + i * (2 * pi) / 12
+                    pos[i] = (0.5 * sin(ft) + 0.5) * 45 + 15
+                pos[5] = -pos[5]
+                client.set_position(positions=pos, reply_mode=2)  # Update command
+                client.send_command()  # Send command
     except KeyboardInterrupt:
         pass
     finally:
