@@ -134,7 +134,6 @@ class AHSerialClient:
             )
         elif udp:
             from ah_wrapper.serial_connection import UDPConnection
-
             self._conn = UDPConnection(
                 dest_ip=udp_ip, dest_port=udp_port, local_port=udp_local_port
             )
@@ -246,7 +245,7 @@ class AHSerialClient:
                             except Exception as e:
                                 if config.write_log:
                                     logging.warning(e)
-
+            time.sleep(.0000001)
         self.end_time = time.time()
         if config.write_log:
             logging.info("Stopping Read Thread")
