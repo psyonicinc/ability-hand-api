@@ -57,6 +57,11 @@ class AHSerialClient:
         auto_start_threads: bool = True,
         simulated: bool = False,
         rate_hz=500,
+        udp: bool = False,
+        udp_ip: str = None,
+        udp_port: int = None,
+        udp_local_port: int = None,
+        en_connection_logic: bool = False,
     ):
         """
         Serial client and wrapper for ability hand containing functions for
@@ -127,6 +132,12 @@ class AHSerialClient:
             self._conn = SimSerialConnection(
                 port=port, baud_rate=baud_rate, read_size=read_size
             )
+        elif udp:
+            from ah_wrapper.serial_connection import UDPConnection
+
+            self._conn = UDPConnection(
+                dest_ip=udp_ip, dest_port=udp_port, local_port=udp_local_port
+            )
         else:
             self._conn = SerialConnection(
                 port=port,
@@ -135,6 +146,7 @@ class AHSerialClient:
                 rs_485=rs_485,
                 read_timeout=read_timeout,
                 write_timeout=write_timeout,
+                en_connection_logic=en_connection_logic,
             )
 
         # Initial hand position

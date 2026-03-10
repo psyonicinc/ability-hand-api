@@ -5,4 +5,5 @@
 *.vscode
 *.ropeproject
 venv/
-python/ah_examples/config.py
+__pycache__/
+***config.py***

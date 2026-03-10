@@ -102,6 +102,7 @@ class SerialConnection(SerialConnectionBase):
         rs_485,
         read_timeout,
         write_timeout,
+        en_connection_logic=False,
     ):
         super().__init__()
 
@@ -115,12 +116,14 @@ class SerialConnection(SerialConnectionBase):
             baud_rate=baud_rate,
             read_timeout=read_timeout,
             write_timeout=write_timeout,
+            en_connection_logic=en_connection_logic,
         )
         if not connected:
-            if config.write_log:
-                logging.warning(f"Recieved {msg} when trying to connect")
-            print("Could not connect to any hand, check logs for more info")
-            exit(1)
+            if en_connection_logic:
+                if config.write_log:
+                    logging.warning(f"Received {msg} when trying to connect")
+                print("Could not connect to any hand, check logs for more info")
+                exit(1)
 
     def _connect(
         self,
@@ -128,6 +131,7 @@ class SerialConnection(SerialConnectionBase):
         write_timeout: float,
         port: str = None,
         baud_rate: int = None,
+        en_connection_logic: bool = False,
     ) -> (None | serial.Serial, bytearray):
         """Handles connections to various ports and baud_rates automatically return
         a tuple of (Serial Object, successful byte array response)"""
@@ -149,6 +153,9 @@ class SerialConnection(SerialConnectionBase):
                         timeout=read_timeout,
                         write_timeout=write_timeout,
                     )
+                if not en_connection_logic:
+                    return self._serial, None
+
                 self._serial.write(test_msg)
                 time.sleep(0.05)
                 msg = self._serial.read(128)
@@ -213,6 +220,10 @@ class SerialConnection(SerialConnectionBase):
                             timeout=read_timeout,
                             write_timeout=write_timeout,
                         )
+                    if not en_connection_logic:
+                        print(f"Connected to: {p} with baudrate: {b}")
+                        return self._serial, None
+
                     self._serial.write(test_msg)
                     time.sleep(0.05)
                     msg = self._serial.read(128)
@@ -230,3 +241,49 @@ class SerialConnection(SerialConnectionBase):
                         logging.info(e)
 
         return None, None  # No connection found
+
+
+import socket
+
+
+class UDPConnection(SerialConnectionBase):
+    def __init__(self, dest_ip: str, dest_port: int, local_port: int = None, read_timeout: float = 0.1):
+        super().__init__()
+        self._dest_ip = dest_ip
+        self._dest_port = dest_port
+        self._local_port = local_port if local_port is not None else dest_port
+        self._read_timeout = read_timeout
+        self._connect(dest_ip, dest_port)
+
+    def _connect(self, port: str, baud_rate: int):
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.settimeout(self._read_timeout)
+        self._sock.bind(('', self._local_port))
+
+    def read(self, read_size: int = 512) -> bytes | None:
+        try:
+            with self.rw_lock:
+                data, _ = self._sock.recvfrom(read_size)
+            return data
+        except socket.timeout:
+            return None
+        except Exception as e:
+            if config.write_log:
+                logging.warning(e)
+            return None
+
+    def write(self, msg) -> None:
+        try:
+            with self.rw_lock:
+                self._sock.sendto(bytes(msg), (self._dest_ip, self._dest_port))
+                self.n_writes += 1
+        except Exception as e:
+            if config.write_log:
+                logging.warning(e)
+
+    def close(self) -> None:
+        try:
+            self._sock.close()
+        except Exception as e:
+            if config.write_log:
+                logging.warning(e)
