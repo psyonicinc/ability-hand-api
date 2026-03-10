@@ -15,15 +15,32 @@ If you are using Python 3.8 / 3.9 you can checkout the following [branch](https:
 
 ### Install Pip Package
 
-Preferably using a [virtual env](https://docs.python.org/3/library/venv.html) 
+Preferably using a [virtual env](https://docs.python.org/3/library/venv.html)
 install the [pip package](https://pypi.org/project/ability-hand/) using:
 
 `python3 -m pip install ability-hand`
 
-If you are wanting to use the simulator it is best to clone the repository and 
+If you are wanting to use the simulator it is best to clone the repository and
 work with the raw files.
 
 `git clone git@github.com:psyonicinc/ability-hand-api.git`
+
+### Install from Source (Editable Install)
+
+If you have cloned the repository and want changes to the source files to take
+effect immediately without reinstalling, install in editable mode from inside
+the `python/` directory:
+
+```
+cd python
+pip install -e .
+```
+
+You can verify the correct source is being used with:
+
+`python3 -c "import ah_wrapper; print(ah_wrapper.__file__)"`
+
+This should point to your local clone rather than a site-packages directory.
 
 ### Enable UART & Byte Stuffing using App
 
