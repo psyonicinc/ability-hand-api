@@ -247,9 +247,6 @@ class AHSerialClient:
                                 if config.write_log:
                                     logging.warning(e)
 
-            time.sleep(
-                self._wait_time_s / 2
-            )  # Sleeping on the job sometimes good
         self.end_time = time.time()
         if config.write_log:
             logging.info("Stopping Read Thread")

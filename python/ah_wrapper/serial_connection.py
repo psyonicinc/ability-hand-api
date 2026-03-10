@@ -247,17 +247,16 @@ import socket
 
 
 class UDPConnection(SerialConnectionBase):
-    def __init__(self, dest_ip: str, dest_port: int, local_port: int = None, read_timeout: float = 0.1):
+    def __init__(self, dest_ip: str, dest_port: int, local_port: int = None):
         super().__init__()
         self._dest_ip = dest_ip
         self._dest_port = dest_port
         self._local_port = local_port if local_port is not None else dest_port
-        self._read_timeout = read_timeout
         self._connect(dest_ip, dest_port)
 
     def _connect(self, port: str, baud_rate: int):
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.settimeout(self._read_timeout)
+        self._sock.setblocking(False)
         self._sock.bind(('', self._local_port))
 
     def read(self, read_size: int = 512) -> bytes | None:
@@ -265,7 +264,7 @@ class UDPConnection(SerialConnectionBase):
             with self.rw_lock:
                 data, _ = self._sock.recvfrom(read_size)
             return data
-        except socket.timeout:
+        except BlockingIOError:
             return None
         except Exception as e:
             if config.write_log:
