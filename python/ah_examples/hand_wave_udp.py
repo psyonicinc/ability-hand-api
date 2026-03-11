@@ -5,7 +5,7 @@ from ah_wrapper import AHSerialClient
 
 
 def main():
-    client = AHSerialClient(udp=True, udp_ip='10.0.4.151', udp_port=5067, write_thread=False, read_thread=False)
+    client = AHSerialClient(udp=True, udp_ip='10.0.4.140', udp_port=5067, write_thread=False, read_thread=False)
     """
     Since write_thread == False we will need to issue send_command after every 
     set_position command since the while loop is acting as our write thread.  One
